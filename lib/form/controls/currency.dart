@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:school_erp/config/palette.dart';
 import 'package:school_erp/model/doctype_response.dart';
 
-import 'base_input.dart';
-import 'base_control.dart';
+import '../../config/palette.dart';
 
-class ReadOnly extends StatelessWidget with Control, ControlInput {
+import 'base_control.dart';
+import 'base_input.dart';
+
+class Currency extends StatelessWidget with Control, ControlInput {
   final DoctypeField doctypeField;
 
   final Key? key;
   final Map? doc;
 
-  const ReadOnly({
+  const Currency({
     required this.doctypeField,
     this.key,
     this.doc,
@@ -25,13 +26,19 @@ class ReadOnly extends StatelessWidget with Control, ControlInput {
     var f = setMandatory(doctypeField);
 
     if (f != null) {
-      validators.add(f(context));
+      validators.add(
+        f(context),
+      );
     }
 
     return FormBuilderTextField(
       key: key,
-      readOnly: true,
-      initialValue: doc != null ? doc![doctypeField.fieldname] : null,
+      initialValue: doc != null
+          ? doc![doctypeField.fieldname] != null
+              ? doc![doctypeField.fieldname].toString()
+              : null
+          : null,
+      keyboardType: TextInputType.number,
       name: doctypeField.fieldname,
       decoration: Palette.formFieldDecoration(
         label: doctypeField.label,

@@ -44,7 +44,11 @@ dependencies:
   file_picker: ^4.0.2
   flutter_form_builder: ^6.1.0+1
   flutter_typeahead: ^3.2.0
-  
+  flutter_html: ^2.1.2
+  html_editor_enhanced: ^2.3.0
+  json_table: ^2.0.1
+  flutter_chips_input: ^1.10.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

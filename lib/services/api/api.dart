@@ -24,4 +24,13 @@ abstract class Api {
     int? pageLength,
     int? offset,
   });
+
+  Future<Map> searchLink({
+    required String doctype,
+    String? refDoctype,
+    required String txt,
+    int? pageLength,
+  });
+
+  Future<Map> getContactList(String query);
 }

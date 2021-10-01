@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:frappe_app/config/frappe_icons.dart';
-import 'package:frappe_app/model/common.dart';
-import 'package:frappe_app/utils/frappe_icon.dart';
+import 'package:school_erp/config/frappe_icons.dart';
+import 'package:school_erp/model/common.dart';
+import 'package:school_erp/utils/frappe_icon.dart';
 
 import '../../config/palette.dart';
 import '../../model/doctype_response.dart';
@@ -29,6 +29,16 @@ class Select extends StatelessWidget with Control, ControlInput {
     List<String? Function(dynamic)> validators = [];
 
     var f = setMandatory(doctypeField);
+    _onChanged(val) {
+      if (onControlChanged != null) {
+        onControlChanged!(
+          FieldValue(
+            field: doctypeField,
+            value: val,
+          ),
+        );
+      }
+    }
 
     if (f != null) {
       validators.add(
@@ -45,16 +55,7 @@ class Select extends StatelessWidget with Control, ControlInput {
 
     return FormBuilderDropdown(
       key: key,
-      onChanged: (val) {
-        if (onControlChanged != null) {
-          onControlChanged!(
-            FieldValue(
-              field: doctypeField,
-              value: val,
-            ),
-          );
-        }
-      },
+      onChanged: _onChanged,
       icon: FrappeIcon(
         FrappeIcons.select,
       ),

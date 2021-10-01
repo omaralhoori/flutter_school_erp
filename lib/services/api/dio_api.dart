@@ -209,6 +209,84 @@ class DioApi implements Api {
     }
   }
 
+  Future<Map> searchLink({
+    required String doctype,
+    String? refDoctype,
+    required String txt,
+    int? pageLength,
+  }) async {
+    var queryParams = {
+      'txt': txt,
+      'doctype': doctype,
+      'reference_doctype': refDoctype,
+      'ignore_user_permissions': 0,
+    };
+
+    if (pageLength != null) {
+      queryParams['page_length'] = pageLength;
+    }
+
+    try {
+      final response = await DioHelper.dio!.post(
+        '/method/frappe.desk.search.search_link',
+        data: queryParams,
+        options: Options(
+          contentType: Headers.formUrlEncodedContentType,
+          validateStatus: (status) {
+            return status! < 500;
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        if (await OfflineStorage.storeApiResponse()) {
+          if (pageLength != null && pageLength == 9999) {
+            await OfflineStorage.putItem('${doctype}LinkFull', response.data);
+          } else {
+            await OfflineStorage.putItem('$txt${doctype}Link', response.data);
+          }
+        }
+        return response.data;
+      } else if (response.statusCode == HttpStatus.forbidden) {
+        throw ErrorResponse(
+          statusCode: response.statusCode,
+          statusMessage: response.statusMessage,
+        );
+      } else {
+        throw ErrorResponse();
+      }
+    } catch (e) {
+      if (e is DioError) {
+        var error = e.error;
+        if (error is SocketException) {
+          throw ErrorResponse(
+            statusCode: HttpStatus.serviceUnavailable,
+            statusMessage: error.message,
+          );
+        } else {
+          throw ErrorResponse(statusMessage: error.message);
+        }
+      } else {
+        throw e;
+      }
+    }
+  }
+
+  Future<Map> getContactList(String query) async {
+    var data = {
+      "txt": query,
+    };
+
+    final response = await DioHelper.dio!.post(
+        '/method/frappe.email.get_contact_list',
+        data: data,
+        options: Options(contentType: Headers.formUrlEncodedContentType));
+    if (response.statusCode == 200) {
+      return response.data;
+    } else {
+      throw Exception('Something went wrong');
+    }
+  }
+
   Future<GetDocResponse> getdoc(String doctype, String name) async {
     var queryParams = {
       'doctype': doctype,

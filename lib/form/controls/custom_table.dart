@@ -1,25 +1,25 @@
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
 
-import 'package:frappe_app/widgets/form_builder_table.dart';
+// import 'package:school_erp/widgets/form_builder_table.dart';
 
-import '../../model/doctype_response.dart';
+// import '../../model/doctype_response.dart';
 
-class CustomTable extends StatelessWidget {
-  final DoctypeField doctypeField;
-  final Map? doc;
+// class CustomTable extends StatelessWidget {
+//   final DoctypeField doctypeField;
+//   final Map? doc;
 
-  CustomTable({
-    required this.doctypeField,
-    this.doc,
-  });
+//   CustomTable({
+//     required this.doctypeField,
+//     this.doc,
+//   });
 
-  @override
-  Widget build(BuildContext context) {
-    return FormBuilderTable(
-      name: doctypeField.fieldname,
-      context: context,
-      doctype: doctypeField.options,
-      value: doc != null ? doc![doctypeField.fieldname] : [],
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return FormBuilderTable(
+//       name: doctypeField.fieldname,
+//       context: context,
+//       doctype: doctypeField.options,
+//       value: doc != null ? doc![doctypeField.fieldname] : [],
+//     );
+//   }
+// }

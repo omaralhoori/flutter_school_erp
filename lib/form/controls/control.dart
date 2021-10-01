@@ -26,6 +26,7 @@ import './time.dart';
 import './autocomplete.dart';
 import './link_field.dart';
 import './multi_select.dart';
+import 'currency.dart';
 
 Widget makeControl({
   required DoctypeField field,
@@ -56,14 +57,14 @@ Widget makeControl({
       }
       break;
 
-    case "Table":
-      {
-        control = CustomTable(
-          doctypeField: field,
-          doc: doc,
-        );
-      }
-      break;
+    // case "Table":
+    //   {
+    //     control = CustomTable(
+    //       doctypeField: field,
+    //       doc: doc,
+    //     );
+    //   }
+    //   break;
 
     case "Select":
       {

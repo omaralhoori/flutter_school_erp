@@ -32,3 +32,13 @@ Future<bool> verifyOnline() async {
 bool isSubmittable(DoctypeDoc meta) {
   return meta.isSubmittable == 1;
 }
+
+DateTime parseDate(val) {
+  if (val == null) {
+    return DateTime.now();
+  } else if (val == "Today") {
+    return DateTime.now();
+  } else {
+    return DateTime.parse(val);
+  }
+}

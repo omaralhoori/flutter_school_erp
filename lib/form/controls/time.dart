@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:intl/intl.dart';
 
-import 'package:frappe_app/config/palette.dart';
-import 'package:frappe_app/model/doctype_response.dart';
+import 'package:school_erp/config/palette.dart';
+import 'package:school_erp/model/doctype_response.dart';
 
 import 'base_control.dart';
 import 'base_input.dart';
@@ -40,7 +40,7 @@ class Time extends StatelessWidget with Control, ControlInput {
           : null,
       inputType: InputType.time,
       valueTransformer: (val) {
-        return val.toIso8601String();
+        return val!.toIso8601String();
       },
       keyboardType: TextInputType.number,
       name: doctypeField.fieldname,

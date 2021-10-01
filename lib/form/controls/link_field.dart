@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:frappe_app/config/palette.dart';
-import 'package:frappe_app/model/common.dart';
-import 'package:frappe_app/widgets/form_builder_typeahead.dart';
+import 'package:school_erp/config/palette.dart';
+import 'package:school_erp/model/common.dart';
+import 'package:school_erp/widgets/form_builder_typeahead.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/doctype_response.dart';
