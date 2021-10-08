@@ -37,25 +37,25 @@ Widget makeControl({
   Widget control;
 
   switch (field.fieldtype) {
-    case "Link":
-      {
-        control = LinkField(
-          doctypeField: field,
-          doc: doc,
-          onControlChanged: onControlChanged,
-        );
-      }
-      break;
+    // case "Link":
+    //   {
+    //     control = LinkField(
+    //       doctypeField: field,
+    //       doc: doc,
+    //       onControlChanged: onControlChanged,
+    //     );
+    //   }
+    //   break;
 
-    case "Autocomplete":
-      {
-        control = AutoComplete(
-          doctypeField: field,
-          doc: doc,
-          onControlChanged: onControlChanged,
-        );
-      }
-      break;
+    // case "Autocomplete":
+    //   {
+    //     control = AutoComplete(
+    //       doctypeField: field,
+    //       doc: doc,
+    //       onControlChanged: onControlChanged,
+    //     );
+    //   }
+    //   break;
 
     // case "Table":
     //   {
@@ -76,25 +76,25 @@ Widget makeControl({
       }
       break;
 
-    case "MultiSelect":
-      {
-        control = MultiSelect(
-          doctypeField: field,
-          doc: doc,
-          onControlChanged: onControlChanged,
-        );
-      }
-      break;
+    // case "MultiSelect":
+    //   {
+    //     control = MultiSelect(
+    //       doctypeField: field,
+    //       doc: doc,
+    //       onControlChanged: onControlChanged,
+    //     );
+    //   }
+    //   break;
 
-    case "Table MultiSelect":
-      {
-        control = MultiSelect(
-          doctypeField: field,
-          doc: doc,
-          onControlChanged: onControlChanged,
-        );
-      }
-      break;
+    // case "Table MultiSelect":
+    //   {
+    //     control = MultiSelect(
+    //       doctypeField: field,
+    //       doc: doc,
+    //       onControlChanged: onControlChanged,
+    //     );
+    //   }
+    //   break;
 
     case "Small Text":
       {
@@ -132,15 +132,15 @@ Widget makeControl({
       }
       break;
 
-    case "Check":
-      {
-        control = Check(
-          doctypeField: field,
-          doc: doc,
-          onControlChanged: onControlChanged,
-        );
-      }
-      break;
+    // case "Check":
+    //   {
+    //     control = Check(
+    //       doctypeField: field,
+    //       doc: doc,
+    //       onControlChanged: onControlChanged,
+    //     );
+    //   }
+    //   break;
 
     case "Text Editor":
       {
