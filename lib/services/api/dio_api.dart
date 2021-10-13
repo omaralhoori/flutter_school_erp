@@ -4,10 +4,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:school_erp/model/common.dart';
+import 'package:school_erp/model/config.dart';
 import 'package:school_erp/model/doctype_response.dart';
 import 'package:school_erp/model/get_doc_response.dart';
 import 'package:school_erp/model/login/login_request.dart';
 import 'package:school_erp/model/login/login_response.dart';
+import 'package:school_erp/model/models.dart';
 import 'package:school_erp/model/offline_storage.dart';
 import 'package:school_erp/utils/dio_helper.dart';
 import 'package:school_erp/utils/helpers.dart';
@@ -332,5 +334,30 @@ class DioApi implements Api {
         throw e;
       }
     }
+  }
+
+  Future<List<Announcement>> getAnnouncements() async {
+    var data = {};
+    List<Announcement> announcementList = [];
+    if (DioHelper.dio == null) {
+      try {
+        DioHelper.init(Config().baseUrl!);
+      } catch (e) {}
+    }
+    if (DioHelper.dio != null) {
+      final response = await DioHelper.dio!.post(
+          '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.get_announcements',
+          data: data,
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+      if (response.statusCode == 200) {
+        for (var json in response.data["message"]) {
+          Announcement announcement = Announcement.fromJson(json);
+          announcementList.add(announcement);
+        }
+      } else {
+        throw Exception('Something went wrong');
+      }
+    }
+    return announcementList;
   }
 }

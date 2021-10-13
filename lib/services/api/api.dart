@@ -3,6 +3,7 @@ import 'package:school_erp/model/doctype_response.dart';
 import 'package:school_erp/model/get_doc_response.dart';
 import 'package:school_erp/model/login/login_request.dart';
 import 'package:school_erp/model/login/login_response.dart';
+import 'package:school_erp/model/models.dart';
 
 abstract class Api {
   Future<LoginResponse> login(
@@ -33,4 +34,6 @@ abstract class Api {
   });
 
   Future<Map> getContactList(String query);
+
+  Future<List<Announcement>> getAnnouncements();
 }

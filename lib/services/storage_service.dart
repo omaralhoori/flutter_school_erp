@@ -13,6 +13,10 @@ class StorageService {
     return Hive.openBox(name);
   }
 
+  void registerAdapter<T>(TypeAdapter<T> adapter) {
+    return Hive.registerAdapter<T>(adapter);
+  }
+
   Future initHiveStorage() {
     return Hive.initFlutter();
   }
