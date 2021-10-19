@@ -21,6 +21,8 @@ import '../../views/base_view.dart';
 import '../../utils/frappe_alert.dart';
 import '../../utils/enums.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class LoginView extends StatefulWidget {
   @override
   _LoginViewState createState() => _LoginViewState();
@@ -68,12 +70,12 @@ class _LoginViewState extends State<LoginView> {
                                 FormBuilderValidators.url(context),
                               ]),
                               decoration: Palette.formFieldDecoration(
-                                label: "Server URL",
+                                label: tr("Server URL"),
                               ),
                             ),
                             field: DoctypeField(
                               fieldname: 'serverUrl',
-                              label: "Server URL",
+                              label: tr("Server URL"),
                             ),
                           ),
                           buildDecoratedControl(
@@ -84,15 +86,15 @@ class _LoginViewState extends State<LoginView> {
                                 FormBuilderValidators.required(context),
                               ]),
                               decoration: Palette.formFieldDecoration(
-                                label: "Email Address",
+                                label: tr("Email Address"),
                               ),
                             ),
                             field: DoctypeField(
-                                fieldname: "email", label: "Email Address"),
+                                fieldname: "email", label: tr("Email Address")),
                           ),
                           PasswordField(),
                           FrappeFlatButton(
-                            title: model.loginButtonLabel,
+                            title: tr('Login'), //model.loginButtonLabel,
                             fullWidth: true,
                             height: 46,
                             buttonType: ButtonType.primary,
@@ -163,6 +165,28 @@ class _LoginViewState extends State<LoginView> {
                                 }
                               }
                             },
+                          ),
+                          const SizedBox(height: 15),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              ElevatedButton(
+                                onPressed: () async {
+                                  await context.setLocale(Locale('en'));
+                                },
+                                child: Text(
+                                  "English",
+                                ),
+                              ),
+                              ElevatedButton(
+                                onPressed: () async {
+                                  await context.setLocale(Locale('ar'));
+                                },
+                                child: Text(
+                                  "العربية",
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -327,7 +351,9 @@ class _PasswordFieldState extends State<PasswordField> {
   Widget build(BuildContext context) {
     return buildDecoratedControl(
       control: Stack(
-        alignment: Alignment.centerRight,
+        alignment: context.locale.toString() == 'ar'
+            ? Alignment.centerLeft
+            : Alignment.centerRight,
         children: [
           FormBuilderTextField(
             maxLines: 1,
@@ -337,7 +363,7 @@ class _PasswordFieldState extends State<PasswordField> {
             ]),
             obscureText: _hidePassword,
             decoration: Palette.formFieldDecoration(
-              label: "Password",
+              label: tr("Password"),
             ),
           ),
           TextButton(
@@ -347,7 +373,7 @@ class _PasswordFieldState extends State<PasswordField> {
               ),
             ),
             child: Text(
-              _hidePassword ? "Show" : "Hide",
+              _hidePassword ? tr("Show") : tr("Hide"),
               style: TextStyle(
                 color: FrappePalette.grey[600],
               ),
@@ -359,10 +385,10 @@ class _PasswordFieldState extends State<PasswordField> {
                 },
               );
             },
-          )
+          ),
         ],
       ),
-      field: DoctypeField(fieldname: "password", label: "Password"),
+      field: DoctypeField(fieldname: "password", label: tr("Password")),
     );
   }
 }

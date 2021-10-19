@@ -14,6 +14,8 @@ import 'services/connectivity_service.dart';
 import 'views/home/home_view.dart';
 import 'views/login/login_view.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 class FrappeApp extends StatefulWidget {
   @override
   _FrappeAppState createState() => _FrappeAppState();
@@ -46,6 +48,9 @@ class _FrappeAppState extends State<FrappeApp> {
           create: (context) =>
               ConnectivityService().connectionStatusController.stream,
           child: MaterialApp(
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
             builder: EasyLoading.init(),
             debugShowCheckedModeBanner: false,
             title: 'Frappe',
