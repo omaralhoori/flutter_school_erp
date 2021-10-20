@@ -45,7 +45,13 @@ class AnnouncementCard extends StatelessWidget {
                             attr["src"] != null &&
                             attr["src"]!.startsWith("/files"):
                         networkImageRender(
-                            mapUrl: (url) => Config().baseUrl! + url!),
+                          mapUrl: (url) {
+                            String imgUrl = Config().baseUrl!.endsWith('/')
+                                ? url!.substring(1, url.length)
+                                : url!;
+                            return Config().baseUrl! + imgUrl;
+                          },
+                        ),
                   },
                 )
               ],

@@ -61,6 +61,7 @@ class _LoginViewState extends State<LoginView> {
                       key: _fbKey,
                       child: Column(
                         children: <Widget>[
+                          /*
                           buildDecoratedControl(
                             control: FormBuilderTextField(
                               name: 'serverURL',
@@ -77,7 +78,7 @@ class _LoginViewState extends State<LoginView> {
                               fieldname: 'serverUrl',
                               label: tr("Server URL"),
                             ),
-                          ),
+                          ),*/
                           buildDecoratedControl(
                             control: FormBuilderTextField(
                               name: 'usr',
@@ -103,15 +104,16 @@ class _LoginViewState extends State<LoginView> {
                                 FocusNode(),
                               );
 
+
                               if (_fbKey.currentState != null) {
                                 if (_fbKey.currentState!.saveAndValidate()) {
                                   var formValue = _fbKey.currentState?.value;
 
                                   try {
-                                    await setBaseUrl(formValue!["serverURL"]);
+                                    // await setBaseUrl(formValue!["serverURL"]);
 
                                     var loginRequest = LoginRequest(
-                                      usr: formValue["usr"].trimRight(),
+                                      usr: formValue!["usr"].trimRight(),
                                       pwd: formValue["pwd"],
                                     );
 

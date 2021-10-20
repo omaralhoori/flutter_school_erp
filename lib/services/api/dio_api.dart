@@ -341,7 +341,7 @@ class DioApi implements Api {
     List<Announcement> announcementList = [];
     if (DioHelper.dio == null) {
       try {
-        DioHelper.init(Config().baseUrl!);
+        DioHelper.init();
       } catch (e) {}
     }
     if (DioHelper.dio != null) {
