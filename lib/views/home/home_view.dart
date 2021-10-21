@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:school_erp/app/locator.dart';
-import 'package:school_erp/config/palette.dart';
 import 'package:school_erp/model/models.dart';
 import 'package:school_erp/model/offline_storage.dart';
 import 'package:school_erp/services/api/api.dart';
@@ -22,7 +21,7 @@ class _HomeViewState extends State<HomeView> {
     } catch (DioError) {
       var snapshot = await OfflineStorage.getItem('allPosts');
       this.announcementList =
-          snapshot["data"] is List<Announcement> ? snapshot["data"] : [];
+      snapshot["data"] is List<Announcement> ? snapshot["data"] : [];
 
       //.map<Announcement>((announcement) {
       //       return announcement;
@@ -39,7 +38,7 @@ class _HomeViewState extends State<HomeView> {
     } catch (DioError) {
       var snapshot = await OfflineStorage.getItem('allPosts');
       this.announcementList =
-          snapshot["data"] is List<Announcement> ? snapshot["data"] : [];
+      snapshot["data"] is List<Announcement> ? snapshot["data"] : [];
 
       //.map<Announcement>((announcement) {
       //       return announcement;
@@ -51,33 +50,37 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Center(
-      child: FutureBuilder(
-        future: getAnnoucements(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return Column(
-              children: [
-                Text("Items"),
-                Expanded(
-                    child: RefreshIndicator(
-                  onRefresh: updateData,
-                  child: ListView.builder(
-                      itemCount: this.announcementList.length,
-                      itemBuilder: (ctxt, index) {
-                        return AnnouncementCard(
-                          announcement: this.announcementList[index],
-                        );
-                      }),
-                ))
-              ],
-            );
-          } else {
-            return CircularProgressIndicator();
-          }
-        },
+    return SafeArea(
+      child: Scaffold(
+          body: Center(
+            child: FutureBuilder(
+              future: getAnnoucements(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Column(
+                    children: [
+                      Text("aa"),
+                      Expanded(
+                        child: RefreshIndicator(
+                          onRefresh: updateData,
+                          child: ListView.builder(
+                              itemCount: this.announcementList.length,
+                              itemBuilder: (ctxt, index) {
+                                return AnnouncementCard(
+                                  announcement: this.announcementList[index],
+                                );
+                              }),
+                        ),
+                      )
+                    ],
+                  );
+                } else {
+                  return CircularProgressIndicator();
+                }
+              },
+            ),
+          ),
       ),
-    ));
+    );
   }
 }

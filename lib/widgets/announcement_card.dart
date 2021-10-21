@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:school_erp/model/announcement.dart';
 import 'package:school_erp/model/config.dart';
 
@@ -18,21 +21,14 @@ class AnnouncementCard extends StatelessWidget {
           splashColor: Colors.blue.withAlpha(30),
           onTap: () {},
           child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(25.0)
+            ),
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 4),
             width: 300,
             child: Column(
               children: [
                 Text(this.announcement.title),
-                // this.announcement.description != null
-                //     ? Text(this.announcement.description!)
-                //     : Container(),
-                // this.announcement.image != null
-                //     ? Image.network(
-                //         'http://192.168.1.109:8000' + this.announcement.image!,
-                //         height: 150,
-                //         fit: BoxFit.fill,
-                //       )
-                //     : Container(),
                 Html(
                   data: this.announcement.description,
                   customImageRenders: {
@@ -53,7 +49,61 @@ class AnnouncementCard extends StatelessWidget {
                           },
                         ),
                   },
-                )
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                          "${this.announcement.likes}",
+                          style: GoogleFonts.rajdhani(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        SizedBox(width: 5.0,),
+                        FaIcon(
+                          FontAwesomeIcons.thumbsUp,
+                          size: 19,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "${this.announcement.approvedComments}",
+                          style: GoogleFonts.rajdhani(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        SizedBox(width: 5.0,),
+                        FaIcon(
+                          FontAwesomeIcons.comment,
+                          size: 19,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "${this.announcement.views}",
+                          style: GoogleFonts.rajdhani(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        SizedBox(width: 5.0,),
+                        FaIcon(
+                          FontAwesomeIcons.eye,
+                          size: 19,
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ],
             ),
           ),

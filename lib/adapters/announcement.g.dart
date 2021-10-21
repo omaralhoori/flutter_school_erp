@@ -23,13 +23,14 @@ class AnnouncementAdapter extends TypeAdapter<Announcement> {
       description: fields[3] as String,
       views: fields[4] as int,
       likes: fields[5] as int,
+      approvedComments: (fields[6]??0) as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, Announcement obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.creation)
       ..writeByte(1)
@@ -41,7 +42,9 @@ class AnnouncementAdapter extends TypeAdapter<Announcement> {
       ..writeByte(4)
       ..write(obj.views)
       ..writeByte(5)
-      ..write(obj.likes);
+      ..write(obj.likes)
+      ..writeByte(6)
+      ..write(obj.approvedComments);
   }
 
   @override
