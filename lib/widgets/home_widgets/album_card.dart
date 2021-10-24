@@ -1,19 +1,18 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:school_erp/model/announcement.dart';
-import 'package:school_erp/model/config.dart';
+import 'package:school_erp/model/album.dart';
 
-class AnnouncementCard extends StatelessWidget {
-  final Announcement announcement;
+class AlbumCard extends StatelessWidget {
+  final Album album;
 
-  const AnnouncementCard({Key? key, required this.announcement})
+  const AlbumCard({Key? key, required this.album})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return Center(
       child: Card(
         margin: EdgeInsets.symmetric(vertical: 10),
@@ -22,34 +21,14 @@ class AnnouncementCard extends StatelessWidget {
           onTap: () {},
           child: Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25.0)
+                borderRadius: BorderRadius.circular(25.0)
             ),
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 4),
-            width: 300,
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+            width: size.width * .9,
             child: Column(
               children: [
-                Text(this.announcement.title),
-                Html(
-                  data: this.announcement.description,
-                  customImageRenders: {
-                    networkSourceMatcher(): networkImageRender(
-                      headers: {"Custom-Header": "some-value"},
-                      altWidget: (alt) => Text(alt ?? ""),
-                      loadingWidget: () => Text("Loading..."),
-                    ),
-                    (attr, _) =>
-                            attr["src"] != null &&
-                            attr["src"]!.startsWith("/files"):
-                        networkImageRender(
-                          mapUrl: (url) {
-                            String imgUrl = Config().baseUrl!.endsWith('/')
-                                ? url!.substring(1, url.length)
-                                : url!;
-                            return Config().baseUrl! + imgUrl;
-                          },
-                        ),
-                  },
-                ),
+                Text(this.album.title),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -57,7 +36,7 @@ class AnnouncementCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Text(
-                          "${this.announcement.likes}",
+                          "${this.album.likes}",
                           style: GoogleFonts.rajdhani(
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
@@ -65,15 +44,15 @@ class AnnouncementCard extends StatelessWidget {
                         ),
                         SizedBox(width: 5.0,),
                         FaIcon(
-                          FontAwesomeIcons.thumbsUp,
-                          size: 19,
+                          FontAwesomeIcons.heart,
+                          size: 17,
                         ),
                       ],
                     ),
                     Row(
                       children: [
                         Text(
-                          "${this.announcement.approvedComments}",
+                          "${this.album.approvedComments}",
                           style: GoogleFonts.rajdhani(
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
@@ -82,14 +61,14 @@ class AnnouncementCard extends StatelessWidget {
                         SizedBox(width: 5.0,),
                         FaIcon(
                           FontAwesomeIcons.comment,
-                          size: 19,
+                          size: 17,
                         ),
                       ],
                     ),
                     Row(
                       children: [
                         Text(
-                          "${this.announcement.views}",
+                          "${this.album.views}",
                           style: GoogleFonts.rajdhani(
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
@@ -98,7 +77,7 @@ class AnnouncementCard extends StatelessWidget {
                         SizedBox(width: 5.0,),
                         FaIcon(
                           FontAwesomeIcons.eye,
-                          size: 19,
+                          size: 17,
                         ),
                       ],
                     )

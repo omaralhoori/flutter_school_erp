@@ -57,12 +57,12 @@ class _FrappeAppState extends State<FrappeApp> {
             theme: new ThemeData(
               textTheme: GoogleFonts.interTextTheme(
                 Theme.of(context).textTheme.apply(
-                    // fontSizeFactor: 0.7,
-                    ),
+
+                ),
               ),
               disabledColor: Colors.black,
               primaryColor: Colors.white,
-              accentColor: Colors.black54,
+              colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.black54),
             ),
             home: GestureDetector(
               onTap: () {

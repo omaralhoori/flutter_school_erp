@@ -1,22 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of '../model/announcement.dart';
+part of '../model/album.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class AnnouncementAdapter extends TypeAdapter<Announcement> {
+class AlbumAdapter extends TypeAdapter<Album> {
   @override
-  final int typeId = 0;
+  final int typeId = 1;
 
   @override
-  Announcement read(BinaryReader reader) {
+  Album read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Announcement(
+    return Album(
       title: fields[2] as String,
       creation: fields[0] as String,
       name: fields[1] as String,
@@ -24,15 +24,16 @@ class AnnouncementAdapter extends TypeAdapter<Announcement> {
       views: fields[4] as int,
       likes: fields[5] as int,
       approvedComments: fields[6] as int,
-      isViewed: (fields[7]??0) as int,
-      isLiked: (fields[8]??0) as int,
+      fileUrl: fields[7] as String,
+      isViewed: fields[8] as int,
+      isLiked: fields[9] as int,
     );
   }
 
   @override
-  void write(BinaryWriter writer, Announcement obj) {
+  void write(BinaryWriter writer, Album obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.creation)
       ..writeByte(1)
@@ -48,8 +49,10 @@ class AnnouncementAdapter extends TypeAdapter<Announcement> {
       ..writeByte(6)
       ..write(obj.approvedComments)
       ..writeByte(7)
-      ..write(obj.isViewed)
+      ..write(obj.fileUrl)
       ..writeByte(8)
+      ..write(obj.isViewed)
+      ..writeByte(9)
       ..write(obj.isLiked);
   }
 
@@ -59,7 +62,7 @@ class AnnouncementAdapter extends TypeAdapter<Announcement> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is AnnouncementAdapter &&
+      other is AlbumAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

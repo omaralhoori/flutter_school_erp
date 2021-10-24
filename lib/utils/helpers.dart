@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:school_erp/model/album.dart';
 import 'package:tuple/tuple.dart';
 import 'package:school_erp/model/announcement.dart';
 import 'package:school_erp/model/doctype_response.dart';
@@ -10,8 +11,8 @@ import '../app/locator.dart';
 initDb() async {
   await locator<StorageService>().initHiveStorage();
 
-  locator<StorageService>()
-      .registerAdapter<Announcement>(AnnouncementAdapter());
+  locator<StorageService>().registerAdapter<Announcement>(AnnouncementAdapter());
+  locator<StorageService>().registerAdapter<Album>(AlbumAdapter());
 
   await locator<StorageService>().initHiveBox('queue');
   await locator<StorageService>().initHiveBox('offline');

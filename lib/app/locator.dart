@@ -16,8 +16,6 @@ void setupLocator() {
   // locator.registerLazySingleton<Api>(
   //   () => USE_FAKE_IMPLEMENTATION ? FakeApi() : DioApi(),
   // );
-  locator.registerLazySingleton<Api>(
-    () => DioApi(),
-  );
+  locator.registerLazySingleton<Api>(() => DioApi(),);
   $initGetIt(locator);
 }

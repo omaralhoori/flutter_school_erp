@@ -1,8 +1,9 @@
 import 'package:hive/hive.dart';
-part '../adapters/announcement.g.dart';
 
-@HiveType(typeId: 0)
-class Announcement extends HiveObject {
+part '../adapters/album.g.dart';
+
+@HiveType(typeId: 1)
+class Album{
   @HiveField(0)
   late String creation;
   @HiveField(1)
@@ -18,11 +19,13 @@ class Announcement extends HiveObject {
   @HiveField(6)
   late int approvedComments;
   @HiveField(7)
-  late int isViewed;
+  late String fileUrl;
   @HiveField(8)
+  late int isViewed;
+  @HiveField(9)
   late int isLiked;
 
-  Announcement({
+  Album({
     required this.title,
     required this.creation,
     required this.name,
@@ -30,11 +33,12 @@ class Announcement extends HiveObject {
     required this.views,
     required this.likes,
     required this.approvedComments,
+    required this.fileUrl,
     required this.isViewed,
     required this.isLiked,
   });
 
-  Announcement.fromJson(Map<String, dynamic> json) {
+  Album.fromJson(Map<String, dynamic> json) {
     creation = json['creation'];
     name = json['name'];
     title = json['title'];
@@ -42,6 +46,7 @@ class Announcement extends HiveObject {
     views = json['views'];
     likes = json['likes'];
     approvedComments = json['approved_comments'];
+    fileUrl = json['file_url'];
     isViewed = json['is_viewed'];
     isLiked = json['is_liked'];
   }
@@ -55,6 +60,7 @@ class Announcement extends HiveObject {
     data['views'] = this.views;
     data['likes'] = this.likes;
     data['approved_comments'] = this.approvedComments;
+    data['file_url'] = this.fileUrl;
     data['is_viewed'] = this.isViewed;
     data['is_liked'] = this.isLiked;
     return data;

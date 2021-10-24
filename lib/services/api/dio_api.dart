@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:school_erp/model/album.dart';
 import 'package:school_erp/model/common.dart';
 import 'package:school_erp/model/config.dart';
 import 'package:school_erp/model/doctype_response.dart';
@@ -359,5 +360,31 @@ class DioApi implements Api {
       }
     }
     return announcementList;
+  }
+
+  @override
+  Future<List<Album>> getGallery() async{
+    var data = {};
+    List<Album> albumList = [];
+    if (DioHelper.dio == null) {
+      try {
+        DioHelper.init();
+      } catch (e) {}
+    }
+    if (DioHelper.dio != null) {
+      final response = await DioHelper.dio!.post(
+          '/method/mobile_backend.mobile_backend.doctype.gallery_album.gallery_album.get_albums',
+          data: data,
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+      if (response.statusCode == 200) {
+        for (var json in response.data["message"]) {
+          Album album = Album.fromJson(json);
+          albumList.add(album);
+        }
+      } else {
+        throw Exception('Something went wrong');
+      }
+    }
+    return albumList;
   }
 }

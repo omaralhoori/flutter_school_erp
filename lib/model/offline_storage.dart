@@ -34,7 +34,11 @@ class OfflineStorage {
       'data': data,
     };
 
-    await storage.put(kHash, v);
+    try{
+      await storage.put(kHash, v);
+    }catch(e){
+      throw e;
+    }
   }
 
   static putAllItems(Map data, [bool isIsolate = false]) async {
