@@ -1,7 +1,6 @@
 import 'package:school_erp/model/album.dart';
-import 'package:school_erp/model/announcement.dart';
+import 'package:school_erp/model/content.dart';
 import 'package:school_erp/views/base_viewmodel.dart';
-import 'package:school_erp/utils/dio_helper.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../app/locator.dart';
@@ -10,25 +9,8 @@ import '../../model/offline_storage.dart';
 
 @lazySingleton
 class HomeViewModel extends BaseViewModel {
-  List<Announcement> newsList = [];
+  List<Content> contentList = [];
   List<Album> albums = [];
-
-  Future<bool> getAnnoucements() async {
-    try {
-      this.newsList = await locator<Api>().getAnnouncements();
-      if (this.newsList.isNotEmpty)
-        await OfflineStorage.putItem('allPosts', newsList);
-    } catch (DioError) {
-      var snapshot = await OfflineStorage.getItem('allPosts');
-      this.newsList =
-      snapshot["data"] is List<Announcement> ? snapshot["data"] : [];
-
-      //.map<Announcement>((announcement) {
-      //       return announcement;
-      //     }).toList();
-    }
-    return Future.value(true);
-  }
 
 
   Future<bool> getAlbums() async {
@@ -41,10 +23,24 @@ class HomeViewModel extends BaseViewModel {
       var snapshot = await OfflineStorage.getItem('allAlbums');
       this.albums =
       snapshot["data"] is List<Album> ? snapshot["data"] : [];
+    }
+    return Future.value(true);
+  }
 
-      //.map<Announcement>((announcement) {
-      //       return announcement;
-      //     }).toList();
+  Future<bool> getContent() async {
+    try {
+      this.contentList = await locator<Api>().getContents();
+      if (this.contentList.isNotEmpty) {
+        try{
+          await OfflineStorage.putItem('allContents', contentList);
+        }catch(e){
+          print(e);
+        }
+      }
+    } catch (DioError) {
+      var snapshot = await OfflineStorage.getItem('allContents');
+      this.contentList =
+      snapshot["data"] is List<Album> ? snapshot["data"] : [];
     }
     return Future.value(true);
   }

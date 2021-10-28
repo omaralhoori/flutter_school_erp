@@ -1,28 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:school_erp/views/base_view.dart';
 import 'package:school_erp/views/home/home_viewmodel.dart';
+import 'package:school_erp/widgets/home_widgets/content_card.dart';
 
-import 'announcement_card.dart';
-
-class NewsTab extends StatelessWidget {
-  NewsTab({Key? key}) : super(key: key);
+class ContentTab extends StatelessWidget {
+  ContentTab({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     return BaseView<HomeViewModel>(
       builder: (context, home, _){
         return FutureBuilder(
-          future: home.getAnnoucements(),
+          future: home.getContent(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return RefreshIndicator(
-                onRefresh: home.getAnnoucements,
+                onRefresh: home.getContent,
                 child: ListView.separated(
-                    itemCount: home.newsList.length,
+                    itemCount: home.contentList.length,
                     itemBuilder: (ctxt, index) {
-                      return AnnouncementCard(
-                        announcement: home.newsList[index],
+                      return ContentCard(
+                        content: home.contentList[index],
                       );
                     },
                   separatorBuilder: (BuildContext context, int index) {

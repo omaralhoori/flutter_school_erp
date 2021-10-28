@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:school_erp/lifecycle_manager.dart';
+import 'package:school_erp/widgets/home_widgets/content_tab.dart';
+import 'config/frappe_palette.dart';
 import 'model/config.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import 'model/config.dart';
 import 'utils/enums.dart';
 
 import 'services/connectivity_service.dart';
@@ -15,6 +17,8 @@ import 'views/home/home_view.dart';
 import 'views/login/login_view.dart';
 
 import 'package:easy_localization/easy_localization.dart';
+
+import 'widgets/home_widgets/gallery_tab.dart';
 
 class FrappeApp extends StatefulWidget {
   @override

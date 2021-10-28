@@ -1,8 +1,10 @@
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:school_erp/config/frappe_palette.dart';
 import 'package:school_erp/model/album.dart';
+import 'package:school_erp/model/config.dart';
+import 'package:school_erp/widgets/interaction_button.dart';
 
 class AlbumCard extends StatelessWidget {
   final Album album;
@@ -18,69 +20,56 @@ class AlbumCard extends StatelessWidget {
         margin: EdgeInsets.symmetric(vertical: 10),
         child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
-          onTap: () {},
+          onTap: () {
+            // TODO(ac01): Add new page to show comments and News details
+          },
           child: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25.0)
             ),
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-            width: size.width * .9,
+            padding: EdgeInsets.zero,
+            width: size.width,
             child: Column(
               children: [
+                CachedNetworkImage(imageUrl: Config().baseUrl! + this.album.fileUrl.split(',').first),
                 Text(this.album.title),
-
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          "${this.album.likes}",
-                          style: GoogleFonts.rajdhani(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        SizedBox(width: 5.0,),
-                        FaIcon(
-                          FontAwesomeIcons.heart,
-                          size: 17,
-                        ),
-                      ],
+                    Flexible(
+                      flex: 1,
+                      child: InteractionButton(
+                        onPressed: this.album.isLiked == 0 ? () {
+                          // TODO(ac01): Add like button action
+                        } : null,
+                        icon:
+                        this.album.isLiked == 0
+                            ? FontAwesomeIcons.heart
+                            : FontAwesomeIcons.solidHeart,
+                        count: this.album.likes,
+                        color: FrappePalette.mainSecondaryColor,
+                      ),
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          "${this.album.approvedComments}",
-                          style: GoogleFonts.rajdhani(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        SizedBox(width: 5.0,),
-                        FaIcon(
-                          FontAwesomeIcons.comment,
-                          size: 17,
-                        ),
-                      ],
+                    Flexible(
+                      flex: 1,
+                      child: InteractionButton(
+                        onPressed: () {
+                          // TODO(ac02): Add comments button action
+                        },
+                        icon: FontAwesomeIcons.comment,
+                        count: this.album.approvedComments,
+                        color: FrappePalette.mainSecondaryColor,
+                      ),
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          "${this.album.views}",
-                          style: GoogleFonts.rajdhani(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        SizedBox(width: 5.0,),
-                        FaIcon(
-                          FontAwesomeIcons.eye,
-                          size: 17,
-                        ),
-                      ],
-                    )
+                    Flexible(
+                      flex: 1,
+                      child: InteractionButton(
+                        onPressed: null,
+                        icon: FontAwesomeIcons.eye,
+                        count: this.album.views,
+                        color: this.album.isViewed == 0 ? FrappePalette.mainSecondaryColor : FrappePalette.mainSecondaryColor.withOpacity(0.5),
+                      ),
+                    ),
                   ],
                 ),
               ],

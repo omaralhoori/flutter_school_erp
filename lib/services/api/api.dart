@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:school_erp/model/album.dart';
+import 'package:school_erp/model/content.dart';
 import 'package:school_erp/model/doctype_response.dart';
 import 'package:school_erp/model/get_doc_response.dart';
 import 'package:school_erp/model/login/login_request.dart';
@@ -39,4 +40,6 @@ abstract class Api {
   Future<List<Announcement>> getAnnouncements();
 
   Future<List<Album>> getGallery();
+
+  Future<List<Content>> getContents();
 }

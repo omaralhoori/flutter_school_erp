@@ -15,13 +15,15 @@ class GalleryTab extends StatelessWidget {
           future: home.getAlbums(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-
               return RefreshIndicator(
                 onRefresh: home.getAlbums,
-                child: ListView.builder(
+                child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 0
+                    ),
                     itemCount: home.albums.length,
                     itemBuilder: (ctxt, index) {
-
                       return AlbumCard(
                         album: home.albums[index],
                       );

@@ -111,4 +111,17 @@ class FrappePalette {
     },
   );
   static const int _darkGreenPrimaryValue = 0xFF48BB74;
+
+  //#00382B
+  //#1B5240
+  //#77AD9E
+  //#C1E0D2
+  //#F4F3E8
+
+  static Color mainPrimaryColor = Color(0xFF00382B);
+  static Color mainSecondaryColor = Color(0xFF1B5240);
+  static Color primaryColor = Color(0xFF77AD9E);
+  static Color fontPrimaryColor = Color(0xFFC1E0D2);
+  static Color fontSecondaryColor = Color(0xFFF4F3E8);
 }
+

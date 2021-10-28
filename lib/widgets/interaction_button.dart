@@ -21,7 +21,7 @@ class InteractionButton extends StatelessWidget {
     return TextButton(
       onPressed: onPressed,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             "$count",
@@ -31,7 +31,7 @@ class InteractionButton extends StatelessWidget {
               color: FrappePalette.grey.shade900
             ),
           ),
-          SizedBox(width: 5.0,),
+          SizedBox(width: 5,),
           FaIcon(
             icon,
             size: 17,

@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:school_erp/model/album.dart';
 import 'package:school_erp/model/common.dart';
 import 'package:school_erp/model/config.dart';
+import 'package:school_erp/model/content.dart';
 import 'package:school_erp/model/doctype_response.dart';
 import 'package:school_erp/model/get_doc_response.dart';
 import 'package:school_erp/model/login/login_request.dart';
@@ -18,6 +19,7 @@ import 'package:school_erp/utils/helpers.dart';
 import '../../services/api/api.dart';
 
 class DioApi implements Api {
+
   Future<LoginResponse> login(LoginRequest loginRequest) async {
     try {
       final response = await DioHelper.dio!.post(
@@ -386,5 +388,31 @@ class DioApi implements Api {
       }
     }
     return albumList;
+  }
+
+  @override
+  Future<List<Content>> getContents() async{
+    var data = {};
+    List<Content> contentList = [];
+    if (DioHelper.dio == null) {
+      try {
+        DioHelper.init();
+      } catch (e) {}
+    }
+    if (DioHelper.dio != null) {
+      final response = await DioHelper.dio!.post(
+          '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.get_all_contents',
+          data: data,
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+      if (response.statusCode == 200) {
+        for (var json in response.data["message"]) {
+          Content content = Content.fromJson(json);
+          contentList.add(content);
+        }
+      } else {
+        throw Exception('Something went wrong');
+      }
+    }
+    return contentList;
   }
 }
