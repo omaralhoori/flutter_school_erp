@@ -1,8 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:school_erp/config/frappe_palette.dart';
 
 // Color palette for the unthemed pages
 class Palette {
+
+  static Color mColor = Color(0xFF034C8C);
+  static Color pColor = Color(0xFFCCFFEB);
+
+  static Color fontColorPrimary = Color(0xFF404040);
+  static Color interactionIconsColor = Color(0xFF595959);
+  static Color indicatorColor = Color(0xFF04BEC4);
+  static Color appBarIconsColor = Color(0xFF03658C);
+  static Color homeAppBarColor = Color(0xFFFFFFFF);
+
+  static ThemeData customTheme = ThemeData(
+    textTheme: TextTheme(
+      bodyText1: TextStyle(
+        color: fontColorPrimary,
+      ),
+      bodyText2: TextStyle(
+        color: homeAppBarColor,
+      ),
+      caption: TextStyle(
+        color: interactionIconsColor.withOpacity(0.5),
+        fontSize: 13,
+      ),
+    ),
+    disabledColor: Colors.black,
+    primaryColor: Colors.white,
+    colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.black54),
+    appBarTheme: AppBarTheme(
+      backgroundColor: appBarIconsColor,
+      foregroundColor: homeAppBarColor,
+    ),
+    scaffoldBackgroundColor: homeAppBarColor,
+
+  );
+
+
   static Color bgColor = FrappePalette.grey[50]!;
   static Color fieldBgColor = FrappePalette.grey[100]!;
   static Color iconColor = FrappePalette.grey[700]!;

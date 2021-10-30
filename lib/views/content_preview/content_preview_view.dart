@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:school_erp/config/frappe_palette.dart';
+import 'package:school_erp/config/palette.dart';
 import 'package:school_erp/model/config.dart';
 import 'package:school_erp/model/content.dart';
 import 'package:school_erp/widgets/interaction_button.dart';
@@ -14,15 +14,21 @@ class ContentPreviewView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Palette.appBarIconsColor,
+        title: Text(
+          this.content.title,
+          style: Theme.of(context).textTheme.bodyText2!.apply(
+            color: Palette.homeAppBarColor,
+            fontSizeDelta: 3,
+          ),
+        ),
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(
-              height: size.height*.05,
-            ),
-            Text(this.content.title),
             Html(
               data: this.content.description,
               customImageRenders: {
@@ -59,7 +65,7 @@ class ContentPreviewView extends StatelessWidget {
                         ? FontAwesomeIcons.heart
                         : FontAwesomeIcons.solidHeart,
                     count: this.content.likes,
-                    color: FrappePalette.red,
+                    color: Palette.interactionIconsColor,
                   ),
                 ),
                 Flexible(
@@ -70,7 +76,7 @@ class ContentPreviewView extends StatelessWidget {
                     },
                     icon: FontAwesomeIcons.comment,
                     count: this.content.approvedComments,
-                    color: FrappePalette.red,
+                    color: Palette.interactionIconsColor,
                   ),
                 ),
                 Flexible(
@@ -79,14 +85,14 @@ class ContentPreviewView extends StatelessWidget {
                     onPressed: null,
                     icon: FontAwesomeIcons.eye,
                     count: this.content.views,
-                    color: this.content.isViewed == 0 ? FrappePalette.red : FrappePalette.grey,
+                    color: this.content.isViewed == 0 ? Palette.interactionIconsColor : Palette.interactionIconsColor.withOpacity(0.5),
                   ),
                 ),
               ],
             ),
             Divider(),
             Container(
-              height: 300.0,
+              height: 50.0,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 7),
                 child: Column(
@@ -97,9 +103,10 @@ class ContentPreviewView extends StatelessWidget {
                         Flexible(
                           flex: 4,
                           child: Container(
+                            height: 35.0,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20.0),
-                              border: Border.all(color: Colors.black)
+                              borderRadius: BorderRadius.circular(5.0),
+                              border: Border.all(color: Palette.appBarIconsColor)
                             ),
                             child: TextField(
                               decoration: InputDecoration(
@@ -112,9 +119,12 @@ class ContentPreviewView extends StatelessWidget {
                           flex: 1,
                           child: IconButton(
                             onPressed: (){
-
+                              // TODO(): Comment send button
                             },
-                            icon: Icon(Icons.send),
+                            icon: Icon(
+                              Icons.send,
+                              color: Palette.appBarIconsColor,
+                            ),
                           ),
                         ),
                       ],

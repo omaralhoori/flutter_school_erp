@@ -12,8 +12,6 @@ import 'package:school_erp/widgets/section.dart';
 
 import '../../config/palette.dart';
 
-import './custom_table.dart';
-import './check.dart';
 import './data.dart';
 import './date.dart';
 import './datetime.dart';
@@ -23,9 +21,6 @@ import './select.dart';
 import './small_text.dart';
 import './text_editor.dart';
 import './time.dart';
-import './autocomplete.dart';
-import './link_field.dart';
-import './multi_select.dart';
 import 'currency.dart';
 
 Widget makeControl({

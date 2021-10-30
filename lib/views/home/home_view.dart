@@ -1,7 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:school_erp/config/frappe_palette.dart';
+import 'package:school_erp/config/palette.dart';
+import 'package:school_erp/widgets/home_widgets/contact_tab.dart';
 import 'package:school_erp/widgets/home_widgets/gallery_tab.dart';
 import 'package:school_erp/widgets/home_widgets/home_drawer.dart';
 import 'package:school_erp/widgets/home_widgets/content_tab.dart';
@@ -15,19 +17,20 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          endDrawer: HomeDrawer(),
-          body: DefaultTabController(
+    return Scaffold(
+      endDrawer: HomeDrawer(),
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.light.copyWith(statusBarColor: Palette.appBarIconsColor),
+        child: SafeArea(
+          child: DefaultTabController(
             length: 3,
             child: NestedScrollView(
               headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
                 return <Widget>[
                   SliverAppBar(
-                    backgroundColor: FrappePalette.mainSecondaryColor,
+                    backgroundColor: Palette.homeAppBarColor,
                     expandedHeight: 60.0,
+                    iconTheme: IconThemeData(color: Palette.appBarIconsColor),
                     floating: false,
                     pinned: false,
                     flexibleSpace: FlexibleSpaceBar(
@@ -38,20 +41,21 @@ class _HomeViewState extends State<HomeView> {
                           Text(
                             tr("Latest Updates"),
                             style: TextStyle(
-                              color: FrappePalette.fontSecondaryColor,
-                              fontSize: 13
+                                color: Palette.appBarIconsColor,
+                                fontSize: 13
                             ),
                           ),
                         ],
                       ),
+                      titlePadding: EdgeInsets.only(bottom: 13.0),
                     ),
 
                   ),
                   SliverPersistentHeader(
                     delegate: _SliverAppBarDelegate(
                       TabBar(
-                        indicatorColor: FrappePalette.primaryColor,
-                        labelColor: FrappePalette.fontSecondaryColor,
+                        indicatorColor: Palette.indicatorColor,
+                        labelColor: Palette.appBarIconsColor,
                         tabs: [
                           Tab(
                             child: Row(
@@ -76,7 +80,7 @@ class _HomeViewState extends State<HomeView> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 FaIcon(FontAwesomeIcons.solidAddressBook, size: 25,),
-                                Text(tr("Info")),
+                                Text(tr("Contact")),
                               ],
                             ),
                           ),
@@ -91,7 +95,7 @@ class _HomeViewState extends State<HomeView> {
                 children: [
                   ContentTab(),
                   GalleryTab(),
-                  GalleryTab(),
+                  ContactTab(),
                 ],
               ),
             ),
@@ -119,7 +123,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return new Container(
-      color: FrappePalette.mainSecondaryColor,
+      color: Palette.homeAppBarColor,
       child: _tabBar,
     );
   }

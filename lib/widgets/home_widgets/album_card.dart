@@ -1,10 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:school_erp/config/frappe_palette.dart';
+import 'package:school_erp/config/palette.dart';
 import 'package:school_erp/model/album.dart';
 import 'package:school_erp/model/config.dart';
-import 'package:school_erp/widgets/interaction_button.dart';
+import 'package:school_erp/views/album_preview/album_preview_view.dart';
 
 class AlbumCard extends StatelessWidget {
   final Album album;
@@ -15,68 +14,56 @@ class AlbumCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    return Center(
-      child: Card(
-        margin: EdgeInsets.symmetric(vertical: 10),
-        child: InkWell(
-          splashColor: Colors.blue.withAlpha(30),
-          onTap: () {
-            // TODO(ac01): Add new page to show comments and News details
-          },
-          child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25.0)
-            ),
-            padding: EdgeInsets.zero,
-            width: size.width,
-            child: Column(
-              children: [
-                CachedNetworkImage(imageUrl: Config().baseUrl! + this.album.fileUrl.split(',').first),
-                Text(this.album.title),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Flexible(
-                      flex: 1,
-                      child: InteractionButton(
-                        onPressed: this.album.isLiked == 0 ? () {
-                          // TODO(ac01): Add like button action
-                        } : null,
-                        icon:
-                        this.album.isLiked == 0
-                            ? FontAwesomeIcons.heart
-                            : FontAwesomeIcons.solidHeart,
-                        count: this.album.likes,
-                        color: FrappePalette.mainSecondaryColor,
-                      ),
-                    ),
-                    Flexible(
-                      flex: 1,
-                      child: InteractionButton(
-                        onPressed: () {
-                          // TODO(ac02): Add comments button action
-                        },
-                        icon: FontAwesomeIcons.comment,
-                        count: this.album.approvedComments,
-                        color: FrappePalette.mainSecondaryColor,
-                      ),
-                    ),
-                    Flexible(
-                      flex: 1,
-                      child: InteractionButton(
-                        onPressed: null,
-                        icon: FontAwesomeIcons.eye,
-                        count: this.album.views,
-                        color: this.album.isViewed == 0 ? FrappePalette.mainSecondaryColor : FrappePalette.mainSecondaryColor.withOpacity(0.5),
-                      ),
-                    ),
-                  ],
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(0.0),
+      ),
+      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+      width: size.width,
+      child: InkWell(
+        splashColor: Colors.blue.withAlpha(30),
+        onTap: () {
+          // TODO(ac01): Add new page to show comments and News details
+          Navigator.push(context, MaterialPageRoute(builder: (context) => AlbumPreviewView(album: album,)));
+        },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Container(
+              width: 140.0,
+              height: 140.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30.0),
+                image: DecorationImage(
+                    image: CachedNetworkImageProvider(Config().baseUrl! + this.album.fileUrl.split(',').first),
+                    fit: BoxFit.fill
                 ),
-              ],
+              ),
+              child: Align(
+                alignment: Alignment.topRight,
+                child: Container(
+                  width: 17.0,
+                  height: 17.0,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    shape: BoxShape.circle
+                  ),
+                  child: Text(
+                    "${this.album.fileUrl.split(',').length}",
+                    style: Theme.of(context).textTheme.bodyText2,
+                  ),
+                ),
+              ),
+              ),
+            Text(
+              this.album.title,
+              style: Theme.of(context).textTheme.bodyText1,
             ),
-          ),
+          ],
         ),
       ),
     );
   }
 }
+

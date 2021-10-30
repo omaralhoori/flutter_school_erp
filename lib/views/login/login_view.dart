@@ -6,7 +6,6 @@ import 'package:school_erp/config/frappe_palette.dart';
 import 'package:school_erp/form/controls/control.dart';
 import 'package:school_erp/model/doctype_response.dart';
 import 'package:school_erp/model/login/login_request.dart';
-import 'package:school_erp/utils/http.dart';
 import 'package:school_erp/utils/navigation_helper.dart';
 import 'package:school_erp/views/home/home_view.dart';
 import 'package:school_erp/widgets/frappe_bottom_sheet.dart';

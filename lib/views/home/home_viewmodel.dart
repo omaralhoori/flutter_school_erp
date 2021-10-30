@@ -19,7 +19,7 @@ class HomeViewModel extends BaseViewModel {
       if (this.albums.isNotEmpty) {
         await OfflineStorage.putItem('allAlbums', albums);
       }
-    } catch (DioError) {
+    } catch (dioError) {
       var snapshot = await OfflineStorage.getItem('allAlbums');
       this.albums =
       snapshot["data"] is List<Album> ? snapshot["data"] : [];
@@ -37,7 +37,7 @@ class HomeViewModel extends BaseViewModel {
           print(e);
         }
       }
-    } catch (DioError) {
+    } catch (dioError) {
       var snapshot = await OfflineStorage.getItem('allContents');
       this.contentList =
       snapshot["data"] is List<Album> ? snapshot["data"] : [];

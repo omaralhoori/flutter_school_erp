@@ -6,12 +6,7 @@ import 'package:injectable/injectable.dart';
 import '../../app/locator.dart';
 import '../../services/api/api.dart';
 import '../../model/offline_storage.dart';
-
-import '../../utils/helpers.dart';
-import '../../utils/http.dart';
-
 import '../../model/config.dart';
-
 import '../../views/base_viewmodel.dart';
 
 class SavedCredentials {
@@ -73,7 +68,7 @@ class LoginViewModel extends BaseViewModel {
           loginRequest.usr,
         );
 
-        await cacheAllUsers();
+        // await cacheAllUsers();
         await DioHelper.initCookies();
 
         loginButtonLabel = "Success";

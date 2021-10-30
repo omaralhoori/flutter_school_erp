@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:school_erp/lifecycle_manager.dart';
-import 'package:school_erp/widgets/home_widgets/content_tab.dart';
-import 'config/frappe_palette.dart';
+import 'config/palette.dart';
 import 'model/config.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_mentions/flutter_mentions.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'utils/enums.dart';
@@ -18,7 +15,6 @@ import 'views/login/login_view.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 
-import 'widgets/home_widgets/gallery_tab.dart';
 
 class FrappeApp extends StatefulWidget {
   @override
@@ -58,16 +54,7 @@ class _FrappeAppState extends State<FrappeApp> {
             builder: EasyLoading.init(),
             debugShowCheckedModeBanner: false,
             title: 'Frappe',
-            theme: new ThemeData(
-              textTheme: GoogleFonts.interTextTheme(
-                Theme.of(context).textTheme.apply(
-
-                ),
-              ),
-              disabledColor: Colors.black,
-              primaryColor: Colors.white,
-              colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.black54),
-            ),
+            theme: Palette.customTheme,
             home: GestureDetector(
               onTap: () {
                 FocusScope.of(context).requestFocus(new FocusNode());

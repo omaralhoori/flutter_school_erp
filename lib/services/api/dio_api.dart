@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:school_erp/model/album.dart';
 import 'package:school_erp/model/common.dart';
-import 'package:school_erp/model/config.dart';
 import 'package:school_erp/model/content.dart';
 import 'package:school_erp/model/doctype_response.dart';
 import 'package:school_erp/model/get_doc_response.dart';
@@ -29,8 +27,7 @@ class DioApi implements Api {
       );
 
       if (response.statusCode != HttpStatus.ok ||
-          response.headers.map["set-cookie"] == null ||
-          response.headers.map["set-cookie"]![3] == null)
+          response.headers.map["set-cookie"] == null)
         throw ErrorResponse(
           statusCode: response.statusCode,
           statusMessage: response.data["message"],

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:school_erp/config/frappe_palette.dart';
+import 'package:school_erp/config/palette.dart';
 import 'package:school_erp/model/config.dart';
 import 'package:school_erp/model/content.dart';
 import 'package:school_erp/views/content_preview/content_preview_view.dart';
@@ -33,14 +34,14 @@ class ContentCard extends StatelessWidget {
         width: size.width,
         child: Column(
           children: [
-            Text(this.content.title,),
+            Text(
+              this.content.title,
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
             SizedBox(height: 3.0,),
             Text(
               postingTime(DateTime.parse(this.content.creation)),
-              style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                color: FrappePalette.mainPrimaryColor.withOpacity(0.5),
-                fontSize: 13
-              ),
+              style: Theme.of(context).textTheme.caption,
             ),
             Html(
               data: this.content.description,
@@ -77,7 +78,7 @@ class ContentCard extends StatelessWidget {
                         ? FontAwesomeIcons.heart
                         : FontAwesomeIcons.solidHeart,
                     count: this.content.likes,
-                    color: FrappePalette.mainSecondaryColor,
+                    color: this.content.isViewed == 0 ? Palette.interactionIconsColor : FrappePalette.red,
                   ),
                 ),
                 Flexible(
@@ -88,7 +89,7 @@ class ContentCard extends StatelessWidget {
                     },
                     icon: FontAwesomeIcons.comment,
                     count: this.content.approvedComments,
-                    color: FrappePalette.mainSecondaryColor,
+                    color: Palette.interactionIconsColor,
                   ),
                 ),
                 Flexible(
@@ -97,7 +98,7 @@ class ContentCard extends StatelessWidget {
                     onPressed: null,
                     icon: FontAwesomeIcons.eye,
                     count: this.content.views,
-                    color: this.content.isViewed == 0 ? FrappePalette.mainSecondaryColor : FrappePalette.mainSecondaryColor.withOpacity(0.5),
+                    color: this.content.isViewed == 0 ? Palette.interactionIconsColor : Palette.interactionIconsColor.withOpacity(0.5),
                   ),
                 ),
               ],

@@ -1,4 +1,3 @@
-import 'package:meta/meta.dart';
 import 'models.dart';
 
 class Post {

@@ -9,10 +9,7 @@ import 'package:school_erp/config/palette.dart';
 import 'package:school_erp/model/config.dart';
 import 'package:school_erp/utils/dio_helper.dart';
 import 'package:school_erp/views/login/login_view.dart';
-import 'package:html/parser.dart';
 // import 'package:html_editor_enhanced/html_editor.dart';
-import 'package:school_erp/utils/enums.dart' as enums;
-import 'frappe_button.dart';
 
 class FormBuilderTextEditor<T> extends FormBuilderField<T> {
   FormBuilderTextEditor({

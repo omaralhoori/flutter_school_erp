@@ -8,7 +8,6 @@ import '../app/locator.dart';
 import '../services/storage_service.dart';
 import '../services/api/api.dart';
 
-import '../utils/constants.dart';
 import '../utils/helpers.dart';
 import 'common.dart';
 import 'config.dart';

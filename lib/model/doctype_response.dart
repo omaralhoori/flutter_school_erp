@@ -257,7 +257,7 @@ class DoctypeField {
   late String? label;
   late String? fieldtype;
   late String? oldfieldtype;
-  late dynamic? options;
+  late dynamic options;
   late int? searchIndex;
   late int? hidden;
   late int? setOnlyOnce;
@@ -281,7 +281,7 @@ class DoctypeField {
   late int? inPreview;
   late int? readOnly;
   late int? length;
-  late dynamic? translatable;
+  late dynamic translatable;
   late int? rememberLastSelectedValue;
   late int? allowBulkEdit;
   late int? printHideIfNoValue;
@@ -291,7 +291,7 @@ class DoctypeField {
   late int? hideBorder;
   late int? hideDays;
   late int? hideSeconds;
-  late dynamic? defaultValue;
+  late dynamic defaultValue;
 
   DoctypeField(
       {this.doctype,

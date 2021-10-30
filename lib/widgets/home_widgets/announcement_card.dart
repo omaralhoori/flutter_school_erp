@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:school_erp/config/frappe_palette.dart';
 import 'package:school_erp/model/announcement.dart';
 import 'package:school_erp/model/config.dart';
