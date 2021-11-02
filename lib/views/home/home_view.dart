@@ -18,7 +18,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: HomeDrawer(),
+      drawer: HomeDrawer(),
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light.copyWith(statusBarColor: Palette.appBarIconsColor),
         child: SafeArea(
@@ -35,7 +35,7 @@ class _HomeViewState extends State<HomeView> {
                     pinned: false,
                     flexibleSpace: FlexibleSpaceBar(
                       title: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(width: 30.0,height: 20.0, child: Image.asset("assets/frappe_icon.jpg")),
                           Text(

@@ -9,5 +9,16 @@
   "Latest Updates": "Latest Updates",
   "News": "News",
   "Gallery": "Gallery",
-  "Contact": "Contact"
+  "Contact": "Contact",
+  "Description": "Description",
+  "ar": "Arabic",
+  "en": "English",
+  "Language": "Language",
+  "Settings": "Settings",
+  "Logout": "Logout",
+  "About": "About",
+  "app version": "app version",
+  "Would you like to logout?": "Would you like to logout?",
+  "No": "No",
+  "Yes": "Yes"
 }

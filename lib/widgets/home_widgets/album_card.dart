@@ -39,26 +39,30 @@ class AlbumCard extends StatelessWidget {
                     fit: BoxFit.fill
                 ),
               ),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: Container(
+              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
                   width: 17.0,
                   height: 17.0,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: Colors.red,
-                    shape: BoxShape.circle
+                      color: Palette.appBarIconsColor.withOpacity(0.3),
+                      border: Border.all(color: Palette.appBarIconsColor),
+                      borderRadius: BorderRadius.circular(5.0)
                   ),
                   child: Text(
                     "${this.album.fileUrl.split(',').length}",
-                    style: Theme.of(context).textTheme.bodyText2,
+                    style: Theme.of(context).textTheme.bodyText1,
                   ),
                 ),
-              ),
-              ),
-            Text(
-              this.album.title,
-              style: Theme.of(context).textTheme.bodyText1,
+                Text(
+                  this.album.title,
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+                SizedBox(),
+              ],
             ),
           ],
         ),

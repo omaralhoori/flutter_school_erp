@@ -9,5 +9,16 @@
   "Latest Updates": "أخر التحديثات",
   "News": "الأخبار",
   "Gallery": "المعرض",
-  "Contact": "التواصل"
+  "Contact": "التواصل",
+  "Description": "الوصف",
+  "ar": "عربي",
+  "en": "إنجليزي",
+  "Language": "اللغة",
+  "Settings": "الإعدادات",
+  "Logout": "تسجيل الخروج",
+  "About": "حول",
+  "app version": "إصدار التطبيق",
+  "Would you like to logout?": "هل تريد تسجيل الخروج؟",
+  "No": "لا",
+  "Yes": "نعم"
 }
