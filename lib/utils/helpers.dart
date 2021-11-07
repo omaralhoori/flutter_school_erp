@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:school_erp/model/album.dart';
+import 'package:school_erp/model/config.dart';
 import 'package:school_erp/model/content.dart';
 import 'package:tuple/tuple.dart';
 import 'package:school_erp/model/announcement.dart';
@@ -7,6 +8,7 @@ import 'package:school_erp/model/doctype_response.dart';
 import 'package:school_erp/services/storage_service.dart';
 
 import '../app/locator.dart';
+import 'dio_helper.dart';
 
 initDb() async {
   await locator<StorageService>().initHiveStorage();
@@ -49,7 +51,16 @@ DateTime parseDate(val) {
     return DateTime.parse(val);
   }
 }
+clearLoginInfo() async {
+  var cookie = await DioHelper.getCookiePath();
+  if (Config().uri != null) {
+    cookie.delete(
+      Config().uri!,
+    );
+  }
 
+  Config.set('isLoggedIn', false);
+}
 Tuple2<String, int> getCreatedBefore(String date) {
   //DateFormat format = new DateFormat("yyyy-MM-dd hh:mm:ss");
   DateTime now = DateTime.now();

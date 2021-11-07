@@ -252,7 +252,7 @@ Widget buildDecoratedControl({
                 child: Text(
                   field.label ?? "",
                   style: TextStyle(
-                    color: FrappePalette.grey[700],
+                    // color: Palette.f,
                     fontWeight: FontWeight.w400,
                     fontSize: 12,
                   ),

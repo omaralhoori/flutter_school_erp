@@ -22,8 +22,10 @@ class Content extends HiveObject {
   @HiveField(7)
   late int approvedComments;
   @HiveField(8)
-  late int isViewed;
+  late String fileUrl;
   @HiveField(9)
+  late int isViewed;
+  @HiveField(10)
   late int isLiked;
 
 
@@ -36,6 +38,7 @@ class Content extends HiveObject {
     required this.likes,
     required this.views,
     required this.approvedComments,
+    required this.fileUrl,
     required this.isViewed,
     required this.isLiked,
   });
@@ -49,6 +52,7 @@ class Content extends HiveObject {
     likes = json['likes'];
     views = json['views'];
     approvedComments = json['approved_comments'];
+    fileUrl = json['file_url'];
     isViewed = json['is_viewed'];
     isLiked = json['is_liked'];
   }
@@ -63,6 +67,7 @@ class Content extends HiveObject {
     data['likes'] = this.likes;
     data['views'] = this.views;
     data['approved_comments'] = this.approvedComments;
+    data['file_url'] = this.fileUrl;
     data['is_viewed'] = this.isViewed;
     data['is_liked'] = this.isLiked;
     return data;

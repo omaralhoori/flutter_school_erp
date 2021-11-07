@@ -8,6 +8,10 @@ class Config {
         'isLoggedIn',
         defaultValue: false,
       );
+  bool get isGuest => configContainer.get(
+    'isGuest',
+    defaultValue: false,
+  );
 
   String? get userId =>
       Uri.decodeFull(configContainer.get('userId', defaultValue: ""));

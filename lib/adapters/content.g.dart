@@ -25,15 +25,16 @@ class ContentAdapter extends TypeAdapter<Content> {
       likes: fields[5] as int,
       views: fields[6] as int,
       approvedComments: fields[7] as int,
-      isViewed: fields[8] as int,
-      isLiked: fields[9] as int,
+      fileUrl: fields[8] as String,
+      isViewed: fields[9] as int,
+      isLiked: fields[10] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, Content obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.contentType)
       ..writeByte(1)
@@ -51,8 +52,10 @@ class ContentAdapter extends TypeAdapter<Content> {
       ..writeByte(7)
       ..write(obj.approvedComments)
       ..writeByte(8)
-      ..write(obj.isViewed)
+      ..write(obj.fileUrl)
       ..writeByte(9)
+      ..write(obj.isViewed)
+      ..writeByte(10)
       ..write(obj.isLiked);
   }
 

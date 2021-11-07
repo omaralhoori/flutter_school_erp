@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:school_erp/lifecycle_manager.dart';
+import 'package:school_erp/services/notifications.dart';
+import 'package:school_erp/splash_view.dart';
 import 'config/palette.dart';
 import 'model/config.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -11,7 +13,6 @@ import 'utils/enums.dart';
 import 'services/connectivity_service.dart';
 
 import 'views/home/home_view.dart';
-import 'views/login/login_view.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 
@@ -41,6 +42,7 @@ class _FrappeAppState extends State<FrappeApp> {
 
   @override
   Widget build(BuildContext context) {
+
     return Portal(
       child: LifeCycleManager(
         child: StreamProvider<ConnectivityStatus>(
@@ -63,7 +65,7 @@ class _FrappeAppState extends State<FrappeApp> {
                 body: _isLoaded
                     ? _isLoggedIn
                         ? HomeView()
-                        : LoginView()
+                        : SplashView()
                     : Center(
                         child: CircularProgressIndicator(),
                       ),

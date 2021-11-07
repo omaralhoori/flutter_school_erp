@@ -20,5 +20,15 @@
   "app version": "app version",
   "Would you like to logout?": "Would you like to logout?",
   "No": "No",
-  "Yes": "Yes"
+  "weeks": "weeks",
+  "week": "week",
+  "days": "days",
+  "hours": "hours",
+  "hour": "hour",
+  "minutes": "minutes",
+  "seconds": "seconds",
+  "second": "second",
+  "ago": "ago",
+  "Skip": "Skip"
+
 }

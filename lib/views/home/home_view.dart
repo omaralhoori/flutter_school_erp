@@ -49,7 +49,6 @@ class _HomeViewState extends State<HomeView> {
                       ),
                       titlePadding: EdgeInsets.only(bottom: 13.0),
                     ),
-
                   ),
                   SliverPersistentHeader(
                     delegate: _SliverAppBarDelegate(

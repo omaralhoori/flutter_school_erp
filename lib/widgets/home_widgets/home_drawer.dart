@@ -2,6 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:school_erp/config/palette.dart';
+import 'package:school_erp/model/config.dart';
+import 'package:school_erp/utils/helpers.dart';
+import 'package:school_erp/utils/navigation_helper.dart';
+import 'package:school_erp/views/login/login_view.dart';
 import 'package:school_erp/views/settings/settings_view.dart';
 
 class HomeDrawer extends StatelessWidget {
@@ -17,10 +21,7 @@ class HomeDrawer extends StatelessWidget {
           TextButton(
             onPressed: (){
               // TODO(hd01): Create setting page
-              Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => SettingsViews(),
-                  ),
-              );
+              NavigationHelper.push(context: context, page: SettingsViews());
             },
             child: Container(
               child: Row(
@@ -42,33 +43,8 @@ class HomeDrawer extends StatelessWidget {
             ),
           ),
           Divider(),
-          /*
-          TextButton(
-            onPressed: (){
-              // TODO(hd02): Create logout action
-            },
-            child: Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                      width: 40.0,
-                      height: 40.0,
-                      decoration: BoxDecoration(
-                          color: Palette.appBarIconsColor.withOpacity(0.2),
-                          border: Border.all(color: Palette.homeAppBarColor)
-                      ),
-                      alignment: Alignment.center,
-                      child: FaIcon(FontAwesomeIcons.info)),
-                  SizedBox(width: 5.0,),
-                  Text(tr("About")),
-                ],
-              ),
-            ),
-          ),
-          Divider(),
-          */
-          TextButton(
+          if(!Config().isGuest)
+            TextButton(
             onPressed: (){
               showDialog(
                 context: context,
@@ -84,8 +60,13 @@ class HomeDrawer extends StatelessWidget {
                     ),
                     TextButton(
                       child: Text(tr("Yes")),
-                      onPressed:  () {
+                      onPressed: () async {
                         // TODO(hd02): Create logout
+                        await clearLoginInfo();
+                        NavigationHelper.clearAllAndNavigateTo(
+                          context: context,
+                          page: LoginView(),
+                        );
                       },
                     ),
                   ],
@@ -111,7 +92,32 @@ class HomeDrawer extends StatelessWidget {
                 ],
               ),
             ),
-          ),
+          )
+          else
+            TextButton(
+              onPressed: (){
+                NavigationHelper.push(context: context, page: LoginView());
+              },
+              child: Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 40.0,
+                      height: 40.0,
+                      decoration: BoxDecoration(
+                          color: Palette.appBarIconsColor.withOpacity(0.2),
+                          border: Border.all(color: Palette.homeAppBarColor)
+                      ),
+                      alignment: Alignment.center,
+                      child: FaIcon(FontAwesomeIcons.signInAlt),
+                    ),
+                    SizedBox(width: 5.0,),
+                    Text(tr("Login")),
+                  ],
+                ),
+              ),
+            ),
           Divider(),
         ],
       ),

@@ -9,6 +9,7 @@ import 'package:school_erp/model/config.dart';
 import 'package:school_erp/model/content.dart';
 import 'package:school_erp/views/content_preview/content_preview_view.dart';
 
+import '../custom_slider.dart';
 import '../interaction_button.dart';
 
 class ContentCard extends StatelessWidget {
@@ -40,7 +41,7 @@ class ContentCard extends StatelessWidget {
             ),
             SizedBox(height: 3.0,),
             Text(
-              postingTime(DateTime.parse(this.content.creation)),
+              Palette.postingTime(DateTime.parse(this.content.creation), context.locale.toString()),
               style: Theme.of(context).textTheme.caption,
             ),
             Html(
@@ -64,6 +65,7 @@ class ContentCard extends StatelessWidget {
                 ),
               },
             ),
+            CustomSlider(filesUrl: content.fileUrl.split(',')),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -108,34 +110,8 @@ class ContentCard extends StatelessWidget {
       ),
     );
   }
-
-  String postingTime(DateTime date){
-    Duration resultDuration = DateTime.now().difference(date);
-    DateFormat perfectFormat = DateFormat("yyyy-MM-dd");
-    DateFormat monthFormat = DateFormat("MM-dd");
-
-    int inDays = resultDuration.inDays;
-    int inHours = resultDuration.inHours;
-    int inMinutes = resultDuration.inMinutes;
-    int inSeconds = resultDuration.inSeconds;
-
-    if(inDays > 360){
-      return "${perfectFormat.format(date)}";
-    }else if(inDays > 30){
-      return "${monthFormat.format(date)}";
-    }else if(inDays > 7){
-      int weeks = (inDays/7).round();
-      return "$weeks ${weeks < 1 ? "weeks":"week"} ago";
-    }else if (inHours > 24){
-      return "$inDays ${inDays > 1 ? "days":"day"} ago";
-    }else if(inMinutes > 60){
-      return "$inHours ${inHours > 1 ? "hours":"hour"} ago";
-    }else if(inSeconds > 60){
-      return "$inMinutes ${inMinutes > 1 ? "minutes":"minute"} ago";
-    }else{
-      return "$inSeconds ${inSeconds > 1 ? "seconds":"second"} ago";
-    }
-  }
 }
+
+
 
 

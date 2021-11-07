@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:school_erp/views/base_view.dart';
 import 'package:school_erp/views/home/home_viewmodel.dart';
 import 'package:school_erp/widgets/home_widgets/content_card.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class ContentTab extends StatelessWidget {
   ContentTab({Key? key}) : super(key: key);
@@ -19,8 +20,12 @@ class ContentTab extends StatelessWidget {
                 child: ListView.separated(
                     itemCount: home.contentList.length,
                     itemBuilder: (ctxt, index) {
-                      return ContentCard(
-                        content: home.contentList[index],
+                      return VisibilityDetector(
+                        key: Key(index.toString()),
+                        onVisibilityChanged: (VisibilityInfo info) => home.setViewInfo(info, home.contentList[index]),
+                        child: ContentCard(
+                          content: home.contentList[index],
+                        ),
                       );
                     },
                   separatorBuilder: (BuildContext context, int index) {

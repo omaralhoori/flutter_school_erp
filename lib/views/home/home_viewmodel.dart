@@ -2,6 +2,7 @@ import 'package:school_erp/model/album.dart';
 import 'package:school_erp/model/content.dart';
 import 'package:school_erp/views/base_viewmodel.dart';
 import 'package:injectable/injectable.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../app/locator.dart';
 import '../../services/api/api.dart';
@@ -44,4 +45,13 @@ class HomeViewModel extends BaseViewModel {
     }
     return Future.value(true);
   }
+
+  void setViewInfo(VisibilityInfo info, Content content){
+    if(content.isViewed == 0){
+      if(info.visibleFraction == 1){
+        // TODO(hv01): Add view state function
+      }
+    }
+  }
+
 }

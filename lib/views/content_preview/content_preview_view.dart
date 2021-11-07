@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:school_erp/config/palette.dart';
 import 'package:school_erp/model/config.dart';
 import 'package:school_erp/model/content.dart';
+import 'package:school_erp/widgets/custom_slider.dart';
 import 'package:school_erp/widgets/interaction_button.dart';
 
 class ContentPreviewView extends StatelessWidget {
@@ -50,6 +51,7 @@ class ContentPreviewView extends StatelessWidget {
                 ),
               },
             ),
+            CustomSlider(filesUrl: content.fileUrl.split(',')),
             Divider(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
