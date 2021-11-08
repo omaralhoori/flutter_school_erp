@@ -11,13 +11,14 @@ import 'package:school_erp/model/login/login_request.dart';
 import 'package:school_erp/model/login/login_response.dart';
 import 'package:school_erp/model/models.dart';
 import 'package:school_erp/model/offline_storage.dart';
+import 'package:school_erp/model/update_profile_response.dart';
+import 'package:school_erp/model/user_data.dart';
 import 'package:school_erp/utils/dio_helper.dart';
 import 'package:school_erp/utils/helpers.dart';
 
 import '../../services/api/api.dart';
 
 class DioApi implements Api {
-
   Future<LoginResponse> login(LoginRequest loginRequest) async {
     try {
       final response = await DioHelper.dio!.post(
@@ -362,7 +363,7 @@ class DioApi implements Api {
   }
 
   @override
-  Future<List<Album>> getGallery() async{
+  Future<List<Album>> getGallery() async {
     var data = {};
     List<Album> albumList = [];
     if (DioHelper.dio == null) {
@@ -388,7 +389,7 @@ class DioApi implements Api {
   }
 
   @override
-  Future<List<Content>> getContents() async{
+  Future<List<Content>> getContents() async {
     var data = {};
     List<Content> contentList = [];
     if (DioHelper.dio == null) {
@@ -411,5 +412,40 @@ class DioApi implements Api {
       }
     }
     return contentList;
+  }
+
+  Future<UserData?> getUserData() async {
+    if (DioHelper.dio != null) {
+      final response = await DioHelper.dio!.post(
+          '/method/mobile_backend.mobile_backend.user.get_user_data',
+          data: {},
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+
+      if (response.statusCode == 200) {
+        UserData userData = UserData.fromJson(response.data["message"]);
+        return userData;
+      } else {
+        throw Exception('Something went wrong');
+      }
+    }
+    return null;
+  }
+
+  Future<UpdateProfileResponse> updateUserProfile(UserData userData) async {
+    if (DioHelper.dio != null) {
+      final response = await DioHelper.dio!.post(
+          '/method/mobile_backend.mobile_backend.user.update_user_info',
+          data: userData.toJson(),
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+
+      if (response.statusCode == 200) {
+        UpdateProfileResponse res =
+            UpdateProfileResponse.fromJson(response.data["message"]);
+        return res;
+      } else {
+        throw Exception('Something went wrong');
+      }
+    }
+    return UpdateProfileResponse(errorMessage: "Something went wrong");
   }
 }

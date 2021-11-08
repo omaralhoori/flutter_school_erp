@@ -29,6 +29,16 @@
   "seconds": "seconds",
   "second": "second",
   "ago": "ago",
-  "Skip": "Skip"
+  "Skip": "Skip",
+
+  "Email is in use!": "Email already taken",
+  "Profile updated successfully": "Profile updated successfully",
+  "Error": "Error",
+  "Full Name": "Full Name",
+  "Update": "Update",
+  "Profile": "Profile",
+  "Validation error": "Validation error",
+  "Password must be greater than or equal to 8": "Password must be greater than or equal to 8",
+  "Internal error occurred!": "Internal error occurred!"
 
 }

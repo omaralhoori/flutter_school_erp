@@ -106,7 +106,8 @@ class _LoginViewState extends State<LoginView> {
                                 ),
                               ),
                               field: DoctypeField(
-                                  fieldname: "email", label: el.tr("Email Address")),
+                                  fieldname: "email",
+                                  label: el.tr("Email Address")),
                             ),
                             PasswordField(),
                             FrappeFlatButton(
@@ -118,7 +119,6 @@ class _LoginViewState extends State<LoginView> {
                                 FocusScope.of(context).requestFocus(
                                   FocusNode(),
                                 );
-
 
                                 if (_fbKey.currentState != null) {
                                   if (_fbKey.currentState!.saveAndValidate()) {
@@ -150,8 +150,7 @@ class _LoginViewState extends State<LoginView> {
                                                 .verification!.prompt,
                                           ),
                                         );
-                                      }
-                                      else {
+                                      } else {
                                         Config.set('isGuest', false);
                                         NavigationHelper.clearAllAndNavigateTo(
                                           context: context,
@@ -217,12 +216,13 @@ class _LoginViewState extends State<LoginView> {
                   height: 60,
                 ),
                 TextButton(
-                  onPressed: () async{
+                  onPressed: () async {
                     String deviceID = await Palette.deviceID();
                     model.updateUserDetails(LoginResponse(userId: deviceID));
                     // print(Config().userId);
                     Config.set('isGuest', true);
-                    NavigationHelper.clearAllAndNavigateTo(context: context, page: HomeView());
+                    NavigationHelper.clearAllAndNavigateTo(
+                        context: context, page: HomeView());
                   },
                   child: Row(
                     children: [
@@ -407,7 +407,7 @@ class _PasswordFieldState extends State<PasswordField> {
                 ? TextAlign.end
                 : TextAlign.start,
             validator: FormBuilderValidators.compose([
-              FormBuilderValidators.required(context),
+              // FormBuilderValidators.required(context),
             ]),
             obscureText: _hidePassword,
             decoration: Palette.formFieldDecoration(

@@ -4,13 +4,16 @@ import '../views/login/login_viewmodel.dart' as _i14;
 import '../views/home/home_viewmodel.dart' as _i13;
 import '../services/storage_service.dart' as _i19;
 import '../views/settings/settings_vewmodel.dart' as _i15;
+import '../views/profile/profile_viewmodel.dart' as _i16;
 
-_i1.GetIt $initGetIt(_i1.GetIt get, {String? environment, _i2.EnvironmentFilter? environmentFilter}) {
+_i1.GetIt $initGetIt(_i1.GetIt get,
+    {String? environment, _i2.EnvironmentFilter? environmentFilter}) {
   final gh = _i2.GetItHelper(get, environment, environmentFilter);
   gh.lazySingleton<_i14.LoginViewModel>(() => _i14.LoginViewModel());
   gh.lazySingleton<_i13.HomeViewModel>(() => _i13.HomeViewModel());
   gh.lazySingleton<_i19.StorageService>(() => _i19.StorageService());
   gh.lazySingleton<_i15.SettingsViewModel>(() => _i15.SettingsViewModel());
+  gh.lazySingleton<_i16.ProfileViewModel>(() => _i16.ProfileViewModel());
 
   return get;
 }

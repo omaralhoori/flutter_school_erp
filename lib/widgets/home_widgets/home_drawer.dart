@@ -6,6 +6,7 @@ import 'package:school_erp/model/config.dart';
 import 'package:school_erp/utils/helpers.dart';
 import 'package:school_erp/utils/navigation_helper.dart';
 import 'package:school_erp/views/login/login_view.dart';
+import 'package:school_erp/views/profile/profile_view.dart';
 import 'package:school_erp/views/settings/settings_view.dart';
 
 class HomeDrawer extends StatelessWidget {
@@ -17,9 +18,39 @@ class HomeDrawer extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          if (!Config().isGuest) Divider(),
+          if (!Config().isGuest)
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => ProfileView(),
+                  ),
+                );
+              },
+              child: Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                        width: 40.0,
+                        height: 40.0,
+                        decoration: BoxDecoration(
+                            color: Palette.appBarIconsColor.withOpacity(0.2),
+                            border: Border.all(color: Palette.homeAppBarColor)),
+                        alignment: Alignment.center,
+                        child: FaIcon(FontAwesomeIcons.user)),
+                    SizedBox(
+                      width: 5.0,
+                    ),
+                    Text(tr("Profile")),
+                  ],
+                ),
+              ),
+            ),
           Divider(),
           TextButton(
-            onPressed: (){
+            onPressed: () {
               // TODO(hd01): Create setting page
               NavigationHelper.push(context: context, page: SettingsViews());
             },
@@ -32,70 +63,72 @@ class HomeDrawer extends StatelessWidget {
                       height: 40.0,
                       decoration: BoxDecoration(
                           color: Palette.appBarIconsColor.withOpacity(0.2),
-                          border: Border.all(color: Palette.homeAppBarColor)
-                      ),
+                          border: Border.all(color: Palette.homeAppBarColor)),
                       alignment: Alignment.center,
                       child: FaIcon(FontAwesomeIcons.cog)),
-                  SizedBox(width: 5.0,),
+                  SizedBox(
+                    width: 5.0,
+                  ),
                   Text(tr("Settings")),
                 ],
               ),
             ),
           ),
           Divider(),
-          if(!Config().isGuest)
+          if (!Config().isGuest)
             TextButton(
-            onPressed: (){
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: Text(tr("Logout")),
-                  content: Text(tr("Would you like to logout?")),
-                  actions: [
-                    TextButton(
-                      child: Text(tr("No")),
-                      onPressed:  () {
-                        Navigator.of(context).pop();
-                      },
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text(tr("Logout")),
+                    content: Text(tr("Would you like to logout?")),
+                    actions: [
+                      TextButton(
+                        child: Text(tr("No")),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      TextButton(
+                        child: Text(tr("Yes")),
+                        onPressed: () async {
+                          // TODO(hd02): Create logout
+                          await clearLoginInfo();
+                          NavigationHelper.clearAllAndNavigateTo(
+                            context: context,
+                            page: LoginView(),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              },
+              child: Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 40.0,
+                      height: 40.0,
+                      decoration: BoxDecoration(
+                          color: Palette.appBarIconsColor.withOpacity(0.2),
+                          border: Border.all(color: Palette.homeAppBarColor)),
+                      alignment: Alignment.center,
+                      child: FaIcon(FontAwesomeIcons.signOutAlt),
                     ),
-                    TextButton(
-                      child: Text(tr("Yes")),
-                      onPressed: () async {
-                        // TODO(hd02): Create logout
-                        await clearLoginInfo();
-                        NavigationHelper.clearAllAndNavigateTo(
-                          context: context,
-                          page: LoginView(),
-                        );
-                      },
+                    SizedBox(
+                      width: 5.0,
                     ),
+                    Text(tr("Logout")),
                   ],
                 ),
-              );
-            },
-            child: Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 40.0,
-                    height: 40.0,
-                    decoration: BoxDecoration(
-                      color: Palette.appBarIconsColor.withOpacity(0.2),
-                      border: Border.all(color: Palette.homeAppBarColor)
-                    ),
-                    alignment: Alignment.center,
-                    child: FaIcon(FontAwesomeIcons.signOutAlt),
-                  ),
-                  SizedBox(width: 5.0,),
-                  Text(tr("Logout")),
-                ],
               ),
-            ),
-          )
+            )
           else
             TextButton(
-              onPressed: (){
+              onPressed: () {
                 NavigationHelper.push(context: context, page: LoginView());
               },
               child: Container(
@@ -107,12 +140,13 @@ class HomeDrawer extends StatelessWidget {
                       height: 40.0,
                       decoration: BoxDecoration(
                           color: Palette.appBarIconsColor.withOpacity(0.2),
-                          border: Border.all(color: Palette.homeAppBarColor)
-                      ),
+                          border: Border.all(color: Palette.homeAppBarColor)),
                       alignment: Alignment.center,
                       child: FaIcon(FontAwesomeIcons.signInAlt),
                     ),
-                    SizedBox(width: 5.0,),
+                    SizedBox(
+                      width: 5.0,
+                    ),
                     Text(tr("Login")),
                   ],
                 ),
@@ -124,4 +158,3 @@ class HomeDrawer extends StatelessWidget {
     );
   }
 }
-
