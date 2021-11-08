@@ -21,7 +21,7 @@ class Time extends StatelessWidget with Control, ControlInput {
 
   @override
   Widget build(BuildContext context) {
-    List<String? Function(dynamic?)> validators = [];
+    List<String? Function(dynamic)> validators = [];
 
     var f = setMandatory(doctypeField);
 

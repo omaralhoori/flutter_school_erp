@@ -1,8 +1,47 @@
+import 'dart:io';
+
+import 'package:device_info/device_info.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:school_erp/config/frappe_palette.dart';
 
 // Color palette for the unthemed pages
 class Palette {
+  static Color mColor = Color(0xFF034C8C);
+  static Color pColor = Color(0xFFCCFFEB);
+
+  static Color fontColorPrimary = Color(0xFF404040);
+  static Color interactionIconsColor = Color(0xFF595959);
+  static Color indicatorColor = Color(0xFF04BEC4);
+  static Color appBarIconsColor = Color(0xFF03658C);
+  static Color homeAppBarColor = Color(0xFFFFFFFF);
+
+  static Color appbarForegroundColor = Color(0xFFFFFFFF);
+  static Color appbarBackgroundColor = appBarIconsColor;
+
+  static ThemeData customTheme = ThemeData(
+    textTheme: TextTheme(
+      bodyText1: TextStyle(
+        color: fontColorPrimary,
+      ),
+      bodyText2: TextStyle(
+        color: homeAppBarColor,
+      ),
+      caption: TextStyle(
+        color: interactionIconsColor.withOpacity(0.5),
+        fontSize: 13,
+      ),
+    ),
+    disabledColor: Colors.black,
+    primaryColor: Colors.white,
+    colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.black54),
+    appBarTheme: AppBarTheme(
+      backgroundColor: appBarIconsColor,
+      foregroundColor: homeAppBarColor,
+    ),
+    scaffoldBackgroundColor: homeAppBarColor,
+  );
+
   static Color bgColor = FrappePalette.grey[50]!;
   static Color fieldBgColor = FrappePalette.grey[100]!;
   static Color iconColor = FrappePalette.grey[700]!;
@@ -76,5 +115,85 @@ class Palette {
       filled: filled,
       fillColor: fillColor ?? Palette.bgColor,
     );
+  }
+
+  static String postingTime(DateTime date, String lang) {
+    Duration resultDuration = DateTime.now().difference(date);
+    DateFormat perfectFormat = DateFormat("yyyy-MM-dd");
+    DateFormat monthFormat = DateFormat("MM-dd");
+
+    int inDays = resultDuration.inDays;
+    int inHours = resultDuration.inHours;
+    int inMinutes = resultDuration.inMinutes;
+    int inSeconds = resultDuration.inSeconds;
+
+    if (inDays > 360) {
+      return "${perfectFormat.format(date)}";
+    } else if (inDays > 30) {
+      return "${monthFormat.format(date)}";
+    } else if (inDays > 7) {
+      int weeks = (inDays / 7).round();
+      switch (lang) {
+        case 'ar':
+          return "${tr("ago")} $weeks ${weeks > 1 && weeks <= 10 ? tr("weeks") : tr("week")}";
+        case 'en':
+          return "$weeks ${weeks > 1 ? tr("weeks") : tr("week")} ${tr("ago")}";
+        default:
+          return "$weeks ${weeks > 1 ? tr("weeks") : tr("week")} ${tr("ago")}";
+      }
+    } else if (inHours > 24) {
+      switch (lang) {
+        case 'ar':
+          return "${tr("ago")} $inDays ${inDays > 1 && inDays <= 10 ? tr("days") : tr("day")}";
+        case 'en':
+          return "$inDays ${inDays > 1 ? tr("days") : tr("day")} ${tr("ago")}";
+        default:
+          return "$inDays ${inDays > 1 ? tr("days") : tr("day")} ${tr("ago")}";
+      }
+    } else if (inMinutes > 60) {
+      switch (lang) {
+        case 'ar':
+          return "${tr("ago")} $inHours ${inHours > 1 && inHours <= 10 ? tr("hours") : tr("hour")}";
+        case 'en':
+          return "$inHours ${inHours > 1 ? tr("hours") : tr("hour")} ${tr("ago")}";
+        default:
+          return "$inHours ${inHours > 1 ? tr("hours") : tr("hour")} ${tr("ago")}";
+      }
+    } else if (inSeconds > 60) {
+      switch (lang) {
+        case 'ar':
+          return "${tr("ago")} ${inMinutes > 1 && inMinutes <= 10 ? inMinutes.toString() + " " + tr("minutes") : tr("minute")}";
+        case 'en':
+          return "$inMinutes ${inMinutes > 1 ? tr("minutes") : tr("minute")} ${tr("ago")}";
+        default:
+          return "$inMinutes ${inMinutes > 1 ? tr("minutes") : tr("minute")} ${tr("ago")}";
+      }
+    } else {
+      switch (lang) {
+        case 'ar':
+          return "${tr("ago")} ${inSeconds > 1 && inSeconds <= 10 ? inSeconds.toString() + " " + tr("seconds") : tr("second")}";
+        case 'en':
+          return "$inSeconds ${inSeconds > 1 ? tr("seconds") : tr("second")} ${tr("ago")}";
+        default:
+          return "$inSeconds ${inSeconds > 1 ? tr("seconds") : tr("second")} ${("ago")}";
+      }
+    }
+  }
+
+  static Future<String> deviceID() async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo;
+    IosDeviceInfo iosInfo;
+    late String deviceID;
+    if (Platform.isAndroid) {
+      androidInfo = await deviceInfo.androidInfo;
+      deviceID = androidInfo.androidId;
+      print(androidInfo.androidId);
+    }
+    if (Platform.isIOS) {
+      iosInfo = await deviceInfo.iosInfo;
+      deviceID = iosInfo.identifierForVendor;
+    }
+    return deviceID;
   }
 }

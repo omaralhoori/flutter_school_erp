@@ -11,11 +11,11 @@ class DioHelper {
   static Dio? dio;
   static String? cookies;
 
-  static Future init(String baseUrl) async {
+  static Future init() async {
     var cookieJar = await getCookiePath();
     dio = Dio(
       BaseOptions(
-        baseUrl: "$baseUrl/api",
+        baseUrl: "${Config().baseUrl}/api",
       ),
     )..interceptors.add(
         CookieManager(cookieJar),

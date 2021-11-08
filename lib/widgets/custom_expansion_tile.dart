@@ -44,9 +44,7 @@ class CustomExpansionTile extends StatefulWidget {
     this.expandedCrossAxisAlignment,
     this.expandedAlignment,
     this.leadingArrow = false,
-  })  : assert(initiallyExpanded != null),
-        assert(maintainState != null),
-        assert(
+  })  : assert(
           expandedCrossAxisAlignment != CrossAxisAlignment.baseline,
           'CrossAxisAlignment.baseline is not supported since the expanded children '
           'are aligned in a column, not a row. Try to use another constant.',
@@ -165,8 +163,8 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
   late Animation<double> _iconTurns;
   late Animation<double> _heightFactor;
   late Animation<Color?> _borderColor;
-  late Animation<Color?> _headerColor;
-  late Animation<Color?> _iconColor;
+  // late Animation<Color?> _headerColor;
+  // late Animation<Color?> _iconColor;
   late Animation<Color?> _backgroundColor;
 
   bool _isExpanded = false;
@@ -178,8 +176,8 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
     _heightFactor = _controller.drive(_easeInTween);
     _iconTurns = _controller.drive(_halfTween.chain(_easeInTween));
     _borderColor = _controller.drive(_borderColorTween.chain(_easeOutTween));
-    _headerColor = _controller.drive(_headerColorTween.chain(_easeInTween));
-    _iconColor = _controller.drive(_iconColorTween.chain(_easeInTween));
+    // _headerColor = _controller.drive(_headerColorTween.chain(_easeInTween));
+    // _iconColor = _controller.drive(_iconColorTween.chain(_easeInTween));
     _backgroundColor =
         _controller.drive(_backgroundColorTween.chain(_easeOutTween));
 
@@ -292,10 +290,10 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
     _borderColorTween.end = theme.dividerColor;
     _headerColorTween
       ..begin = theme.textTheme.subtitle1!.color
-      ..end = theme.accentColor;
+      ..end = theme.colorScheme.secondary;
     _iconColorTween
       ..begin = theme.unselectedWidgetColor
-      ..end = theme.accentColor;
+      ..end = theme.colorScheme.secondary;
     super.didChangeDependencies();
   }
 

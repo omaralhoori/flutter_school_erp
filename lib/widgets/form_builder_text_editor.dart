@@ -9,10 +9,7 @@ import 'package:school_erp/config/palette.dart';
 import 'package:school_erp/model/config.dart';
 import 'package:school_erp/utils/dio_helper.dart';
 import 'package:school_erp/views/login/login_view.dart';
-import 'package:html/parser.dart';
-import 'package:html_editor_enhanced/html_editor.dart';
-import 'package:school_erp/utils/enums.dart' as enums;
-import 'frappe_button.dart';
+// import 'package:html_editor_enhanced/html_editor.dart';
 
 class FormBuilderTextEditor<T> extends FormBuilderField<T> {
   FormBuilderTextEditor({
@@ -38,9 +35,10 @@ class FormBuilderTextEditor<T> extends FormBuilderField<T> {
                       var v = await Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) {
-                                return EditText(
+                                return Container();
+                                /*EditText(
                                   data: field.value as String,
-                                );
+                                );*/
                               },
                             ),
                           ) ??
@@ -132,101 +130,101 @@ class FormBuilderTextEditor<T> extends FormBuilderField<T> {
 class _FormBuilderTextEditorState<T>
     extends FormBuilderFieldState<FormBuilderTextEditor<T>, T> {}
 
-class EditText extends StatefulWidget {
-  final String? data;
-
-  EditText({
-    required this.data,
-  });
-
-  @override
-  _EditTextState createState() => _EditTextState();
-}
-
-class _EditTextState extends State<EditText> {
-  final HtmlEditorController controller = HtmlEditorController();
-
-  @override
-  Widget build(BuildContext context) {
-    String? html;
-    if (widget.data != null) {
-      final doc = parse(widget.data);
-      doc.getElementsByTagName("img").forEach((element) {
-        if (!element.attributes['src']!.startsWith("http")) {
-          element.attributes['src'] =
-              Config().baseUrl! + element.attributes['src']!;
-        }
-      });
-      html = doc.outerHtml;
-    }
-
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0.8,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 12.0,
-              horizontal: 8,
-            ),
-            child: FrappeFlatButton(
-              onPressed: () async {
-                var txt = await controller.getText();
-                Navigator.of(context).pop(txt);
-              },
-              buttonType: enums.ButtonType.primary,
-              title: "Update",
-            ),
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            HtmlEditor(
-              controller: controller,
-              htmlEditorOptions: HtmlEditorOptions(
-                shouldEnsureVisible: true,
-                hint: '',
-                initialText: html,
-              ),
-              htmlToolbarOptions: HtmlToolbarOptions(
-                toolbarType: ToolbarType.nativeGrid,
-                defaultToolbarButtons: [
-                  StyleButtons(),
-                  FontButtons(
-                    strikethrough: false,
-                    subscript: false,
-                    superscript: false,
-                  ),
-                  ColorButtons(),
-                  ListButtons(
-                    listStyles: false,
-                  ),
-                  ParagraphButtons(
-                    alignCenter: false,
-                    alignJustify: false,
-                    alignLeft: false,
-                    alignRight: false,
-                    textDirection: false,
-                    caseConverter: false,
-                    lineHeight: false,
-                  ),
-                  InsertButtons(
-                    audio: false,
-                    video: false,
-                    hr: false,
-                  ),
-                ],
-              ),
-              otherOptions: OtherOptions(
-                height: MediaQuery.of(context).size.height,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+// class EditText extends StatefulWidget {
+//   final String? data;
+//
+//   EditText({
+//     required this.data,
+//   });
+//
+//   @override
+//   _EditTextState createState() => _EditTextState();
+// }
+//
+// class _EditTextState extends State<EditText> {
+//   final HtmlEditorController controller = HtmlEditorController();
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     String? html;
+//     if (widget.data != null) {
+//       final doc = parse(widget.data);
+//       doc.getElementsByTagName("img").forEach((element) {
+//         if (!element.attributes['src']!.startsWith("http")) {
+//           element.attributes['src'] =
+//               Config().baseUrl! + element.attributes['src']!;
+//         }
+//       });
+//       html = doc.outerHtml;
+//     }
+//
+//     return Scaffold(
+//       appBar: AppBar(
+//         elevation: 0.8,
+//         actions: [
+//           Padding(
+//             padding: const EdgeInsets.symmetric(
+//               vertical: 12.0,
+//               horizontal: 8,
+//             ),
+//             child: FrappeFlatButton(
+//               onPressed: () async {
+//                 var txt = await controller.getText();
+//                 Navigator.of(context).pop(txt);
+//               },
+//               buttonType: enums.ButtonType.primary,
+//               title: "Update",
+//             ),
+//           ),
+//         ],
+//       ),
+//       body: SingleChildScrollView(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: <Widget>[
+//             HtmlEditor(
+//               controller: controller,
+//               htmlEditorOptions: HtmlEditorOptions(
+//                 shouldEnsureVisible: true,
+//                 hint: '',
+//                 initialText: html,
+//               ),
+//               htmlToolbarOptions: HtmlToolbarOptions(
+//                 toolbarType: ToolbarType.nativeGrid,
+//                 defaultToolbarButtons: [
+//                   StyleButtons(),
+//                   FontButtons(
+//                     strikethrough: false,
+//                     subscript: false,
+//                     superscript: false,
+//                   ),
+//                   ColorButtons(),
+//                   ListButtons(
+//                     listStyles: false,
+//                   ),
+//                   ParagraphButtons(
+//                     alignCenter: false,
+//                     alignJustify: false,
+//                     alignLeft: false,
+//                     alignRight: false,
+//                     textDirection: false,
+//                     caseConverter: false,
+//                     lineHeight: false,
+//                   ),
+//                   InsertButtons(
+//                     audio: false,
+//                     video: false,
+//                     hr: false,
+//                   ),
+//                 ],
+//               ),
+//               otherOptions: OtherOptions(
+//                 height: MediaQuery.of(context).size.height,
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }

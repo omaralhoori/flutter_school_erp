@@ -112,3 +112,4 @@ class FrappePalette {
   );
   static const int _darkGreenPrimaryValue = 0xFF48BB74;
 }
+

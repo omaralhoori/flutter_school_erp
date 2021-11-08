@@ -8,7 +8,6 @@ import '../app/locator.dart';
 import '../services/storage_service.dart';
 import '../services/api/api.dart';
 
-import '../utils/constants.dart';
 import '../utils/helpers.dart';
 import 'common.dart';
 import 'config.dart';
@@ -34,7 +33,11 @@ class OfflineStorage {
       'data': data,
     };
 
-    await storage.put(kHash, v);
+    try{
+      await storage.put(kHash, v);
+    }catch(e){
+      throw e;
+    }
   }
 
   static putAllItems(Map data, [bool isIsolate = false]) async {

@@ -1,8 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:school_erp/config/palette.dart';
 import 'package:school_erp/model/models.dart';
-import 'package:school_erp/widgets/widgets.dart';
 
 class PostContainer extends StatelessWidget {
   final Post post;
@@ -30,18 +28,14 @@ class PostContainer extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(post.caption),
-                  post.imageUrl != null
-                      ? const SizedBox.shrink()
-                      : const SizedBox(height: 6.0),
+                  const SizedBox.shrink(),
                 ],
               ),
             ),
-            post.imageUrl != null
-                ? Padding(
+            Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: CachedNetworkImage(imageUrl: post.imageUrl),
-                  )
-                : const SizedBox.shrink(),
+                  ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: _PostStats(post: post),

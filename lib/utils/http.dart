@@ -7,7 +7,7 @@ import '../model/config.dart';
 
 initApiConfig() async {
   if (Config().baseUrl != null) {
-    await DioHelper.init(Config().baseUrl!);
+    await DioHelper.init();
     await DioHelper.initCookies();
   }
 }
@@ -57,7 +57,7 @@ Future<void> setBaseUrl(url) async {
   //   url = "https://$url";
   // }
   await Config.set('baseUrl', url);
-  await DioHelper.init(url);
+  await DioHelper.init();
 }
 
 String getAbsoluteUrl(String url) {

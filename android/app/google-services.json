@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "438822645350",
+    "project_id": "school-erp-baff3",
+    "storage_bucket": "school-erp-baff3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:438822645350:android:6fc636e4fa5724007ec7a7",
+        "android_client_info": {
+          "package_name": "com.example.school_erp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "438822645350-r08c3vtorr39cah6aqm18tceaqrlg19s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlAOF6NVFIaz7fYBtxe_NqkotzPE3OkiQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "438822645350-r08c3vtorr39cah6aqm18tceaqrlg19s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

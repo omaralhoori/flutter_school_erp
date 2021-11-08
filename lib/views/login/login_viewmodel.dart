@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:device_info/device_info.dart';
+import 'package:school_erp/config/palette.dart';
 import 'package:school_erp/model/login/login_request.dart';
 import 'package:school_erp/model/login/login_response.dart';
 import 'package:school_erp/utils/dio_helper.dart';
@@ -6,12 +10,7 @@ import 'package:injectable/injectable.dart';
 import '../../app/locator.dart';
 import '../../services/api/api.dart';
 import '../../model/offline_storage.dart';
-
-import '../../utils/helpers.dart';
-import '../../utils/http.dart';
-
 import '../../model/config.dart';
-
 import '../../views/base_viewmodel.dart';
 
 class SavedCredentials {
@@ -73,7 +72,7 @@ class LoginViewModel extends BaseViewModel {
           loginRequest.usr,
         );
 
-        await cacheAllUsers();
+        // await cacheAllUsers();
         await DioHelper.initCookies();
 
         loginButtonLabel = "Success";

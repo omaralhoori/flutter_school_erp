@@ -15,6 +15,12 @@ class Announcement extends HiveObject {
   late int views;
   @HiveField(5)
   late int likes;
+  @HiveField(6)
+  late int approvedComments;
+  @HiveField(7)
+  late int isViewed;
+  @HiveField(8)
+  late int isLiked;
 
   Announcement({
     required this.title,
@@ -23,6 +29,9 @@ class Announcement extends HiveObject {
     required this.description,
     required this.views,
     required this.likes,
+    required this.approvedComments,
+    required this.isViewed,
+    required this.isLiked,
   });
 
   Announcement.fromJson(Map<String, dynamic> json) {
@@ -32,6 +41,9 @@ class Announcement extends HiveObject {
     description = json['description'];
     views = json['views'];
     likes = json['likes'];
+    approvedComments = json['approved_comments'];
+    isViewed = json['is_viewed'];
+    isLiked = json['is_liked'];
   }
 
   Map<String, dynamic> toJson() {
@@ -42,6 +54,9 @@ class Announcement extends HiveObject {
     data['description'] = this.description;
     data['views'] = this.views;
     data['likes'] = this.likes;
+    data['approved_comments'] = this.approvedComments;
+    data['is_viewed'] = this.isViewed;
+    data['is_liked'] = this.isLiked;
     return data;
   }
 }

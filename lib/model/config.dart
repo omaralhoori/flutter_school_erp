@@ -8,6 +8,10 @@ class Config {
         'isLoggedIn',
         defaultValue: false,
       );
+  bool get isGuest => configContainer.get(
+    'isGuest',
+    defaultValue: false,
+  );
 
   String? get userId =>
       Uri.decodeFull(configContainer.get('userId', defaultValue: ""));
@@ -19,7 +23,8 @@ class Config {
 
   String get version => configContainer.get('version');
 
-  String? get baseUrl => configContainer.get('baseUrl');
+  // String? get baseUrl => configContainer.get('baseUrl');
+  String? get baseUrl => "http://137.184.51.167:8000";
 
   Uri? get uri {
     if (baseUrl == null) return null;

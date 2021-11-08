@@ -1,4 +1,7 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:school_erp/services/notifications.dart';
 import 'package:school_erp/services/storage_service.dart';
 
 import 'app/locator.dart';
@@ -12,8 +15,10 @@ class LifeCycleManager extends StatefulWidget {
 
 class _LifeCycleManagerState extends State<LifeCycleManager>
     with WidgetsBindingObserver {
+  late Notifications notifications;
   @override
   void initState() {
+    notifications = Notifications();
     WidgetsBinding.instance?.addObserver(this);
     super.initState();
   }
@@ -23,6 +28,8 @@ class _LifeCycleManagerState extends State<LifeCycleManager>
     WidgetsBinding.instance?.removeObserver(this);
     super.dispose();
   }
+
+
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
@@ -35,12 +42,15 @@ class _LifeCycleManagerState extends State<LifeCycleManager>
           "backgroundTask",
           true,
         );
+        notifications.startBackgroundListening();
         break;
       case AppLifecycleState.resumed:
         await locator<StorageService>().putSharedPrefBoolValue(
           "backgroundTask",
           false,
         );
+        notifications.handleBackgroundMessages();
+        notifications.startForegroundListening();
         print('resume...');
         break;
 
@@ -55,4 +65,6 @@ class _LifeCycleManagerState extends State<LifeCycleManager>
       child: widget.child,
     );
   }
+
+
 }
