@@ -1,4 +1,5 @@
 import 'package:school_erp/model/album.dart';
+import 'package:school_erp/model/contact_message_request.dart';
 import 'package:school_erp/model/content.dart';
 import 'package:school_erp/views/base_viewmodel.dart';
 import 'package:injectable/injectable.dart';
@@ -13,7 +14,6 @@ class HomeViewModel extends BaseViewModel {
   List<Content> contentList = [];
   List<Album> albums = [];
 
-
   Future<bool> getAlbums() async {
     try {
       this.albums = await locator<Api>().getGallery();
@@ -22,8 +22,7 @@ class HomeViewModel extends BaseViewModel {
       }
     } catch (dioError) {
       var snapshot = await OfflineStorage.getItem('allAlbums');
-      this.albums =
-      snapshot["data"] is List<Album> ? snapshot["data"] : [];
+      this.albums = snapshot["data"] is List<Album> ? snapshot["data"] : [];
     }
     return Future.value(true);
   }
@@ -32,26 +31,30 @@ class HomeViewModel extends BaseViewModel {
     try {
       this.contentList = await locator<Api>().getContents();
       if (this.contentList.isNotEmpty) {
-        try{
+        try {
           await OfflineStorage.putItem('allContents', contentList);
-        }catch(e){
+        } catch (e) {
           print(e);
         }
       }
     } catch (dioError) {
       var snapshot = await OfflineStorage.getItem('allContents');
       this.contentList =
-      snapshot["data"] is List<Album> ? snapshot["data"] : [];
+          snapshot["data"] is List<Album> ? snapshot["data"] : [];
     }
     return Future.value(true);
   }
 
-  void setViewInfo(VisibilityInfo info, Content content){
-    if(content.isViewed == 0){
-      if(info.visibleFraction == 1){
+  void setViewInfo(VisibilityInfo info, Content content) {
+    if (content.isViewed == 0) {
+      if (info.visibleFraction == 1) {
         // TODO(hv01): Add view state function
       }
     }
   }
 
+  Future<Map> sendContactMessage(ContactMessageRequest request) async {
+    var response = await locator<Api>().sendContactMessage(request);
+    return response;
+  }
 }

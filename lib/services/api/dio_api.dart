@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:school_erp/model/album.dart';
 import 'package:school_erp/model/common.dart';
+import 'package:school_erp/model/contact_message_request.dart';
 import 'package:school_erp/model/content.dart';
 import 'package:school_erp/model/doctype_response.dart';
 import 'package:school_erp/model/get_doc_response.dart';
@@ -447,5 +448,21 @@ class DioApi implements Api {
       }
     }
     return UpdateProfileResponse(errorMessage: "Something went wrong");
+  }
+
+  Future<Map> sendContactMessage(ContactMessageRequest request) async {
+    if (DioHelper.dio != null) {
+      final response = await DioHelper.dio!.post(
+          '/method/mobile_backend.mobile_backend.doctype.contact_messages.contact_messages.send_message',
+          data: request.toJson(),
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+
+      if (response.statusCode == 200) {
+        return {"message": "Message sent successfully"};
+      } else {
+        throw Exception('Something went wrong');
+      }
+    }
+    return {"errorMessage": "Something went wrong"};
   }
 }

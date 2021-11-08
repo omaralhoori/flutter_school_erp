@@ -39,6 +39,15 @@
   "Profile": "Profile",
   "Validation error": "Validation error",
   "Password must be greater than or equal to 8": "Password must be greater than or equal to 8",
-  "Internal error occurred!": "Internal error occurred!"
+  "Internal error occurred!": "Internal error occurred!",
+
+  "Contact Us": "Contact Us",
+  "Sender Name": "Sender Name",
+  "Message": "Message",
+  "Send Message": "Send Message",
+  "Enter your message": "Enter your message",
+  "Something went wrong": "Something went wrong",
+  "Message sent successfully": "Message sent successfully",
+  "Subject": "Subject"
 
 }

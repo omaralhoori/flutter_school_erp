@@ -1,4 +1,5 @@
 import 'package:school_erp/model/album.dart';
+import 'package:school_erp/model/contact_message_request.dart';
 import 'package:school_erp/model/content.dart';
 import 'package:school_erp/model/doctype_response.dart';
 import 'package:school_erp/model/get_doc_response.dart';
@@ -47,4 +48,6 @@ abstract class Api {
   Future<UserData?> getUserData();
 
   Future<UpdateProfileResponse> updateUserProfile(UserData userData);
+
+  Future<Map> sendContactMessage(ContactMessageRequest request);
 }
