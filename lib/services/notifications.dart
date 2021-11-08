@@ -38,10 +38,7 @@ class Notifications{
   }
 
 
-  Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
-    print("Handling a background message: ${message.data}");
-  }
 
   void startBackgroundListening() {
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -52,4 +49,8 @@ class Notifications{
       print("Message data: ${value.notification!.title} : ${value.notification!.body}");
     });
   }
+}
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print("Handling a background message: ${message.data}");
 }

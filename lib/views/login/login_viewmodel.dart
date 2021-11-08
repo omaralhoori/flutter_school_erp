@@ -1,7 +1,3 @@
-import 'dart:io';
-
-import 'package:device_info/device_info.dart';
-import 'package:school_erp/config/palette.dart';
 import 'package:school_erp/model/login/login_request.dart';
 import 'package:school_erp/model/login/login_response.dart';
 import 'package:school_erp/utils/dio_helper.dart';

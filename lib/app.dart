@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:school_erp/lifecycle_manager.dart';
-import 'package:school_erp/services/notifications.dart';
 import 'package:school_erp/splash_view.dart';
 import 'config/palette.dart';
 import 'model/config.dart';

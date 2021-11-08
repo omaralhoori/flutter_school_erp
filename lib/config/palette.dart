@@ -20,6 +20,7 @@ class Palette {
   static Color appbarBackgroundColor = appBarIconsColor;
 
   static ThemeData customTheme = ThemeData(
+    backgroundColor: appbarBackgroundColor,
     textTheme: TextTheme(
       bodyText1: TextStyle(
         color: fontColorPrimary,
@@ -39,7 +40,7 @@ class Palette {
       backgroundColor: appBarIconsColor,
       foregroundColor: homeAppBarColor,
     ),
-    scaffoldBackgroundColor: homeAppBarColor,
+    scaffoldBackgroundColor: appbarBackgroundColor,
   );
 
   static Color bgColor = FrappePalette.grey[50]!;
