@@ -21,7 +21,7 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
-  final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
+  GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
 
   @override
   Widget build(BuildContext context) {
@@ -110,10 +110,8 @@ class _ProfileViewState extends State<ProfileView> {
                                 fullName: formValue["fullname"],
                                 email: formValue["email"].trimRight());
                             if (pwd != null) userData.password = pwd;
-                            print(userData.toJson());
                             UpdateProfileResponse response =
                                 await model.updateProfileData(userData);
-                            print(response.toJson());
                             if (response.errorMessage != null) {
                               FrappeAlert.errorAlert(
                                 title: tr("Error"),

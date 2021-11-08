@@ -25,7 +25,7 @@ class Palette {
         color: fontColorPrimary,
       ),
       bodyText2: TextStyle(
-        color: homeAppBarColor,
+        color: fontColorPrimary,
       ),
       caption: TextStyle(
         color: interactionIconsColor.withOpacity(0.5),
@@ -81,40 +81,40 @@ class Palette {
   );
 
   // TODO
-  static InputDecoration formFieldDecoration({
-    String? label,
-    Widget? suffixIcon,
-    Widget? prefixIcon,
-    bool filled = true,
-    String? field,
-    Color? fillColor,
-  }) {
+  static InputDecoration formFieldDecoration(
+      {String? label,
+      Widget? suffixIcon,
+      Widget? prefixIcon,
+      bool filled = true,
+      String? field,
+      Color? fillColor,
+      String? hint}) {
     return InputDecoration(
-      suffixIcon: suffixIcon,
-      prefixIcon: prefixIcon,
-      isDense: true,
-      contentPadding: field == "check"
-          ? EdgeInsets.zero
-          : EdgeInsets.symmetric(
-              horizontal: 10,
-              vertical: 8,
-            ),
-      border: OutlineInputBorder(
-        borderSide: BorderSide.none,
-        borderRadius: const BorderRadius.all(
-          const Radius.circular(6.0),
+        suffixIcon: suffixIcon,
+        prefixIcon: prefixIcon,
+        isDense: true,
+        contentPadding: field == "check"
+            ? EdgeInsets.zero
+            : EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 8,
+              ),
+        border: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: const BorderRadius.all(
+            const Radius.circular(6.0),
+          ),
         ),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.red),
-        borderRadius: const BorderRadius.all(
-          const Radius.circular(6.0),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.red),
+          borderRadius: const BorderRadius.all(
+            const Radius.circular(6.0),
+          ),
         ),
-      ),
-      // hintText: label,
-      filled: filled,
-      fillColor: fillColor ?? Palette.bgColor,
-    );
+        // hintText: label,
+        filled: filled,
+        fillColor: fillColor ?? Palette.bgColor,
+        hintText: hint ?? '');
   }
 
   static String postingTime(DateTime date, String lang) {

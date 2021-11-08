@@ -42,5 +42,14 @@
   "Profile": "الملف الشخصي",
   "Validation error": "خطأ في التحقق",
   "Password must be greater than or equal to 8": "كلمة السر يجب ان تكون مساوية او اكبر من 8",
-  "Internal error occurred!": "حدث خطأ داخلي"
+  "Internal error occurred!": "حدث خطأ داخلي",
+
+  "Contact Us": "تواصل معنا",
+  "Sender Name": "اسم المرسل",
+  "Message": "الرسالة",
+  "Send Message": "ارسل الرسالة",
+  "Enter your message": "اكتب رسالتك",
+  "Something went wrong": "حدث خطأ ما",
+  "Message sent successfully": "تم إرسال الرسالة بنجاح",
+  "Subject": "الموضوع"
 }
