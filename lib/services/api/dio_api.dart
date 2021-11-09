@@ -512,4 +512,49 @@ class DioApi implements Api {
     }
     return false;
   }
+
+  @override
+  Future<void> contentLike(Content content) async{
+    var data = {"name": content.name};
+    String url =
+    content.contentType == 'News'
+        ? '/method/mobile_backend.mobile_backend.doctype.news.news.like_news'
+        : '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.like_announcement';
+    if (DioHelper.dio != null) {
+      await DioHelper.dio!.post(
+          url,
+          data: data,
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+    }
+  }
+
+  @override
+  Future<void> contentView(Content content) async{
+    var data = {"name": content.name};
+    String url =
+    content.contentType == 'News'
+        ? '/method/mobile_backend.mobile_backend.doctype.news.news.view_news'
+        : '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.view_announcement';
+    if (DioHelper.dio != null) {
+      await DioHelper.dio!.post(
+          url,
+          data: data,
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+    }
+  }
+
+  @override
+  Future<void> contentDisLike(Content content) async{
+    var data = {"name": content.name};
+    String url =
+    content.contentType == 'News'
+        ? '/method/method/mobile_backend.mobile_backend.doctype.news.news.dislike_news'
+        : '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.dislike_announcement';
+    if (DioHelper.dio != null) {
+      await DioHelper.dio!.post(
+          url,
+          data: data,
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+    }
+  }
 }

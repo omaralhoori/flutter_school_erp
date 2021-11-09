@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:school_erp/model/album.dart';
 import 'package:school_erp/model/config.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:school_erp/utils/navigation_helper.dart';
+import 'package:school_erp/widgets/photo_viewer.dart';
 
 
 class AlbumPreviewView extends StatelessWidget {
@@ -42,7 +44,7 @@ class AlbumPreviewView extends StatelessWidget {
               itemCount: this.album.fileUrl.split(',').length,
               itemBuilder: (context, i) => InkWell(
                 onTap: (){
-
+                  NavigationHelper.push(context: context, page: PhotoViewer(url: Config().baseUrl! + this.album.fileUrl.split(',')[i],));
                 },
                 child: CachedNetworkImage(
                   imageUrl: Config().baseUrl! + this.album.fileUrl.split(',')[i],

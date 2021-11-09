@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:school_erp/model/config.dart';
+import 'package:school_erp/utils/navigation_helper.dart';
+import 'package:school_erp/widgets/photo_viewer.dart';
 
 class CustomSlider extends StatefulWidget {
   const CustomSlider({
@@ -43,8 +45,13 @@ class _CustomSliderState extends State<CustomSlider> with SingleTickerProviderSt
             itemCount: widget.filesUrl.length,
             onPageChanged: _setIndex,
             itemBuilder: (context, i){
-              return CachedNetworkImage(
-                imageUrl: Config().baseUrl! + widget.filesUrl[i],
+              return InkWell(
+                onTap: (){
+                  NavigationHelper.push(context: context, page: PhotoViewer(url: Config().baseUrl! + widget.filesUrl[i],));
+                },
+                child: CachedNetworkImage(
+                  imageUrl: Config().baseUrl! + widget.filesUrl[i],
+                ),
               );
             },
           ),

@@ -57,4 +57,12 @@ abstract class Api {
   Future<List<Message>> getMessages();
 
   Future<bool> addMessageReply(String message, String messageName);
+
+  Future<void> contentLike(Content content);
+
+  Future<void> contentDisLike(Content content);
+
+  Future<void> contentView(Content content);
+
+
 }
