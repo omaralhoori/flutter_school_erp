@@ -1,3 +1,5 @@
+import 'package:school_erp/services/notifications.dart';
+
 import '../app/locator.dart';
 import '../services/api/api.dart';
 
@@ -50,6 +52,11 @@ Future<void> cacheAllUsers() async {
       throw e;
     }
   }
+}
+
+Future<void> updateDeviceToken() async {
+  String token = await Notifications.getDeviceToken();
+  await locator<Api>().updateDeviceToken(token);
 }
 
 Future<void> setBaseUrl(url) async {

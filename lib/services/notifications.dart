@@ -1,16 +1,16 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-class Notifications{
+class Notifications {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-  Notifications(){
+  Notifications() {
     _getPermissions();
   }
 
-  Future<void> _getPermissions()async{
+  Future<void> _getPermissions() async {
     await Firebase.initializeApp();
-    try{
+    try {
       NotificationSettings settings = await messaging.requestPermission(
         alert: true,
         announcement: false,
@@ -21,24 +21,27 @@ class Notifications{
         sound: true,
       );
       print('User granted permission: ${settings.authorizationStatus}');
-    }catch(e){
+    } catch (e) {
       throw Exception(e);
     }
   }
 
-  void startForegroundListening(){
+  static Future<String> getDeviceToken() async {
+    String? token = await FirebaseMessaging.instance.getToken();
+    return token ?? '';
+  }
+
+  void startForegroundListening() {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print('Got a message whilst in the foreground!');
       print('Message data: ${message.data}');
 
       if (message.notification != null) {
-        print('Message also contained a notification: ${message.notification!.title} and ${message.notification!.body}');
+        print(
+            'Message also contained a notification: ${message.notification!.title} and ${message.notification!.body}');
       }
     });
   }
-
-
-
 
   void startBackgroundListening() {
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -46,7 +49,8 @@ class Notifications{
 
   void handleBackgroundMessages() {
     FirebaseMessaging.onMessageOpenedApp.first.then((value) {
-      print("Message data: ${value.notification!.title} : ${value.notification!.body}");
+      print(
+          "Message data: ${value.notification!.title} : ${value.notification!.body}");
     });
   }
 }

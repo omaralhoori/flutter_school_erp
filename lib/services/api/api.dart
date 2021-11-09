@@ -50,4 +50,6 @@ abstract class Api {
   Future<UpdateProfileResponse> updateUserProfile(UserData userData);
 
   Future<Map> sendContactMessage(ContactMessageRequest request);
+
+  Future<void> updateDeviceToken(String token);
 }

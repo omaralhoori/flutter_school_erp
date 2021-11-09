@@ -37,10 +37,10 @@ class Palette {
     primaryColor: Colors.white,
     colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.black54),
     appBarTheme: AppBarTheme(
-      backgroundColor: appBarIconsColor,
-      foregroundColor: homeAppBarColor,
+      backgroundColor: homeAppBarColor,
+      foregroundColor: appBarIconsColor,
     ),
-    scaffoldBackgroundColor: appbarBackgroundColor,
+    scaffoldBackgroundColor: homeAppBarColor,
   );
 
   static Color bgColor = FrappePalette.grey[50]!;

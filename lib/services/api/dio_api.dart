@@ -25,7 +25,7 @@ class DioApi implements Api {
       final response = await DioHelper.dio!.post(
         '/method/login',
         data: loginRequest.toJson(),
-        options: Options(validateStatus: (status) => status! < 500),
+        options: Options(validateStatus: (status) => status! < 600),
       );
 
       if (response.statusCode != HttpStatus.ok ||
@@ -464,5 +464,15 @@ class DioApi implements Api {
       }
     }
     return {"errorMessage": "Something went wrong"};
+  }
+
+  Future<void> updateDeviceToken(String token) async {
+    var data = {"device_token": token};
+    if (DioHelper.dio != null) {
+      await DioHelper.dio!.post(
+          '/method/mobile_backend.mobile_backend.notification.update_device_token',
+          data: data,
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+    }
   }
 }

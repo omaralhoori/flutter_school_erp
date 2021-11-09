@@ -1,7 +1,9 @@
 import 'package:school_erp/model/login/login_request.dart';
 import 'package:school_erp/model/login/login_response.dart';
+import 'package:school_erp/services/notifications.dart';
 import 'package:school_erp/utils/dio_helper.dart';
 import 'package:injectable/injectable.dart';
+import 'package:school_erp/utils/http.dart';
 
 import '../../app/locator.dart';
 import '../../services/api/api.dart';
@@ -55,8 +57,6 @@ class LoginViewModel extends BaseViewModel {
       var response = await locator<Api>().login(
         loginRequest,
       );
-      print(response);
-      print("Test");
       if (response.verification != null) {
         loginButtonLabel = "Verify";
         return response;
@@ -67,8 +67,7 @@ class LoginViewModel extends BaseViewModel {
           'usr',
           loginRequest.usr,
         );
-
-        // await cacheAllUsers();
+        await updateDeviceToken();
         await DioHelper.initCookies();
 
         loginButtonLabel = "Success";
