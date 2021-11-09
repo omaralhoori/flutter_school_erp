@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:school_erp/config/palette.dart';
+import 'package:school_erp/model/config.dart';
+import 'package:school_erp/utils/navigation_helper.dart';
+import 'package:school_erp/views/messaging/direct_messages_view.dart';
 import 'package:school_erp/widgets/home_widgets/contact_tab.dart';
 import 'package:school_erp/widgets/home_widgets/gallery_tab.dart';
 import 'package:school_erp/widgets/home_widgets/home_drawer.dart';
@@ -14,18 +17,19 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: HomeDrawer(),
       body: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.light.copyWith(statusBarColor: Palette.appBarIconsColor),
+        value: SystemUiOverlayStyle.light
+            .copyWith(statusBarColor: Palette.appBarIconsColor),
         child: SafeArea(
           child: DefaultTabController(
             length: 3,
             child: NestedScrollView(
-              headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+              headerSliverBuilder:
+                  (BuildContext context, bool innerBoxIsScrolled) {
                 return <Widget>[
                   SliverAppBar(
                     backgroundColor: Palette.homeAppBarColor,
@@ -37,18 +41,28 @@ class _HomeViewState extends State<HomeView> {
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(width: 30.0,height: 20.0, child: Image.asset("assets/frappe_icon.jpg")),
+                          SizedBox(
+                              width: 30.0,
+                              height: 20.0,
+                              child: Image.asset("assets/frappe_icon.jpg")),
                           Text(
                             tr("Latest Updates"),
                             style: TextStyle(
-                                color: Palette.appBarIconsColor,
-                                fontSize: 13
-                            ),
+                                color: Palette.appBarIconsColor, fontSize: 13),
                           ),
                         ],
                       ),
                       titlePadding: EdgeInsets.only(bottom: 13.0),
                     ),
+                    actions: [
+                      if (!Config().isGuest)
+                        IconButton(
+                            onPressed: () {
+                              NavigationHelper.push(
+                                  context: context, page: DirectMessagesView());
+                            },
+                            icon: Icon(Icons.message_outlined))
+                    ],
                   ),
                   SliverPersistentHeader(
                     delegate: _SliverAppBarDelegate(
@@ -60,7 +74,10 @@ class _HomeViewState extends State<HomeView> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Icon(Icons.home, size: 25,),
+                                Icon(
+                                  Icons.home,
+                                  size: 25,
+                                ),
                                 Text(tr("News")),
                               ],
                             ),
@@ -69,7 +86,10 @@ class _HomeViewState extends State<HomeView> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                FaIcon(FontAwesomeIcons.solidImage, size: 25,),
+                                FaIcon(
+                                  FontAwesomeIcons.solidImage,
+                                  size: 25,
+                                ),
                                 Text(tr("Gallery")),
                               ],
                             ),
@@ -78,7 +98,10 @@ class _HomeViewState extends State<HomeView> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                FaIcon(FontAwesomeIcons.solidAddressBook, size: 25,),
+                                FaIcon(
+                                  FontAwesomeIcons.solidAddressBook,
+                                  size: 25,
+                                ),
                                 Text(tr("Contact")),
                               ],
                             ),
@@ -104,9 +127,6 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 }
-
-
-
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   _SliverAppBarDelegate(this._tabBar);

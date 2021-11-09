@@ -10,6 +10,7 @@ import 'package:school_erp/model/doctype_response.dart';
 import 'package:school_erp/model/get_doc_response.dart';
 import 'package:school_erp/model/login/login_request.dart';
 import 'package:school_erp/model/login/login_response.dart';
+import 'package:school_erp/model/messaging/message.dart';
 import 'package:school_erp/model/models.dart';
 import 'package:school_erp/model/offline_storage.dart';
 import 'package:school_erp/model/update_profile_response.dart';
@@ -474,5 +475,41 @@ class DioApi implements Api {
           data: data,
           options: Options(contentType: Headers.formUrlEncodedContentType));
     }
+  }
+
+  Future<List<Message>> getMessages() async {
+    if (DioHelper.dio != null) {
+      final response = await DioHelper.dio!.post(
+          '/method/mobile_backend.mobile_backend.doctype.school_messaging.school_messaging.get_messages',
+          data: {},
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+      if (response.statusCode == 200) {
+        Iterable i = response.data["message"];
+        List<Message> messages = List.from(
+            i.map((message) => Message.fromJson(message))); //List.empty();
+        // for (var message in response.data["message"]) {
+        //   messages.add(Message.fromJson(message));
+        // }
+        return messages;
+      } else {
+        throw Exception('Something went wrong');
+      }
+    }
+    return [];
+  }
+
+  Future<bool> addMessageReply(String message, String messageName) async {
+    if (DioHelper.dio != null) {
+      final response = await DioHelper.dio!.post(
+          '/method/mobile_backend.mobile_backend.doctype.school_messaging.school_messaging.add_reply',
+          data: {"reply": message, "message_name": messageName},
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    return false;
   }
 }

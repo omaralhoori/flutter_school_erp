@@ -5,6 +5,7 @@ import 'package:school_erp/model/doctype_response.dart';
 import 'package:school_erp/model/get_doc_response.dart';
 import 'package:school_erp/model/login/login_request.dart';
 import 'package:school_erp/model/login/login_response.dart';
+import 'package:school_erp/model/messaging/message.dart';
 import 'package:school_erp/model/models.dart';
 import 'package:school_erp/model/update_profile_response.dart';
 import 'package:school_erp/model/user_data.dart';
@@ -52,4 +53,8 @@ abstract class Api {
   Future<Map> sendContactMessage(ContactMessageRequest request);
 
   Future<void> updateDeviceToken(String token);
+
+  Future<List<Message>> getMessages();
+
+  Future<bool> addMessageReply(String message, String messageName);
 }

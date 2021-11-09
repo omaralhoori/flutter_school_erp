@@ -27,3 +27,5 @@ enum ViewState {
   idle,
   busy,
 }
+
+enum MessageType { direct, group }

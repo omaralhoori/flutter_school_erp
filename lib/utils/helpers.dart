@@ -9,11 +9,13 @@ import 'package:school_erp/services/storage_service.dart';
 
 import '../app/locator.dart';
 import 'dio_helper.dart';
+import 'enums.dart';
 
 initDb() async {
   await locator<StorageService>().initHiveStorage();
 
-  locator<StorageService>().registerAdapter<Announcement>(AnnouncementAdapter());
+  locator<StorageService>()
+      .registerAdapter<Announcement>(AnnouncementAdapter());
   locator<StorageService>().registerAdapter<Album>(AlbumAdapter());
   locator<StorageService>().registerAdapter<Content>(ContentAdapter());
 
@@ -51,6 +53,7 @@ DateTime parseDate(val) {
     return DateTime.parse(val);
   }
 }
+
 clearLoginInfo() async {
   var cookie = await DioHelper.getCookiePath();
   if (Config().uri != null) {
@@ -61,6 +64,7 @@ clearLoginInfo() async {
 
   Config.set('isLoggedIn', false);
 }
+
 Tuple2<String, int> getCreatedBefore(String date) {
   //DateFormat format = new DateFormat("yyyy-MM-dd hh:mm:ss");
   DateTime now = DateTime.now();
@@ -68,4 +72,14 @@ Tuple2<String, int> getCreatedBefore(String date) {
   int difference = now.difference(creation).inSeconds;
 
   return Tuple2('Seconds', difference);
+}
+
+MessageType getMessageType(String type) {
+  if (type == "School Direct Message") {
+    return MessageType.direct;
+  } else if (type == "School Group Message") {
+    return MessageType.group;
+  }
+
+  return MessageType.direct;
 }
