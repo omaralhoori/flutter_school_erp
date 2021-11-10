@@ -19,12 +19,18 @@ class MessagingViewModel extends BaseViewModel {
   // Future<Message> fetchMessage(String name){
 
   // }
-  getMessages() async {
+  Future<bool> getMessages() async {
     messages = await locator<Api>().getMessages();
+    return true;
   }
 
-  Future<bool> addMessageReply(Message message, String reply) async {
-    bool result = await locator<Api>().addMessageReply(reply, message.name);
+  Future<String> addMessageReply(Message message, String reply) async {
+    String result = await locator<Api>().addMessageReply(reply, message.name);
+    return result;
+  }
+
+  Future<bool> deleteReplies(String message, String replies) async {
+    bool result = await locator<Api>().deleteMessageRpelies(message, replies);
     return result;
   }
 }

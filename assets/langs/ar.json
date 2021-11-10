@@ -51,5 +51,8 @@
   "Enter your message": "اكتب رسالتك",
   "Something went wrong": "حدث خطأ ما",
   "Message sent successfully": "تم إرسال الرسالة بنجاح",
-  "Subject": "الموضوع"
+  "Subject": "الموضوع",
+  "Messages": "الرسائل",
+  "Write message...": "اكتب رسالة...",
+  "selected": "تم اختيار"
 }

@@ -19,6 +19,11 @@ class _DirectMessagesViewState extends State<DirectMessagesView> {
     return BaseView<MessagingViewModel>(onModelReady: (model) async {
       await model.init();
     }, builder: (context, model, child) {
+      Future<void> onrefresh() async {
+        await model.getMessages();
+        setState(() {});
+      }
+
       return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -28,40 +33,42 @@ class _DirectMessagesViewState extends State<DirectMessagesView> {
           leading: BackButton(color: Palette.appbarForegroundColor),
           backgroundColor: Palette.appbarBackgroundColor,
         ),
-        body: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 16, right: 16, top: 10),
-                child: ListView.builder(
-                  itemCount: model.messages.length,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    int unreadMessage = 0;
-                    for (var replay in model.messages[index].replies) {
-                      if (replay.isAdministration == 1 && replay.isRead == 0) {
-                        unreadMessage += 1;
-                      }
-                    }
-                    return MessageGesture(
-                      name: model.messages[index].name,
-                      title: model.messages[index].title,
-                      postTime: model.messages[index].creation,
-                      message: model.messages[index].replies.isNotEmpty
-                          ? model.messages[index].replies.last.message
-                          : "",
-                      isRead: unreadMessage == 0,
-                      unreadMessages: unreadMessage,
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
+        body: FutureBuilder(
+            future: model.getMessages(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return RefreshIndicator(
+                  onRefresh: onrefresh,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 16, right: 16, top: 10),
+                    child: ListView.builder(
+                      itemCount: model.messages.length,
+                      itemBuilder: (context, index) {
+                        int unreadMessage = 0;
+                        for (var replay in model.messages[index].replies) {
+                          if (replay.isAdministration == 1 &&
+                              replay.isRead == 0) {
+                            unreadMessage += 1;
+                          }
+                        }
+                        return MessageGesture(
+                          name: model.messages[index].name,
+                          title: model.messages[index].title,
+                          postTime: model.messages[index].creation,
+                          message: model.messages[index].replies.isNotEmpty
+                              ? model.messages[index].replies.last.message
+                              : "",
+                          isRead: unreadMessage == 0,
+                          unreadMessages: unreadMessage,
+                        );
+                      },
+                    ),
+                  ),
+                );
+              } else {
+                return Center(child: CircularProgressIndicator());
+              }
+            }),
       );
     });
   }

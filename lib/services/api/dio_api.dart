@@ -498,11 +498,26 @@ class DioApi implements Api {
     return [];
   }
 
-  Future<bool> addMessageReply(String message, String messageName) async {
+  Future<String> addMessageReply(String message, String messageName) async {
     if (DioHelper.dio != null) {
       final response = await DioHelper.dio!.post(
           '/method/mobile_backend.mobile_backend.doctype.school_messaging.school_messaging.add_reply',
           data: {"reply": message, "message_name": messageName},
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+      if (response.statusCode == 200) {
+        return response.data["message"]["name"];
+      } else {
+        return "";
+      }
+    }
+    return "";
+  }
+
+  Future<bool> deleteMessageRpelies(String message, String replies) async {
+    if (DioHelper.dio != null) {
+      final response = await DioHelper.dio!.post(
+          '/method/mobile_backend.mobile_backend.doctype.school_messaging.school_messaging.delete_replies',
+          data: {"message_name": message, "replies": replies},
           options: Options(contentType: Headers.formUrlEncodedContentType));
       if (response.statusCode == 200) {
         return true;
@@ -514,45 +529,39 @@ class DioApi implements Api {
   }
 
   @override
-  Future<void> contentLike(Content content) async{
+  Future<void> contentLike(Content content) async {
     var data = {"name": content.name};
-    String url =
-    content.contentType == 'News'
+    String url = content.contentType == 'News'
         ? '/method/mobile_backend.mobile_backend.doctype.news.news.like_news'
         : '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.like_announcement';
     if (DioHelper.dio != null) {
-      await DioHelper.dio!.post(
-          url,
+      await DioHelper.dio!.post(url,
           data: data,
           options: Options(contentType: Headers.formUrlEncodedContentType));
     }
   }
 
   @override
-  Future<void> contentView(Content content) async{
+  Future<void> contentView(Content content) async {
     var data = {"name": content.name};
-    String url =
-    content.contentType == 'News'
+    String url = content.contentType == 'News'
         ? '/method/mobile_backend.mobile_backend.doctype.news.news.view_news'
         : '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.view_announcement';
     if (DioHelper.dio != null) {
-      await DioHelper.dio!.post(
-          url,
+      await DioHelper.dio!.post(url,
           data: data,
           options: Options(contentType: Headers.formUrlEncodedContentType));
     }
   }
 
   @override
-  Future<void> contentDisLike(Content content) async{
+  Future<void> contentDisLike(Content content) async {
     var data = {"name": content.name};
-    String url =
-    content.contentType == 'News'
+    String url = content.contentType == 'News'
         ? '/method/method/mobile_backend.mobile_backend.doctype.news.news.dislike_news'
         : '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.dislike_announcement';
     if (DioHelper.dio != null) {
-      await DioHelper.dio!.post(
-          url,
+      await DioHelper.dio!.post(url,
           data: data,
           options: Options(contentType: Headers.formUrlEncodedContentType));
     }

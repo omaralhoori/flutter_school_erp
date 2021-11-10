@@ -10,7 +10,7 @@ class ContentTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseView<HomeViewModel>(
-      builder: (context, home, _){
+      builder: (context, home, _) {
         return FutureBuilder(
           future: home.getContent(),
           builder: (context, snapshot) {
@@ -18,18 +18,19 @@ class ContentTab extends StatelessWidget {
               return RefreshIndicator(
                 onRefresh: home.getContent,
                 child: ListView.separated(
-                    itemCount: home.contentList.length,
-                    itemBuilder: (ctxt, index) {
-                      return VisibilityDetector(
-                        key: Key(index.toString()),
-                        onVisibilityChanged: (VisibilityInfo info) => home.setViewInfo(info, home.contentList[index]),
-                        child: ContentCard(
-                          content: home.contentList[index],
-                        ),
-                      );
-                    },
+                  itemCount: home.contentList.length,
+                  itemBuilder: (ctxt, index) {
+                    return VisibilityDetector(
+                      key: Key(index.toString()),
+                      onVisibilityChanged: (VisibilityInfo info) =>
+                          home.setViewInfo(info, home.contentList[index]),
+                      child: ContentCard(
+                        content: home.contentList[index],
+                      ),
+                    );
+                  },
                   separatorBuilder: (BuildContext context, int index) {
-                      return Divider();
+                    return Divider();
                   },
                 ),
               );

@@ -20,12 +20,15 @@
   "app version": "app version",
   "Would you like to logout?": "Would you like to logout?",
   "No": "No",
+  "Yes": "Yes",
   "weeks": "weeks",
   "week": "week",
+  "day": "day",
   "days": "days",
   "hours": "hours",
   "hour": "hour",
   "minutes": "minutes",
+  "minute": "minute",
   "seconds": "seconds",
   "second": "second",
   "ago": "ago",
@@ -48,6 +51,9 @@
   "Enter your message": "Enter your message",
   "Something went wrong": "Something went wrong",
   "Message sent successfully": "Message sent successfully",
-  "Subject": "Subject"
+  "Subject": "Subject",
+  "Messages": "Messages",
+  "Write message...": "Write message...",
+  "selected":"selected"
 
 }
