@@ -21,6 +21,7 @@ class MessagingViewModel extends BaseViewModel {
   // }
   Future<bool> getMessages() async {
     messages = await locator<Api>().getMessages();
+    //notifyListeners();
     return true;
   }
 

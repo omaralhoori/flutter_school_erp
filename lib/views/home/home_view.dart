@@ -42,20 +42,25 @@ class _HomeViewState extends State<HomeView> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(
-                              width: 30.0,
+                              width: 35.0,
                               height: 20.0,
-                              child: Image.asset("assets/frappe_icon.jpg")),
-                          Text(
-                            tr("Latest Updates"),
-                            style: TextStyle(
-                                color: Palette.appBarIconsColor, fontSize: 13),
+                              child: Image.asset("assets/app_logo.png")),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 4.0, top: 3.0, right: 4.0),
+                            child: Text(
+                              tr("Alftiyan School"),
+                              style: TextStyle(
+                                  color: Palette.appBarIconsColor,
+                                  fontSize: 13),
+                            ),
                           ),
                         ],
                       ),
                       titlePadding: EdgeInsets.only(bottom: 13.0),
                     ),
                     actions: [
-                      if (!Config().isGuest)
+                      if (Config().isLoggedIn)
                         IconButton(
                             onPressed: () {
                               NavigationHelper.push(
@@ -78,7 +83,7 @@ class _HomeViewState extends State<HomeView> {
                                   Icons.home,
                                   size: 25,
                                 ),
-                                Text(tr("News")),
+                                Text(tr("Home")),
                               ],
                             ),
                           ),

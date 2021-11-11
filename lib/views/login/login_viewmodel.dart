@@ -67,6 +67,10 @@ class LoginViewModel extends BaseViewModel {
           'usr',
           loginRequest.usr,
         );
+        OfflineStorage.putItem(
+          'pwd',
+          loginRequest.pwd,
+        );
         await updateDeviceToken();
         await DioHelper.initCookies();
 
@@ -81,5 +85,25 @@ class LoginViewModel extends BaseViewModel {
       notifyListeners();
       throw e;
     }
+  }
+
+  Future<void> loginMain() async {
+    var usr = OfflineStorage.getItem("usr");
+    var pwd = OfflineStorage.getItem("pwd");
+    if (usr != null && pwd != null)
+      try {
+        LoginRequest loginRequest =
+            LoginRequest(usr: usr["data"], pwd: pwd["data"]);
+        var response = await locator<Api>().login(
+          loginRequest,
+        );
+        if (response.verification != null) {
+        } else {
+          Config.set('isLoggedIn', true);
+          await DioHelper.initCookies();
+        }
+      } catch (e) {
+        Config.set('isLoggedIn', false);
+      }
   }
 }

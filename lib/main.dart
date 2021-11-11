@@ -5,7 +5,7 @@ import 'package:school_erp/utils/dio_helper.dart';
 import 'package:school_erp/utils/helpers.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
-
+import 'package:school_erp/views/login/login_viewmodel.dart';
 
 void main() async {
   setupLocator();
@@ -17,6 +17,7 @@ void main() async {
 
   await EasyLocalization.ensureInitialized();
   await DioHelper.init();
+  await locator<LoginViewModel>().loginMain();
   runApp(
     EasyLocalization(
         supportedLocales: [Locale('en'), Locale('ar')],
