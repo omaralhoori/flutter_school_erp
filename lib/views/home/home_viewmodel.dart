@@ -1,6 +1,8 @@
 import 'package:school_erp/model/album.dart';
 import 'package:school_erp/model/contact_message_request.dart';
 import 'package:school_erp/model/content.dart';
+import 'package:school_erp/model/parent/parent.dart';
+import 'package:school_erp/model/payment/parent_payment.dart';
 import 'package:school_erp/views/base_viewmodel.dart';
 import 'package:injectable/injectable.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -13,6 +15,8 @@ import '../../model/offline_storage.dart';
 class HomeViewModel extends BaseViewModel {
   List<Content> contentList = [];
   List<Album> albums = [];
+  ParentPayment? parentPayment;
+  Parent? parentData;
 
   Future<bool> getAlbums() async {
     try {
@@ -56,5 +60,19 @@ class HomeViewModel extends BaseViewModel {
   Future<Map> sendContactMessage(ContactMessageRequest request) async {
     var response = await locator<Api>().sendContactMessage(request);
     return response;
+  }
+
+  Future downloadPdf() async {
+    locator<Api>().downloadPaymentPdf(branch: "", year: "", contract: "");
+  }
+
+  Future<bool> getParentPayments() async {
+    parentPayment = await locator<Api>().getParentPayments(null);
+    return true;
+  }
+
+  Future<bool> getParentData() async {
+    parentData = await locator<Api>().getParentData();
+    return true;
   }
 }

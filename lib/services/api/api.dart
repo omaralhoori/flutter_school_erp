@@ -7,6 +7,8 @@ import 'package:school_erp/model/login/login_request.dart';
 import 'package:school_erp/model/login/login_response.dart';
 import 'package:school_erp/model/messaging/message.dart';
 import 'package:school_erp/model/models.dart';
+import 'package:school_erp/model/parent/parent.dart';
+import 'package:school_erp/model/payment/parent_payment.dart';
 import 'package:school_erp/model/update_profile_response.dart';
 import 'package:school_erp/model/user_data.dart';
 
@@ -65,4 +67,11 @@ abstract class Api {
   Future<void> contentDisLike(Content content);
 
   Future<void> contentView(Content content);
+
+  Future downloadPaymentPdf(
+      {required branch, required year, required contract, studentNo});
+
+  Future<ParentPayment?> getParentPayments(String? studentNo);
+
+  Future<Parent?> getParentData();
 }

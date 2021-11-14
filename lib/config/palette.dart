@@ -19,6 +19,9 @@ class Palette {
   static Color appbarForegroundColor = Color(0xFFFFFFFF);
   static Color appbarBackgroundColor = appBarIconsColor;
 
+  static Color studentCardBackgroundColor = Colors.green.shade100;
+  static const Color studentCardForegroundColor = Colors.black87;
+
   static ThemeData customTheme = ThemeData(
     backgroundColor: appbarBackgroundColor,
     textTheme: TextTheme(

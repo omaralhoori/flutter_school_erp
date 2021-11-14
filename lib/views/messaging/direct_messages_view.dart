@@ -20,7 +20,7 @@ class _DirectMessagesViewState extends State<DirectMessagesView> {
       await model.init();
     }, builder: (context, model, child) {
       Future<void> onrefresh() async {
-        await model.getMessages();
+        await model.getDirectMessages();
         setState(() {});
       }
 
@@ -34,7 +34,7 @@ class _DirectMessagesViewState extends State<DirectMessagesView> {
           backgroundColor: Palette.appbarBackgroundColor,
         ),
         body: FutureBuilder(
-            future: model.getMessages(),
+            future: model.getDirectMessages(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return RefreshIndicator(
@@ -42,21 +42,23 @@ class _DirectMessagesViewState extends State<DirectMessagesView> {
                   child: Padding(
                     padding: EdgeInsets.only(left: 16, right: 16, top: 10),
                     child: ListView.builder(
-                      itemCount: model.messages.length,
+                      itemCount: model.directMessages.length,
                       itemBuilder: (context, index) {
                         int unreadMessage = 0;
-                        for (var replay in model.messages[index].replies) {
+                        for (var replay
+                            in model.directMessages[index].replies) {
                           if (replay.isAdministration == 1 &&
                               replay.isRead == 0) {
                             unreadMessage += 1;
                           }
                         }
                         return MessageGesture(
-                          name: model.messages[index].name,
-                          title: model.messages[index].title,
-                          postTime: model.messages[index].creation,
-                          message: model.messages[index].replies.isNotEmpty
-                              ? model.messages[index].replies.last.message
+                          name: model.directMessages[index].name,
+                          title: model.directMessages[index].title,
+                          postTime: model.directMessages[index].creation,
+                          message: model
+                                  .directMessages[index].replies.isNotEmpty
+                              ? model.directMessages[index].replies.last.message
                               : "",
                           isRead: unreadMessage == 0,
                           unreadMessages: unreadMessage,
@@ -113,6 +115,7 @@ class MessageGesture extends StatelessWidget {
                   children: [
                     Text(
                       title,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(fontSize: 16),
                     ),
                     SizedBox(
@@ -120,6 +123,7 @@ class MessageGesture extends StatelessWidget {
                     ),
                     Text(
                       message,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                           fontSize: 13,
                           color: Colors.grey.shade600,

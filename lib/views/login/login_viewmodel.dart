@@ -99,11 +99,11 @@ class LoginViewModel extends BaseViewModel {
         );
         if (response.verification != null) {
         } else {
-          Config.set('isLoggedIn', true);
+          await Config.set('isLoggedIn', true);
           await DioHelper.initCookies();
         }
       } catch (e) {
-        Config.set('isLoggedIn', false);
+        await Config.set('isLoggedIn', false);
       }
   }
 }

@@ -13,10 +13,13 @@ import 'package:school_erp/model/login/login_response.dart';
 import 'package:school_erp/model/messaging/message.dart';
 import 'package:school_erp/model/models.dart';
 import 'package:school_erp/model/offline_storage.dart';
+import 'package:school_erp/model/parent/parent.dart';
+import 'package:school_erp/model/payment/parent_payment.dart';
 import 'package:school_erp/model/update_profile_response.dart';
 import 'package:school_erp/model/user_data.dart';
 import 'package:school_erp/utils/dio_helper.dart';
 import 'package:school_erp/utils/helpers.dart';
+import 'package:school_erp/utils/http.dart';
 
 import '../../services/api/api.dart';
 
@@ -565,5 +568,55 @@ class DioApi implements Api {
           data: data,
           options: Options(contentType: Headers.formUrlEncodedContentType));
     }
+  }
+
+  Future downloadPaymentPdf(
+      {required branch, required year, required contract, studentNo}) async {
+    if (DioHelper.dio != null) {
+      //String url = '/method/mobile_backend.mobile_backend.pdf.get_transactions_pdf?PBRN=$branch&PYEAR=$year&PCONNO=$contract';
+      String url =
+          '/method/mobile_backend.mobile_backend.pdf.get_transactions_pdf?PBRN=03&PYEAR=2021&PCONNO=2021/02185';
+      String fileName = "test.pdf";
+      openFile(url: url, fileName: fileName);
+    }
+  }
+
+  Future<ParentPayment?> getParentPayments(String? studentNo) async {
+    var data = {};
+    if (studentNo != null) {
+      data["PSTD"] = studentNo;
+    }
+    if (DioHelper.dio != null) {
+      try {
+        final response = await DioHelper.dio!.post(
+            '/method/mobile_backend.mobile_backend.pdf.get_user_payments',
+            data: data,
+            options: Options(contentType: Headers.formUrlEncodedContentType));
+        if (response.statusCode == 200) {
+          return ParentPayment.fromJson(response.data["message"]);
+        }
+      } catch (e) {
+        print(e);
+      }
+    }
+    return null;
+  }
+
+  Future<Parent?> getParentData() async {
+    var data = {};
+    if (DioHelper.dio != null) {
+      try {
+        final response = await DioHelper.dio!.post(
+            '/method/mobile_backend.mobile_backend.user.get_parent_data',
+            data: data,
+            options: Options(contentType: Headers.formUrlEncodedContentType));
+        if (response.statusCode == 200) {
+          return Parent.fromJson(response.data["message"]);
+        }
+      } catch (e) {
+        print(e);
+      }
+    }
+    return null;
   }
 }

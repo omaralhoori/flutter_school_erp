@@ -40,192 +40,169 @@ class _LoginViewState extends State<LoginView> {
       },
       builder: (context, model, child) => Scaffold(
         backgroundColor: Colors.white,
-        body: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              SizedBox(
-                height: 60,
-              ),
-              FrappeLogo(),
-              SizedBox(
-                height: 24,
-              ),
-              Title(),
-              SizedBox(
-                height: 24,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  children: <Widget>[
-                    FormBuilder(
-                      key: _fbKey,
-                      child: Column(
-                        children: <Widget>[
-                          /*
-                          buildDecoratedControl(
-                            control: FormBuilderTextField(
-                              name: 'serverURL',
-                              initialValue: model.savedCreds.serverURL,
-                              validator: FormBuilderValidators.compose([
-                                FormBuilderValidators.required(context),
-                                FormBuilderValidators.url(context),
-                              ]),
-                              decoration: Palette.formFieldDecoration(
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(
+                  height: 24,
+                ),
+                FrappeLogo(),
+                Title(),
+                SizedBox(
+                  height: 24,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    children: <Widget>[
+                      FormBuilder(
+                        key: _fbKey,
+                        child: Column(
+                          children: <Widget>[
+                            /*
+                            buildDecoratedControl(
+                              control: FormBuilderTextField(
+                                name: 'serverURL',
+                                initialValue: model.savedCreds.serverURL,
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(context),
+                                  FormBuilderValidators.url(context),
+                                ]),
+                                decoration: Palette.formFieldDecoration(
+                                  label: tr("Server URL"),
+                                ),
+                              ),
+                              field: DoctypeField(
+                                fieldname: 'serverUrl',
                                 label: tr("Server URL"),
                               ),
-                            ),
-                            field: DoctypeField(
-                              fieldname: 'serverUrl',
-                              label: tr("Server URL"),
-                            ),
-                          ),*/
-                          buildDecoratedControl(
-                            control: FormBuilderTextField(
-                              name: 'usr',
-                              initialValue: model.savedCreds.usr,
-                              validator: FormBuilderValidators.compose([
-                                FormBuilderValidators.required(context),
-                              ]),
-                              textDirection: TextDirection.ltr,
-                              decoration: Palette.formFieldDecoration(
-                                label: el.tr("Email Address"),
+                            ),*/
+                            buildDecoratedControl(
+                              control: FormBuilderTextField(
+                                name: 'usr',
+                                initialValue: model.savedCreds.usr,
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(context),
+                                ]),
+                                textDirection: TextDirection.ltr,
+                                decoration: Palette.formFieldDecoration(
+                                  label: el.tr("Email Address"),
+                                ),
                               ),
+                              field: DoctypeField(
+                                  fieldname: "email",
+                                  label: el.tr("Email Address")),
                             ),
-                            field: DoctypeField(
-                                fieldname: "email",
-                                label: el.tr("Email Address")),
-                          ),
-                          PasswordField(),
-                          FrappeFlatButton(
-                            title: el.tr('Login'), //model.loginButtonLabel,
-                            fullWidth: true,
-                            height: 46,
-                            buttonType: ButtonType.primary,
-                            onPressed: () async {
-                              FocusScope.of(context).requestFocus(
-                                FocusNode(),
-                              );
+                            PasswordField(),
+                            FrappeFlatButton(
+                              title: el.tr('Login'), //model.loginButtonLabel,
+                              fullWidth: true,
+                              height: 46,
+                              buttonType: ButtonType.primary,
+                              onPressed: () async {
+                                FocusScope.of(context).requestFocus(
+                                  FocusNode(),
+                                );
 
-                              if (_fbKey.currentState != null) {
-                                if (_fbKey.currentState!.saveAndValidate()) {
-                                  var formValue = _fbKey.currentState?.value;
+                                if (_fbKey.currentState != null) {
+                                  if (_fbKey.currentState!.saveAndValidate()) {
+                                    var formValue = _fbKey.currentState?.value;
 
-                                  try {
-                                    // await setBaseUrl(formValue!["serverURL"]);
+                                    try {
+                                      // await setBaseUrl(formValue!["serverURL"]);
 
-                                    var loginRequest = LoginRequest(
-                                      usr: formValue!["usr"].trimRight(),
-                                      pwd: formValue["pwd"],
-                                    );
-
-                                    var loginResponse = await model.login(
-                                      loginRequest,
-                                    );
-
-                                    if (loginResponse.verification != null &&
-                                        loginResponse.tmpId != null) {
-                                      showModalBottomSheet(
-                                        context: context,
-                                        useRootNavigator: true,
-                                        isScrollControlled: true,
-                                        builder: (context) =>
-                                            VerificationBottomSheetView(
-                                          loginRequest: loginRequest,
-                                          tmpId: loginResponse.tmpId!,
-                                          message: loginResponse
-                                              .verification!.prompt,
-                                        ),
+                                      var loginRequest = LoginRequest(
+                                        usr: formValue!["usr"].trimRight(),
+                                        pwd: formValue["pwd"],
                                       );
-                                    } else {
-                                      Config.set('isGuest', false);
-                                      NavigationHelper.clearAllAndNavigateTo(
-                                        context: context,
-                                        page: HomeView(),
+
+                                      var loginResponse = await model.login(
+                                        loginRequest,
                                       );
-                                    }
-                                  } on ErrorResponse catch (e) {
-                                    if (e.statusCode ==
-                                        HttpStatus.unauthorized) {
-                                      FrappeAlert.errorAlert(
-                                        title: "Not Authorized",
-                                        subtitle: e.statusMessage,
-                                        context: context,
-                                      );
-                                    } else {
+
+                                      if (loginResponse.verification != null &&
+                                          loginResponse.tmpId != null) {
+                                        showModalBottomSheet(
+                                          context: context,
+                                          useRootNavigator: true,
+                                          isScrollControlled: true,
+                                          builder: (context) =>
+                                              VerificationBottomSheetView(
+                                            loginRequest: loginRequest,
+                                            tmpId: loginResponse.tmpId!,
+                                            message: loginResponse
+                                                .verification!.prompt,
+                                          ),
+                                        );
+                                      } else {
+                                        Config.set('isGuest', false);
+                                        NavigationHelper.clearAllAndNavigateTo(
+                                          context: context,
+                                          page: HomeView(),
+                                        );
+                                      }
+                                    } on ErrorResponse catch (e) {
+                                      if (e.statusCode ==
+                                          HttpStatus.unauthorized) {
+                                        FrappeAlert.errorAlert(
+                                          title: "Not Authorized",
+                                          subtitle: e.statusMessage,
+                                          context: context,
+                                        );
+                                      } else {
+                                        FrappeAlert.errorAlert(
+                                          title: "Error",
+                                          subtitle: e.statusMessage,
+                                          context: context,
+                                        );
+                                      }
+                                    } catch (e) {
+                                      print("$e");
                                       FrappeAlert.errorAlert(
                                         title: "Error",
-                                        subtitle: e.statusMessage,
+                                        subtitle: "Internal error occured!",
                                         context: context,
                                       );
                                     }
-                                  } catch (e) {
-                                    print("$e");
-                                    FrappeAlert.errorAlert(
-                                      title: "Error",
-                                      subtitle: "Internal error occured!",
-                                      context: context,
-                                    );
                                   }
                                 }
-                              }
-                            },
-                          ),
-                          const SizedBox(height: 15),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              ElevatedButton(
-                                onPressed: () async {
-                                  await context.setLocale(Locale('en'));
-                                },
-                                child: Text(
-                                  "English",
-                                ),
-                              ),
-                              ElevatedButton(
-                                onPressed: () async {
-                                  await context.setLocale(Locale('ar'));
-                                },
-                                child: Text(
-                                  "العربية",
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                              },
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 60,
-              ),
-              TextButton(
-                onPressed: () async {
-                  String deviceID = await Palette.deviceID();
-                  model.updateUserDetails(LoginResponse(userId: deviceID));
-                  // print(Config().userId);
-                  Config.set('isGuest', true);
-                  NavigationHelper.clearAllAndNavigateTo(
-                      context: context, page: HomeView());
-                },
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.arrow_back_ios,
-                      color: Palette.fontColorPrimary,
-                    ),
-                    Text(
-                      el.tr("Skip"),
-                      style: Theme.of(context).textTheme.bodyText2,
-                    ),
-                  ],
+                SizedBox(
+                  height: 60,
                 ),
-              ),
-            ],
+                TextButton(
+                  onPressed: () async {
+                    String deviceID = await Palette.deviceID();
+                    model.updateUserDetails(LoginResponse(userId: deviceID));
+                    // print(Config().userId);
+                    Config.set('isGuest', true);
+                    NavigationHelper.clearAllAndNavigateTo(
+                        context: context, page: HomeView());
+                  },
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.arrow_back_ios,
+                        color: Palette.fontColorPrimary,
+                      ),
+                      Text(
+                        el.tr("Skip"),
+                        style: Theme.of(context).textTheme.bodyText2,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -350,7 +327,7 @@ class Title extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      'Login to Frappe',
+      el.tr('Alfityan School'),
       style: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.bold,
@@ -363,9 +340,9 @@ class FrappeLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Image(
-      image: AssetImage('assets/frappe_icon.jpg'),
-      width: 60,
-      height: 60,
+      image: AssetImage('assets/app_logo.png'),
+      width: 120,
+      height: 90,
     );
   }
 }

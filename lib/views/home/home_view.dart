@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:school_erp/config/palette.dart';
 import 'package:school_erp/model/config.dart';
 import 'package:school_erp/utils/navigation_helper.dart';
+import 'package:school_erp/views/home/student_tab.dart';
 import 'package:school_erp/views/messaging/direct_messages_view.dart';
 import 'package:school_erp/widgets/home_widgets/contact_tab.dart';
 import 'package:school_erp/widgets/home_widgets/gallery_tab.dart';
@@ -26,7 +27,7 @@ class _HomeViewState extends State<HomeView> {
             .copyWith(statusBarColor: Palette.appBarIconsColor),
         child: SafeArea(
           child: DefaultTabController(
-            length: 3,
+            length: Config().isLoggedIn ? 3 : 2,
             child: NestedScrollView(
               headerSliverBuilder:
                   (BuildContext context, bool innerBoxIsScrolled) {
@@ -49,7 +50,7 @@ class _HomeViewState extends State<HomeView> {
                             padding: const EdgeInsets.only(
                                 left: 4.0, top: 3.0, right: 4.0),
                             child: Text(
-                              tr("Alftiyan School"),
+                              tr("Alfityan School"),
                               style: TextStyle(
                                   color: Palette.appBarIconsColor,
                                   fontSize: 13),
@@ -99,18 +100,20 @@ class _HomeViewState extends State<HomeView> {
                               ],
                             ),
                           ),
-                          Tab(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                FaIcon(
-                                  FontAwesomeIcons.solidAddressBook,
-                                  size: 25,
-                                ),
-                                Text(tr("Contact")),
-                              ],
+                          if (Config().isLoggedIn)
+                            Tab(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  FaIcon(
+                                    FontAwesomeIcons.solidAddressBook,
+                                    size: 25,
+                                  ),
+                                  Text(tr("Students")),
+                                ],
+                              ),
                             ),
-                          ),
                         ],
                       ),
                     ),
@@ -122,7 +125,7 @@ class _HomeViewState extends State<HomeView> {
                 children: [
                   ContentTab(),
                   GalleryTab(),
-                  ContactTab(),
+                  if (Config().isLoggedIn) StudentTab(),
                 ],
               ),
             ),
