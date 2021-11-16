@@ -50,11 +50,14 @@ class HomeViewModel extends BaseViewModel {
     return Future.value(true);
   }
 
-  void setViewInfo(VisibilityInfo info, Content content) {
-    if (content.isViewed == 0) {
-      if (info.visibleFraction == 1) {
-        // TODO(hv01): Add view state function
-      }
+  Future<void> setViewInfo(VisibilityInfo info, int index) async {
+    if (contentList[index].isViewed == 0) {
+      // if (info.visibleFraction == 1) {
+      //   // TODO(hv01): Add view state function
+
+      // }
+      locator<Api>().contentView(contentList[index]);
+      contentList[index].isViewed = 1;
     }
   }
 

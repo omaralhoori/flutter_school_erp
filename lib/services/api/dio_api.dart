@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:school_erp/config/palette.dart';
 import 'package:school_erp/model/album.dart';
 import 'package:school_erp/model/common.dart';
 import 'package:school_erp/model/contact_message_request.dart';
@@ -568,10 +569,17 @@ class DioApi implements Api {
 
   @override
   Future<void> contentView(Content content) async {
-    var data = {"name": content.name};
-    String url = content.contentType == 'News'
-        ? '/method/mobile_backend.mobile_backend.doctype.news.news.view_news'
-        : '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.view_announcement';
+    var data;
+    String url;
+    if (content.contentType == 'News') {
+      url = '/method/mobile_backend.mobile_backend.doctype.news.news.view_news';
+      data = {"news": content.name};
+    } else {
+      url =
+          '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.view_announcement';
+      data = {"announcement": content.name};
+    }
+    data["user"] = await Palette.deviceID();
     if (DioHelper.dio != null) {
       await DioHelper.dio!.post(url,
           data: data,
