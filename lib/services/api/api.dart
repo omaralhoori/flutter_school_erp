@@ -64,6 +64,8 @@ abstract class Api {
 
   Future<void> viewMessage(String messageName);
 
+  Future<List<dynamic>> getUnreadMessages();
+
   Future<void> contentLike(Content content);
 
   Future<void> contentDisLike(Content content);

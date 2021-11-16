@@ -16,7 +16,10 @@ class ContentTab extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return RefreshIndicator(
-                onRefresh: home.getContent,
+                onRefresh: () async {
+                  home.getContent();
+                  home.getUnreadMessages();
+                },
                 child: ListView.separated(
                   itemCount: home.contentList.length,
                   itemBuilder: (ctxt, index) {

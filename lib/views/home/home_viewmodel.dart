@@ -17,7 +17,8 @@ class HomeViewModel extends BaseViewModel {
   List<Album> albums = [];
   ParentPayment? parentPayment;
   Parent? parentData;
-
+  int unreadDM = 0;
+  int unreadGM = 0;
   Future<bool> getAlbums() async {
     try {
       this.albums = await locator<Api>().getGallery();
@@ -55,6 +56,20 @@ class HomeViewModel extends BaseViewModel {
         // TODO(hv01): Add view state function
       }
     }
+  }
+
+  Future<void> getUnreadMessages() async {
+    var messages = await locator<Api>().getUnreadMessages();
+    for (var msg in messages) {
+      if (msg["message_type"] != null) {
+        if (msg["message_type"] == "School Direct Message") {
+          unreadDM = msg["unread_messages"];
+        } else if (msg["message_type"] == "School Group Message") {
+          unreadGM = msg["unread_messages"];
+        }
+      }
+    }
+    notifyListeners();
   }
 
   Future<Map> sendContactMessage(ContactMessageRequest request) async {

@@ -5,6 +5,7 @@ import 'package:school_erp/model/messaging/reply.dart';
 import 'package:school_erp/services/api/api.dart';
 import 'package:school_erp/utils/enums.dart';
 import 'package:school_erp/views/base_viewmodel.dart';
+import 'package:school_erp/views/home/home_viewmodel.dart';
 
 @lazySingleton
 class MessagingViewModel extends BaseViewModel {
@@ -31,6 +32,7 @@ class MessagingViewModel extends BaseViewModel {
           }
         }
         notifyListeners();
+        locator<HomeViewModel>().getUnreadMessages();
         return;
       }
     }
