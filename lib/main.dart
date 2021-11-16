@@ -27,3 +27,34 @@ void main() async {
         child: FrappeApp()),
   );
 }
+
+class SplashScreen extends StatelessWidget {
+  const SplashScreen({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MediaQuery(
+        data: MediaQueryData(),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: Scaffold(
+            body: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Center(
+                  child: Image(
+                    image: AssetImage('assets/app_logo.png'),
+                    width: 240,
+                    height: 180,
+                  ),
+                ),
+                CircularProgressIndicator()
+              ],
+            ),
+          ),
+        ));
+  }
+}

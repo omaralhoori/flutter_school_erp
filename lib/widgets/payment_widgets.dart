@@ -5,11 +5,12 @@ import 'package:school_erp/model/payment/parent_payment.dart';
 import 'package:school_erp/model/payment/student_extra_amount.dart';
 import 'package:school_erp/model/payment/student_fees.dart';
 import 'package:school_erp/model/payment/student_installment.dart';
+import 'package:school_erp/model/payment/student_payment.dart';
 import 'package:school_erp/model/payment/student_transaction.dart';
 
-class ParentPaymentView extends StatelessWidget {
+class ParentPaymentWidget extends StatelessWidget {
   final ParentPayment parentPayment;
-  const ParentPaymentView({Key? key, required this.parentPayment})
+  const ParentPaymentWidget({Key? key, required this.parentPayment})
       : super(key: key);
 
   @override
@@ -20,36 +21,83 @@ class ParentPaymentView extends StatelessWidget {
           Text(parentPayment.name),
           Text(parentPayment.year),
           Text(parentPayment.branchCode),
-          PaymentTable(
-            title: tr("Transactions"),
-            table: TransactionsTable(
-                transactions: parentPayment.students[0].transactions),
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          PaymentTable(
-            title: tr("Extra Amounts"),
-            table: ExtraAmountsTable(
-                transactions: parentPayment.students[0].extraAmounts),
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          PaymentTable(
-            title: tr("Installments"),
-            table: InstallmentsTable(
-                transactions: parentPayment.students[0].installments),
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          PaymentTable(
-            title: tr("Fees"),
-            table: FeesTable(transactions: parentPayment.students[0].fees),
-          ),
         ],
       ),
+    );
+  }
+}
+
+class StudentPaymentWidget extends StatelessWidget {
+  final ParentPayment parentPayment;
+  final Function onPressed;
+  const StudentPaymentWidget(
+      {Key? key, required this.parentPayment, required this.onPressed})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          if (parentPayment.students.length > 0)
+            Container(
+              margin: EdgeInsets.only(bottom: 30, top: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                      margin: EdgeInsets.symmetric(horizontal: 12),
+                      child: Text(
+                        tr("Download as pdf"),
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      )),
+                  DownloadButton(onPressed: onPressed),
+                ],
+              ),
+            ),
+          if (parentPayment.students.length > 0)
+            PaymentTables(studentPayment: parentPayment.students[0])
+        ],
+      ),
+    );
+  }
+}
+
+class PaymentTables extends StatelessWidget {
+  const PaymentTables({Key? key, required this.studentPayment})
+      : super(key: key);
+  final StudentPayment studentPayment;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        PaymentTable(
+          title: tr("Transactions"),
+          table: TransactionsTable(transactions: studentPayment.transactions),
+        ),
+        SizedBox(
+          height: 24,
+        ),
+        PaymentTable(
+          title: tr("Extra Amounts"),
+          table: ExtraAmountsTable(transactions: studentPayment.extraAmounts),
+        ),
+        SizedBox(
+          height: 24,
+        ),
+        PaymentTable(
+          title: tr("Installments"),
+          table: InstallmentsTable(transactions: studentPayment.installments),
+        ),
+        SizedBox(
+          height: 24,
+        ),
+        PaymentTable(
+          title: tr("Fees"),
+          table: FeesTable(transactions: studentPayment.fees),
+        ),
+      ],
     );
   }
 }

@@ -12,4 +12,8 @@ class PaymentViewModel extends BaseViewModel {
     studentPayments = await locator<Api>().getParentPayments(studentNo);
     return true;
   }
+
+  Future downloadPdf(String studentNo) async {
+    locator<Api>().downloadPaymentPdf(studentNo: studentNo);
+  }
 }

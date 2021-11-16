@@ -29,7 +29,15 @@ class _StudentPaymentViewState extends State<StudentPaymentView> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return model.studentPayments != null
-                    ? ParentPaymentView(parentPayment: model.studentPayments!)
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 16, horizontal: 8),
+                        child: StudentPaymentWidget(
+                            onPressed: () {
+                              model.downloadPdf(studentNo);
+                            },
+                            parentPayment: model.studentPayments!),
+                      )
                     : Center(child: Text(tr("No data.")));
               } else {
                 return Center(child: CircularProgressIndicator());

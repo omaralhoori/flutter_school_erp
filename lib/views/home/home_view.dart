@@ -62,12 +62,33 @@ class _HomeViewState extends State<HomeView> {
                     ),
                     actions: [
                       if (Config().isLoggedIn)
-                        IconButton(
-                            onPressed: () {
-                              NavigationHelper.push(
-                                  context: context, page: DirectMessagesView());
-                            },
-                            icon: Icon(Icons.message_outlined))
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  NavigationHelper.push(
+                                      context: context,
+                                      page: DirectMessagesView());
+                                },
+                                icon: Icon(Icons.mail_outline)),
+                            Positioned(
+                                top: 5,
+                                right: 5,
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 6, vertical: 2),
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.red),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    '3',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                )),
+                          ],
+                        )
                     ],
                   ),
                   SliverPersistentHeader(

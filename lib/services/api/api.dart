@@ -62,14 +62,15 @@ abstract class Api {
 
   Future<bool> deleteMessageRpelies(String message, String replies);
 
+  Future<void> viewMessage(String messageName);
+
   Future<void> contentLike(Content content);
 
   Future<void> contentDisLike(Content content);
 
   Future<void> contentView(Content content);
 
-  Future downloadPaymentPdf(
-      {required branch, required year, required contract, studentNo});
+  Future downloadPaymentPdf({String? studentNo});
 
   Future<ParentPayment?> getParentPayments(String? studentNo);
 

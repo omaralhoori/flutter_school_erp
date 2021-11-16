@@ -531,6 +531,15 @@ class DioApi implements Api {
     return false;
   }
 
+  Future<void> viewMessage(String messageName) async {
+    if (DioHelper.dio != null) {
+      await DioHelper.dio!.post(
+          '/method/mobile_backend.mobile_backend.doctype.school_messaging.school_messaging.view_message',
+          data: {"message_name": messageName},
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+    }
+  }
+
   @override
   Future<void> contentLike(Content content) async {
     var data = {"name": content.name};
@@ -570,13 +579,15 @@ class DioApi implements Api {
     }
   }
 
-  Future downloadPaymentPdf(
-      {required branch, required year, required contract, studentNo}) async {
+  Future downloadPaymentPdf({String? studentNo}) async {
     if (DioHelper.dio != null) {
       //String url = '/method/mobile_backend.mobile_backend.pdf.get_transactions_pdf?PBRN=$branch&PYEAR=$year&PCONNO=$contract';
       String url =
-          '/method/mobile_backend.mobile_backend.pdf.get_transactions_pdf?PBRN=03&PYEAR=2021&PCONNO=2021/02185';
-      String fileName = "test.pdf";
+          '/method/mobile_backend.mobile_backend.pdf.get_parent_transactions_pdf';
+      if (studentNo != null) {
+        url += "?PSTD=${studentNo}";
+      }
+      String fileName = "payments.pdf";
       openFile(url: url, fileName: fileName);
     }
   }

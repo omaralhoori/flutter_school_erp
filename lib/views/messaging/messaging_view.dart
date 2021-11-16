@@ -27,6 +27,7 @@ class _MessagingViewState extends State<MessagingView> {
   Widget build(BuildContext context) {
     return BaseView<MessagingViewModel>(onModelReady: (model) {
       message = model.getMessageByName(name);
+      model.viewMessage(name);
       if (message != null) {
         _selected = List.generate(message!.replies.length, (i) => false);
       }

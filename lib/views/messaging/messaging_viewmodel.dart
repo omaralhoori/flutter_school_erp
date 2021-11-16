@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:school_erp/app/locator.dart';
 import 'package:school_erp/model/messaging/message.dart';
+import 'package:school_erp/model/messaging/reply.dart';
 import 'package:school_erp/services/api/api.dart';
 import 'package:school_erp/utils/enums.dart';
 import 'package:school_erp/views/base_viewmodel.dart';
@@ -17,6 +18,21 @@ class MessagingViewModel extends BaseViewModel {
   Message? getMessageByName(String name) {
     for (Message msg in messages) {
       if (msg.name == name) return msg;
+    }
+  }
+
+  Future<void> viewMessage(String messageName) async {
+    await locator<Api>().viewMessage(messageName);
+    for (Message msg in messages) {
+      if (msg.name == messageName) {
+        for (Reply reply in msg.replies) {
+          if (reply.isAdministration == 1) {
+            reply.isRead = 1;
+          }
+        }
+        notifyListeners();
+        return;
+      }
     }
   }
   // Future<Message> fetchMessage(String name){

@@ -62,10 +62,6 @@ class HomeViewModel extends BaseViewModel {
     return response;
   }
 
-  Future downloadPdf() async {
-    locator<Api>().downloadPaymentPdf(branch: "", year: "", contract: "");
-  }
-
   Future<bool> getParentPayments() async {
     parentPayment = await locator<Api>().getParentPayments(null);
     return true;
