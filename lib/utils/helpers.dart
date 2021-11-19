@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:school_erp/model/album.dart';
 import 'package:school_erp/model/config.dart';
 import 'package:school_erp/model/content.dart';
+import 'package:school_erp/model/offline_storage.dart';
 import 'package:tuple/tuple.dart';
 import 'package:school_erp/model/announcement.dart';
 import 'package:school_erp/model/doctype_response.dart';
@@ -61,7 +62,7 @@ clearLoginInfo() async {
       Config().uri!,
     );
   }
-
+  OfflineStorage.remove("pwd");
   Config.set('isLoggedIn', false);
 }
 

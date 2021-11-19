@@ -93,7 +93,6 @@ class HomeDrawer extends StatelessWidget {
                       TextButton(
                         child: Text(tr("Yes")),
                         onPressed: () async {
-                          // TODO(hd02): Create logout
                           await clearLoginInfo();
                           NavigationHelper.clearAllAndNavigateTo(
                             context: context,

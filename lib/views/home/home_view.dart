@@ -24,7 +24,7 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     bool rtlDir = context.locale.toString() == 'ar';
     return BaseView<HomeViewModel>(onModelReady: (model) {
-      model.getUnreadMessages();
+      if (!Config().isGuest) model.getUnreadMessages();
     }, builder: (context, model, _) {
       return Scaffold(
         drawer: HomeDrawer(),
