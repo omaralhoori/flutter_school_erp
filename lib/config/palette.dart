@@ -192,7 +192,6 @@ class Palette {
     if (Platform.isAndroid) {
       androidInfo = await deviceInfo.androidInfo;
       deviceID = androidInfo.androidId;
-      print(androidInfo.androidId);
     }
     if (Platform.isIOS) {
       iosInfo = await deviceInfo.iosInfo;

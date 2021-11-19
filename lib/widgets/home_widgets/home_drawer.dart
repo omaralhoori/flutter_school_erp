@@ -18,8 +18,8 @@ class HomeDrawer extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if (Config().isLoggedIn) Divider(),
-          if (Config().isLoggedIn)
+          if (!Config().isGuest) Divider(),
+          if (!Config().isGuest)
             TextButton(
               onPressed: () {
                 Navigator.of(context).push(
@@ -75,7 +75,7 @@ class HomeDrawer extends StatelessWidget {
             ),
           ),
           Divider(),
-          if (Config().isLoggedIn)
+          if (!Config().isGuest)
             TextButton(
               onPressed: () {
                 showDialog(

@@ -88,5 +88,9 @@
   "Fee": "المصروف",
   "Total": "المجموع",
   "NO": "الرقم",
-  "Download as pdf": "تحميل كملف pdf"
+  "Download as pdf": "تحميل كملف pdf",
+  "Announcement": "إعلان",
+  "Write comment...": "اكتب تعليق...",
+  "The message was not sent": "لم يتم إرسال الرسالة",
+  "Comment added successfully": "تم إضافة التعليق بنجاح"
 }

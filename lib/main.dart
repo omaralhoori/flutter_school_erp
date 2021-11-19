@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:school_erp/app.dart';
 import 'package:school_erp/app/locator.dart';
+import 'package:school_erp/services/notifications.dart';
 import 'package:school_erp/utils/dio_helper.dart';
 import 'package:school_erp/utils/helpers.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -12,7 +13,7 @@ void main() async {
   await initDb();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
+  Notifications.subscribeToTopics();
   final List<Locale> systemLocales = WidgetsBinding.instance!.window.locales;
 
   await EasyLocalization.ensureInitialized();

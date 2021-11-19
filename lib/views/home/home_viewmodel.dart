@@ -51,17 +51,31 @@ class HomeViewModel extends BaseViewModel {
   }
 
   Future<void> setViewInfo(VisibilityInfo info, int index) async {
-    if (contentList[index].isViewed == 0) {
-      // if (info.visibleFraction == 1) {
-      //   // TODO(hv01): Add view state function
-
-      // }
-      locator<Api>().contentView(contentList[index]);
-      contentList[index].isViewed = 1;
+    if (index < contentList.length) {
+      if (contentList[index].isViewed == 0) {
+        try {
+          locator<Api>().contentView(contentList[index]);
+          contentList[index].isViewed = 1;
+        } catch (e) {}
+      }
     }
   }
 
+  Future likePost(Content content) async {
+    try {
+      locator<Api>().contentLike(content);
+    } catch (e) {}
+  }
+
+  Future dislikePost(Content content) async {
+    try {
+      locator<Api>().contentDisLike(content);
+    } catch (e) {}
+  }
+
   Future<void> getUnreadMessages() async {
+    unreadDM = 0;
+    unreadGM = 0;
     var messages = await locator<Api>().getUnreadMessages();
     for (var msg in messages) {
       if (msg["message_type"] != null) {

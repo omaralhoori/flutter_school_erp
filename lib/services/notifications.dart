@@ -26,6 +26,12 @@ class Notifications {
     }
   }
 
+  static void subscribeToTopics() {
+    final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+    _firebaseMessaging.subscribeToTopic("news");
+    _firebaseMessaging.subscribeToTopic("announcement");
+  }
+
   static Future<String> getDeviceToken() async {
     String? token = await FirebaseMessaging.instance.getToken();
     return token ?? '';

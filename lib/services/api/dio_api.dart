@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:school_erp/config/palette.dart';
 import 'package:school_erp/model/album.dart';
+import 'package:school_erp/model/comment.dart';
 import 'package:school_erp/model/common.dart';
 import 'package:school_erp/model/contact_message_request.dart';
 import 'package:school_erp/model/content.dart';
@@ -351,6 +352,7 @@ class DioApi implements Api {
         DioHelper.init();
       } catch (e) {}
     }
+    data["user"] = await Palette.deviceID();
     if (DioHelper.dio != null) {
       final response = await DioHelper.dio!.post(
           '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.get_announcements',
@@ -377,6 +379,7 @@ class DioApi implements Api {
         DioHelper.init();
       } catch (e) {}
     }
+    data["user"] = await Palette.deviceID();
     if (DioHelper.dio != null) {
       final response = await DioHelper.dio!.post(
           '/method/mobile_backend.mobile_backend.doctype.gallery_album.gallery_album.get_albums',
@@ -403,6 +406,7 @@ class DioApi implements Api {
         DioHelper.init();
       } catch (e) {}
     }
+    data["user"] = await Palette.deviceID();
     if (DioHelper.dio != null) {
       final response = await DioHelper.dio!.post(
           '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.get_all_contents',
@@ -556,10 +560,17 @@ class DioApi implements Api {
 
   @override
   Future<void> contentLike(Content content) async {
-    var data = {"name": content.name};
-    String url = content.contentType == 'News'
-        ? '/method/mobile_backend.mobile_backend.doctype.news.news.like_news'
-        : '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.like_announcement';
+    var data;
+    String url;
+    if (content.contentType == 'News') {
+      url = '/method/mobile_backend.mobile_backend.doctype.news.news.like_news';
+      data = {"news": content.name};
+    } else {
+      url =
+          '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.like_announcement';
+      data = {"announcement": content.name};
+    }
+    data["user"] = await Palette.deviceID();
     if (DioHelper.dio != null) {
       await DioHelper.dio!.post(url,
           data: data,
@@ -589,15 +600,75 @@ class DioApi implements Api {
 
   @override
   Future<void> contentDisLike(Content content) async {
-    var data = {"name": content.name};
-    String url = content.contentType == 'News'
-        ? '/method/method/mobile_backend.mobile_backend.doctype.news.news.dislike_news'
-        : '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.dislike_announcement';
+    var data;
+    String url;
+    if (content.contentType == 'News') {
+      url =
+          '/method/mobile_backend.mobile_backend.doctype.news.news.dislike_news';
+      data = {"news": content.name};
+    } else {
+      url =
+          '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.dislike_announcement';
+      data = {"announcement": content.name};
+    }
+    data["user"] = await Palette.deviceID();
     if (DioHelper.dio != null) {
       await DioHelper.dio!.post(url,
           data: data,
           options: Options(contentType: Headers.formUrlEncodedContentType));
     }
+  }
+
+  Future<List<Comment>> getContentComments(Content content) async {
+    var data;
+    String url;
+    if (content.contentType == 'News') {
+      url =
+          '/method/mobile_backend.mobile_backend.doctype.news.news.get_comments';
+      data = {"news": content.name};
+    } else {
+      url =
+          '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.get_comments';
+      data = {"announcement": content.name};
+    }
+    data["user"] = await Palette.deviceID();
+    if (DioHelper.dio != null) {
+      final response = await DioHelper.dio!.post(url,
+          data: data,
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+      if (response.statusCode == 200) {
+        Iterable i = response.data["message"];
+        List<Comment> comments =
+            List.from(i.map((message) => Comment.fromJson(message)));
+        return comments;
+      }
+    }
+    return [];
+  }
+
+  Future<bool> addContentComment(Content content, String comment) async {
+    var data;
+    String url;
+    if (content.contentType == 'News') {
+      url =
+          '/method/mobile_backend.mobile_backend.doctype.news.news.add_comment';
+      data = {"news": content.name};
+    } else {
+      url =
+          '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.add_comment';
+      data = {"announcement": content.name};
+    }
+    data["user"] = await Palette.deviceID();
+    data["comment"] = comment;
+    if (DioHelper.dio != null) {
+      final response = await DioHelper.dio!.post(url,
+          data: data,
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+      if (response.statusCode == 200) {
+        return true;
+      }
+    }
+    return false;
   }
 
   Future downloadPaymentPdf({String? studentNo}) async {

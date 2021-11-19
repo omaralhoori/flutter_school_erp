@@ -2,7 +2,6 @@ import 'package:hive/hive.dart';
 
 part '../adapters/content.g.dart';
 
-
 @HiveType(typeId: 3)
 class Content extends HiveObject {
   @HiveField(0)
@@ -28,7 +27,6 @@ class Content extends HiveObject {
   @HiveField(10)
   late int isLiked;
 
-
   Content({
     required this.contentType,
     required this.name,
@@ -52,7 +50,7 @@ class Content extends HiveObject {
     likes = json['likes'];
     views = json['views'];
     approvedComments = json['approved_comments'];
-    fileUrl = json['file_url'];
+    fileUrl = json['file_url'] ?? '';
     isViewed = json['is_viewed'];
     isLiked = json['is_liked'];
   }

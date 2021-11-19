@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:school_erp/adapters/student.dart';
+import 'package:school_erp/config/palette.dart';
 import 'package:school_erp/utils/navigation_helper.dart';
 import 'package:school_erp/views/base_view.dart';
 import 'package:school_erp/views/messaging/group_messages_view.dart';
@@ -23,8 +24,13 @@ class _StudentViewState extends State<StudentView> {
     return BaseView<StudentViewModel>(builder: (context, model, child) {
       return Scaffold(
           appBar: AppBar(
+            backgroundColor: Palette.appbarBackgroundColor,
+            leading: BackButton(
+              color: Palette.appbarForegroundColor,
+            ),
             title: Text(
               tr("Student Information"),
+              style: TextStyle(color: Palette.appbarForegroundColor),
             ),
           ),
           body: SingleChildScrollView(

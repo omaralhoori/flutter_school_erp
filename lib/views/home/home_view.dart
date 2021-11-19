@@ -33,7 +33,7 @@ class _HomeViewState extends State<HomeView> {
               .copyWith(statusBarColor: Palette.appBarIconsColor),
           child: SafeArea(
             child: DefaultTabController(
-              length: Config().isLoggedIn ? 3 : 2,
+              length: !Config().isGuest ? 3 : 2,
               child: NestedScrollView(
                 headerSliverBuilder:
                     (BuildContext context, bool innerBoxIsScrolled) {
@@ -67,7 +67,7 @@ class _HomeViewState extends State<HomeView> {
                         titlePadding: EdgeInsets.only(bottom: 13.0),
                       ),
                       actions: [
-                        if (Config().isLoggedIn)
+                        if (!Config().isGuest)
                           Stack(
                             alignment: Alignment.center,
                             children: [
@@ -86,8 +86,10 @@ class _HomeViewState extends State<HomeView> {
                                       padding: EdgeInsets.symmetric(
                                           horizontal: 6, vertical: 2),
                                       decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.red),
+                                          shape: BoxShape.rectangle,
+                                          color: Colors.red,
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
                                       alignment: Alignment.center,
                                       child: Text(
                                         "${model.unreadDM}",
@@ -130,7 +132,7 @@ class _HomeViewState extends State<HomeView> {
                                 ],
                               ),
                             ),
-                            if (Config().isLoggedIn)
+                            if (!Config().isGuest)
                               Tab(
                                 child: Stack(
                                   children: [
@@ -171,7 +173,7 @@ class _HomeViewState extends State<HomeView> {
                   children: [
                     ContentTab(),
                     GalleryTab(),
-                    if (Config().isLoggedIn) StudentTab(),
+                    if (!Config().isGuest) StudentTab(),
                   ],
                 ),
               ),

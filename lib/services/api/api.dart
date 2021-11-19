@@ -1,4 +1,5 @@
 import 'package:school_erp/model/album.dart';
+import 'package:school_erp/model/comment.dart';
 import 'package:school_erp/model/contact_message_request.dart';
 import 'package:school_erp/model/content.dart';
 import 'package:school_erp/model/doctype_response.dart';
@@ -71,6 +72,10 @@ abstract class Api {
   Future<void> contentDisLike(Content content);
 
   Future<void> contentView(Content content);
+
+  Future<bool> addContentComment(Content content, String comment);
+
+  Future<List<Comment>> getContentComments(Content content);
 
   Future downloadPaymentPdf({String? studentNo});
 

@@ -88,5 +88,9 @@
   "Fee": "Fee",
   "Total": "Total",
   "NO": "NO",
-  "Download as pdf": "Download as pdf"
+  "Download as pdf": "Download as pdf",
+  "Announcement": "Announcement",
+  "Write comment...": "Write comment...",
+  "The message was not sent": "The message was not sent",
+  "Comment added successfully": "Comment added successfully"
 }

@@ -28,7 +28,7 @@ class ContentTab extends StatelessWidget {
                       onVisibilityChanged: (VisibilityInfo info) =>
                           home.setViewInfo(info, index),
                       child: ContentCard(
-                        content: home.contentList[index],
+                        index: index,
                       ),
                     );
                   },
