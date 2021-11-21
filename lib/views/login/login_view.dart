@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:school_erp/config/frappe_palette.dart';
 import 'package:school_erp/form/controls/control.dart';
-import 'package:school_erp/model/config.dart';
+import 'package:school_erp/storage/config.dart';
 import 'package:school_erp/model/doctype_response.dart';
 import 'package:school_erp/model/login/login_request.dart';
 import 'package:school_erp/model/login/login_response.dart';

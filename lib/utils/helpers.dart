@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:school_erp/model/album.dart';
-import 'package:school_erp/model/config.dart';
+import 'package:school_erp/storage/config.dart';
 import 'package:school_erp/model/content.dart';
-import 'package:school_erp/model/offline_storage.dart';
+import 'package:school_erp/storage/offline_storage.dart';
+import 'package:school_erp/model/post_version.dart';
 import 'package:tuple/tuple.dart';
-import 'package:school_erp/model/announcement.dart';
 import 'package:school_erp/model/doctype_response.dart';
 import 'package:school_erp/services/storage_service.dart';
 
@@ -15,14 +15,15 @@ import 'enums.dart';
 initDb() async {
   await locator<StorageService>().initHiveStorage();
 
-  locator<StorageService>()
-      .registerAdapter<Announcement>(AnnouncementAdapter());
+  locator<StorageService>().registerAdapter<PostVersion>(PostVersionAdapter());
   locator<StorageService>().registerAdapter<Album>(AlbumAdapter());
   locator<StorageService>().registerAdapter<Content>(ContentAdapter());
 
-  await locator<StorageService>().initHiveBox('queue');
+  await locator<StorageService>().initHiveBox('albums');
+  await locator<StorageService>().initHiveBox('messages');
   await locator<StorageService>().initHiveBox('offline');
   await locator<StorageService>().initHiveBox('posts');
+  await locator<StorageService>().initHiveBox('posts_versions');
   await locator<StorageService>().initHiveBox('config');
 }
 

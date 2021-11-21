@@ -6,7 +6,8 @@ import 'package:visibility_detector/visibility_detector.dart';
 
 class ContentTab extends StatelessWidget {
   ContentTab({Key? key}) : super(key: key);
-
+  ScrollController _scrollController = new ScrollController();
+  bool _scrollLock = false;
   @override
   Widget build(BuildContext context) {
     return BaseView<HomeViewModel>(
@@ -21,6 +22,21 @@ class ContentTab extends StatelessWidget {
                   home.getUnreadMessages();
                 },
                 child: ListView.separated(
+                  addAutomaticKeepAlives: false,
+                  controller: _scrollController
+                    ..addListener(() async {
+                      if (!_scrollLock) {
+                        var triggerFetchMoreSize =
+                            0.9 * _scrollController.position.maxScrollExtent;
+                        if (_scrollController.position.pixels >
+                            triggerFetchMoreSize) {
+                          _scrollLock = true;
+                          await home.getContent();
+                          print(home.contentList.length);
+                          _scrollLock = false;
+                        }
+                      }
+                    }),
                   itemCount: home.contentList.length,
                   itemBuilder: (ctxt, index) {
                     return VisibilityDetector(

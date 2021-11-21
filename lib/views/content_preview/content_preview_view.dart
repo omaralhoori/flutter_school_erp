@@ -6,7 +6,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:school_erp/app/locator.dart';
 import 'package:school_erp/config/palette.dart';
-import 'package:school_erp/model/config.dart';
+import 'package:school_erp/storage/config.dart';
 import 'package:school_erp/model/content.dart';
 import 'package:school_erp/utils/frappe_alert.dart';
 import 'package:school_erp/views/base_view.dart';

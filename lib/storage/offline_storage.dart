@@ -9,9 +9,9 @@ import '../services/storage_service.dart';
 import '../services/api/api.dart';
 
 import '../utils/helpers.dart';
-import 'common.dart';
+import '../model/common.dart';
 import 'config.dart';
-import 'doctype_response.dart';
+import '../model/doctype_response.dart';
 
 class OfflineStorage {
   static var storage = locator<StorageService>().getHiveBox('offline');
@@ -33,9 +33,9 @@ class OfflineStorage {
       'data': data,
     };
 
-    try{
+    try {
       await storage.put(kHash, v);
-    }catch(e){
+    } catch (e) {
       throw e;
     }
   }

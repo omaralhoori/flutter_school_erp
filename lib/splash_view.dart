@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import 'config/palette.dart';
-import 'model/config.dart';
+import 'storage/config.dart';
 import 'model/login/login_response.dart';
 import 'utils/navigation_helper.dart';
 import 'views/base_view.dart';
@@ -30,7 +30,7 @@ class SplashView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           TextButton(
-            onPressed: (){
+            onPressed: () {
               NavigationHelper.push(context: context, page: LoginView());
             },
             child: Container(
@@ -38,12 +38,10 @@ class SplashView extends StatelessWidget {
               height: size.width * .1,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Palette.appBarIconsColor,
-                    Palette.indicatorColor,
-                  ]
-                ),
+                gradient: LinearGradient(colors: [
+                  Palette.appBarIconsColor,
+                  Palette.indicatorColor,
+                ]),
                 borderRadius: BorderRadius.circular(25.0),
               ),
               child: Text(
@@ -56,14 +54,15 @@ class SplashView extends StatelessWidget {
             height: size.height * .35,
           ),
           BaseView<LoginViewModel>(
-            builder: (context, login, _){
+            builder: (context, login, _) {
               return TextButton(
-                onPressed: () async{
+                onPressed: () async {
                   String deviceID = await Palette.deviceID();
                   login.updateUserDetails(LoginResponse(userId: deviceID));
                   // print(Config().userId);
                   Config.set('isGuest', true);
-                  NavigationHelper.clearAllAndNavigateTo(context: context, page: HomeView());
+                  NavigationHelper.clearAllAndNavigateTo(
+                      context: context, page: HomeView());
                 },
                 child: Row(
                   children: [

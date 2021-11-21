@@ -8,14 +8,12 @@ import '../app/locator.dart';
 import '../services/api/api.dart';
 
 import '../utils/dio_helper.dart';
-import '../model/offline_storage.dart';
-import '../model/config.dart';
+import '../storage/offline_storage.dart';
+import '../storage/config.dart';
 
 initApiConfig() async {
-  if (Config().baseUrl != null) {
-    await DioHelper.init();
-    await DioHelper.initCookies();
-  }
+  await DioHelper.init();
+  await DioHelper.initCookies();
 }
 
 Future<void> cacheAllUsers() async {
@@ -72,7 +70,7 @@ Future<void> setBaseUrl(url) async {
 }
 
 String getAbsoluteUrl(String url) {
-  return Uri.encodeFull("${Config().baseUrl}$url");
+  return Uri.encodeFull("${Config.baseUrl}$url");
 }
 
 Future<File?> downloadFile(String url, String name) async {

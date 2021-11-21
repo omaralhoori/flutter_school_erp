@@ -6,7 +6,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/image_render.dart';
 import 'package:school_erp/config/palette.dart';
-import 'package:school_erp/model/config.dart';
+import 'package:school_erp/storage/config.dart';
 import 'package:school_erp/utils/dio_helper.dart';
 import 'package:school_erp/views/login/login_view.dart';
 // import 'package:html_editor_enhanced/html_editor.dart';
@@ -67,7 +67,7 @@ class FormBuilderTextEditor<T> extends FormBuilderField<T> {
                                 var src = renderContext.tree.attributes['src'];
                                 if (src != null) {
                                   if (!src.startsWith("http")) {
-                                    src = Config().baseUrl! + src;
+                                    src = Config.baseUrl + src;
                                   }
                                   return Image.network(
                                     src,
@@ -81,7 +81,7 @@ class FormBuilderTextEditor<T> extends FormBuilderField<T> {
                             },
                             customImageRenders: {
                               networkSourceMatcher(domains: [
-                                Config().baseUrl!,
+                                Config.baseUrl,
                               ]): networkImageRender(
                                 headers: {
                                   HttpHeaders.cookieHeader: DioHelper.cookies!,
@@ -98,7 +98,7 @@ class FormBuilderTextEditor<T> extends FormBuilderField<T> {
                                 headers: {
                                   HttpHeaders.cookieHeader: DioHelper.cookies!,
                                 },
-                                mapUrl: (url) => Config().baseUrl! + url!,
+                                mapUrl: (url) => Config.baseUrl + url!,
                               ),
                               // Custom placeholder image for broken links
                               networkSourceMatcher(): networkImageRender(

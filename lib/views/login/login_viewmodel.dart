@@ -7,8 +7,8 @@ import 'package:school_erp/utils/http.dart';
 
 import '../../app/locator.dart';
 import '../../services/api/api.dart';
-import '../../model/offline_storage.dart';
-import '../../model/config.dart';
+import '../../storage/offline_storage.dart';
+import '../../storage/config.dart';
 import '../../views/base_viewmodel.dart';
 
 class SavedCredentials {
@@ -31,7 +31,7 @@ class LoginViewModel extends BaseViewModel {
     loginButtonLabel = "Login";
 
     savedCreds = SavedCredentials(
-      serverURL: Config().baseUrl,
+      serverURL: Config.baseUrl,
       usr: OfflineStorage.getItem('usr')["data"],
     );
   }

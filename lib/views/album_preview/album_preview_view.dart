@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:school_erp/config/palette.dart';
 import 'package:school_erp/model/album.dart';
-import 'package:school_erp/model/config.dart';
+import 'package:school_erp/storage/config.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:school_erp/utils/navigation_helper.dart';
 import 'package:school_erp/widgets/photo_viewer.dart';
@@ -54,13 +54,11 @@ class AlbumPreviewView extends StatelessWidget {
                   NavigationHelper.push(
                       context: context,
                       page: PhotoViewer(
-                        url: Config().baseUrl! +
-                            this.album.fileUrl.split(',')[i],
+                        url: Config.baseUrl + this.album.fileUrl.split(',')[i],
                       ));
                 },
                 child: CachedNetworkImage(
-                  imageUrl:
-                      Config().baseUrl! + this.album.fileUrl.split(',')[i],
+                  imageUrl: Config.baseUrl + this.album.fileUrl.split(',')[i],
                   fit: BoxFit.cover,
                 ),
               ),

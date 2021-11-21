@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:school_erp/config/palette.dart';
 import 'package:school_erp/model/album.dart';
+import 'package:school_erp/model/announcement.dart';
 import 'package:school_erp/model/comment.dart';
 import 'package:school_erp/model/common.dart';
 import 'package:school_erp/model/contact_message_request.dart';
@@ -13,8 +14,8 @@ import 'package:school_erp/model/get_doc_response.dart';
 import 'package:school_erp/model/login/login_request.dart';
 import 'package:school_erp/model/login/login_response.dart';
 import 'package:school_erp/model/messaging/message.dart';
-import 'package:school_erp/model/models.dart';
-import 'package:school_erp/model/offline_storage.dart';
+import 'package:school_erp/model/post_version.dart';
+import 'package:school_erp/storage/offline_storage.dart';
 import 'package:school_erp/model/parent/parent.dart';
 import 'package:school_erp/model/payment/parent_payment.dart';
 import 'package:school_erp/model/update_profile_response.dart';
@@ -398,8 +399,8 @@ class DioApi implements Api {
   }
 
   @override
-  Future<List<Content>> getContents() async {
-    var data = {};
+  Future<List<Content>> getContents(int skip) async {
+    var data = {"limit": "2", "skip": skip.toString()};
     List<Content> contentList = [];
     if (DioHelper.dio == null) {
       try {
@@ -422,6 +423,52 @@ class DioApi implements Api {
       }
     }
     return contentList;
+  }
+
+  Future<Content?> getAnnouncement(String name) async {
+    var data = {"announcement": name};
+    if (DioHelper.dio == null) {
+      try {
+        DioHelper.init();
+      } catch (e) {}
+    }
+    data["user"] = await Palette.deviceID();
+    if (DioHelper.dio != null) {
+      final response = await DioHelper.dio!.post(
+          '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.get_announcement',
+          data: data,
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+      if (response.statusCode == 200) {
+        for (var json in response.data["message"]) {
+          return Content.fromJson(json);
+        }
+      } else {
+        throw Exception('Something went wrong');
+      }
+    }
+  }
+
+  Future<Content?> getNews(String name) async {
+    var data = {"news": name};
+    if (DioHelper.dio == null) {
+      try {
+        DioHelper.init();
+      } catch (e) {}
+    }
+    data["user"] = await Palette.deviceID();
+    if (DioHelper.dio != null) {
+      final response = await DioHelper.dio!.post(
+          '/method/mobile_backend.mobile_backend.doctype.news.news.get_single_news',
+          data: data,
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+      if (response.statusCode == 200) {
+        for (var json in response.data["message"]) {
+          return Content.fromJson(json);
+        }
+      } else {
+        throw Exception('Something went wrong');
+      }
+    }
   }
 
   Future<UserData?> getUserData() async {
@@ -617,6 +664,23 @@ class DioApi implements Api {
           data: data,
           options: Options(contentType: Headers.formUrlEncodedContentType));
     }
+  }
+
+  Future<List<PostVersion>?> getContentVersions() async {
+    if (DioHelper.dio != null) {
+      final response = await DioHelper.dio!.post(
+          '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.get_contents_version',
+          data: {},
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+
+      if (response.statusCode == 200) {
+        Iterable i = response.data["message"];
+        List<PostVersion> comments =
+            List.from(i.map((message) => PostVersion.fromJson(message)));
+        return comments;
+      }
+    }
+    return null;
   }
 
   Future<List<Comment>> getContentComments(Content content) async {

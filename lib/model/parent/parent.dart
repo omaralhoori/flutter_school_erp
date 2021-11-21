@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:school_erp/adapters/student.dart';
+import 'package:school_erp/model/parent/student.dart';
 
 part '../../adapters/parent.g.dart';
 

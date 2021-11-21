@@ -6,7 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:school_erp/app/locator.dart';
 import 'package:school_erp/config/frappe_palette.dart';
 import 'package:school_erp/config/palette.dart';
-import 'package:school_erp/model/config.dart';
+import 'package:school_erp/storage/config.dart';
 import 'package:school_erp/model/content.dart';
 import 'package:school_erp/views/content_preview/content_preview_view.dart';
 import 'package:school_erp/views/home/home_viewmodel.dart';
@@ -161,10 +161,10 @@ class PostDescriptionHtml extends StatelessWidget {
           (attr, _) => attr["src"] != null && attr["src"]!.startsWith("/files"):
               networkImageRender(
             mapUrl: (url) {
-              String imgUrl = Config().baseUrl!.endsWith('/')
+              String imgUrl = Config.baseUrl.endsWith('/')
                   ? url!.substring(1, url.length)
                   : url!;
-              return Config().baseUrl! + imgUrl;
+              return Config.baseUrl + imgUrl;
             },
           ),
         },
