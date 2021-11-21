@@ -35,8 +35,8 @@ class AlbumCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
-              width: size.width*.39,
-              height: size.width*.39,
+              width: 140.0,
+              height: 140.0,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30.0),
                 image: DecorationImage(
