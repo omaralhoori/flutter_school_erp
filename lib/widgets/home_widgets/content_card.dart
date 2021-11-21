@@ -56,7 +56,7 @@ class ContentCard extends StatelessWidget {
             PostDescriptionHtml(content: content),
             if (content.fileUrl != '')
               CustomSlider(filesUrl: content.fileUrl.split(',')),
-            PostButtons(index: index),
+            PostButtons(content: content,),
           ],
         ),
       ),
@@ -67,10 +67,10 @@ class ContentCard extends StatelessWidget {
 class PostButtons extends StatefulWidget {
   const PostButtons({
     Key? key,
-    required this.index,
+    required this.content,
   }) : super(key: key);
 
-  final int index;
+  final Content content;
 
   @override
   _PostButtonsState createState() => _PostButtonsState();
@@ -79,7 +79,6 @@ class PostButtons extends StatefulWidget {
 class _PostButtonsState extends State<PostButtons> {
   @override
   Widget build(BuildContext context) {
-    Content content = locator<HomeViewModel>().contentList[this.widget.index];
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -87,24 +86,24 @@ class _PostButtonsState extends State<PostButtons> {
           flex: 1,
           child: InteractionButton(
             onPressed: () {
-              if (content.isLiked == 0) {
+              if (widget.content.isLiked == 0) {
                 print('like');
-                content.isLiked = 1;
-                content.likes++;
-                locator<HomeViewModel>().likePost(content);
+                widget.content.isLiked = 1;
+                widget.content.likes++;
+                locator<HomeViewModel>().likePost(widget.content);
               } else {
                 print('dislike');
-                content.isLiked = 0;
-                content.likes--;
-                locator<HomeViewModel>().dislikePost(content);
+                widget.content.isLiked = 0;
+                widget.content.likes--;
+                locator<HomeViewModel>().dislikePost(widget.content);
               }
               setState(() {});
             },
-            icon: content.isLiked == 0
+            icon: widget.content.isLiked == 0
                 ? FontAwesomeIcons.heart
                 : FontAwesomeIcons.solidHeart,
-            count: content.likes,
-            color: content.isLiked == 0
+            count: widget.content.likes,
+            color: widget.content.isLiked == 0
                 ? Palette.interactionIconsColor
                 : FrappePalette.red,
           ),
@@ -114,7 +113,7 @@ class _PostButtonsState extends State<PostButtons> {
           child: InteractionButton(
             onPressed: null,
             icon: FontAwesomeIcons.comment,
-            count: content.approvedComments,
+            count: widget.content.approvedComments,
             color: Palette.interactionIconsColor,
           ),
         ),
@@ -123,8 +122,8 @@ class _PostButtonsState extends State<PostButtons> {
           child: InteractionButton(
             onPressed: null,
             icon: FontAwesomeIcons.eye,
-            count: content.views,
-            color: content.isViewed == 1
+            count: widget.content.views,
+            color: widget.content.isViewed == 1
                 ? Palette.interactionIconsColor
                 : Palette.interactionIconsColor.withOpacity(0.5),
           ),
@@ -174,7 +173,7 @@ class PostDescriptionHtml extends StatelessWidget {
             if (await canLaunch(url)) {
               await launch(url);
             } else {
-              print("Cant open ${url}");
+              print("Cant open $url");
             }
           }
         });

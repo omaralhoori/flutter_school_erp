@@ -50,7 +50,7 @@ class _MessagingViewState extends State<MessagingView> {
                 backgroundColor: Palette.appbarBackgroundColor,
                 title: selectedNum > 0
                     ? Text(
-                        '${selectedNum} ' + tr('selected'),
+                        '$selectedNum ' + tr('selected'),
                         style: TextStyle(color: Palette.appbarForegroundColor),
                       )
                     : Text(""),

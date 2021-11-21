@@ -50,7 +50,8 @@ class _CustomSliderState extends State<CustomSlider>
                   NavigationHelper.push(
                       context: context,
                       page: PhotoViewer(
-                        url: Config.baseUrl + widget.filesUrl[i],
+                        urls: widget.filesUrl,
+                        index: i,
                       ));
                 },
                 child: CachedNetworkImage(

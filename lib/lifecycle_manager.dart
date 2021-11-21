@@ -6,7 +6,8 @@ import 'app/locator.dart';
 
 class LifeCycleManager extends StatefulWidget {
   final Widget child;
-  LifeCycleManager({required this.child});
+  final GlobalKey<NavigatorState> navigatorKey;
+  LifeCycleManager({required this.child, required this.navigatorKey});
 
   _LifeCycleManagerState createState() => _LifeCycleManagerState();
 }
@@ -33,21 +34,23 @@ class _LifeCycleManagerState extends State<LifeCycleManager>
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
       case AppLifecycleState.paused:
+        break;
       case AppLifecycleState.inactive:
-      case AppLifecycleState.detached:
-        print('detached');
+        print('detached: $state');
         await locator<StorageService>().putSharedPrefBoolValue(
           "backgroundTask",
           true,
         );
         notifications.startBackgroundListening();
+        notifications.handleBackgroundMessages(widget.navigatorKey);
+        break;
+      case AppLifecycleState.detached:
         break;
       case AppLifecycleState.resumed:
         await locator<StorageService>().putSharedPrefBoolValue(
           "backgroundTask",
           false,
         );
-        notifications.handleBackgroundMessages();
         notifications.startForegroundListening();
         print('resume...');
         break;

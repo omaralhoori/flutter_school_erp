@@ -2,11 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:school_erp/app/locator.dart';
 import 'package:school_erp/config/palette.dart';
-import 'package:school_erp/storage/config.dart';
 import 'package:school_erp/model/content.dart';
 import 'package:school_erp/utils/frappe_alert.dart';
 import 'package:school_erp/views/base_view.dart';
@@ -14,8 +11,6 @@ import 'package:school_erp/views/content_preview/content_preview_viewmodel.dart'
 import 'package:school_erp/views/home/home_viewmodel.dart';
 import 'package:school_erp/widgets/custom_slider.dart';
 import 'package:school_erp/widgets/home_widgets/content_card.dart';
-import 'package:school_erp/widgets/interaction_button.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class ContentPreviewView extends StatefulWidget {
   final int index;
@@ -74,7 +69,7 @@ class _ContentPreviewViewState extends State<ContentPreviewView> {
                       if (content.fileUrl != '')
                         CustomSlider(filesUrl: content.fileUrl.split(',')),
                       Divider(),
-                      PostButtons(index: widget.index),
+                      PostButtons(content: content,),
                       Divider(),
                       FutureBuilder(
                           future: model.fetchComments(content),

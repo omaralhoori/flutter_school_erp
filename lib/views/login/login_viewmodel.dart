@@ -1,6 +1,5 @@
 import 'package:school_erp/model/login/login_request.dart';
 import 'package:school_erp/model/login/login_response.dart';
-import 'package:school_erp/services/notifications.dart';
 import 'package:school_erp/utils/dio_helper.dart';
 import 'package:injectable/injectable.dart';
 import 'package:school_erp/utils/http.dart';

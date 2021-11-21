@@ -32,6 +32,7 @@ void main() async {
   );
 }
 
+
 class SplashScreen extends StatelessWidget {
   const SplashScreen({
     Key? key,

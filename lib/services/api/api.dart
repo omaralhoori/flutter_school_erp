@@ -48,6 +48,8 @@ abstract class Api {
 
   Future<List<Album>> getGallery();
 
+  Future<Content> getContent(String name, String type);
+
   Future<List<Content>> getContents(int skip);
 
   Future<Content?> getAnnouncement(String name);

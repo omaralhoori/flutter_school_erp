@@ -9,7 +9,6 @@ import 'package:school_erp/views/base_view.dart';
 import 'package:school_erp/views/home/home_viewmodel.dart';
 import 'package:school_erp/views/home/student_tab.dart';
 import 'package:school_erp/views/messaging/direct_messages_view.dart';
-import 'package:school_erp/widgets/home_widgets/contact_tab.dart';
 import 'package:school_erp/widgets/home_widgets/gallery_tab.dart';
 import 'package:school_erp/widgets/home_widgets/home_drawer.dart';
 import 'package:school_erp/widgets/home_widgets/content_tab.dart';

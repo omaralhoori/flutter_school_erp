@@ -4,10 +4,18 @@ import 'package:school_erp/views/home/home_viewmodel.dart';
 import 'package:school_erp/widgets/home_widgets/content_card.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
-class ContentTab extends StatelessWidget {
+class ContentTab extends StatefulWidget {
   ContentTab({Key? key}) : super(key: key);
+
+  @override
+  State<ContentTab> createState() => _ContentTabState();
+}
+
+class _ContentTabState extends State<ContentTab> {
   ScrollController _scrollController = new ScrollController();
+
   bool _scrollLock = false;
+
   @override
   Widget build(BuildContext context) {
     return BaseView<HomeViewModel>(

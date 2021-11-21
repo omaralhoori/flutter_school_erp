@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:school_erp/model/parent/student.dart';
 import 'package:school_erp/config/palette.dart';
 import 'package:school_erp/utils/navigation_helper.dart';

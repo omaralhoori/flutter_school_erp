@@ -1,8 +1,4 @@
-import 'package:school_erp/model/payment/student_extra_amount.dart';
-import 'package:school_erp/model/payment/student_fees.dart';
-import 'package:school_erp/model/payment/student_installment.dart';
 import 'package:school_erp/model/payment/student_payment.dart';
-import 'package:school_erp/model/payment/student_transaction.dart';
 
 class ParentPayment {
   late String year;

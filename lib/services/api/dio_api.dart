@@ -741,7 +741,7 @@ class DioApi implements Api {
       String url =
           '/method/mobile_backend.mobile_backend.pdf.get_parent_transactions_pdf';
       if (studentNo != null) {
-        url += "?PSTD=${studentNo}";
+        url += "?PSTD=$studentNo";
       }
       String fileName = "payments.pdf";
       openFile(url: url, fileName: fileName);
@@ -785,5 +785,34 @@ class DioApi implements Api {
       }
     }
     return null;
+  }
+
+  @override
+  Future<Content> getContent(String name, String type) async{
+    var data = type == 'Announcement' ? {'announcement': name} : {'news': name};
+    late Content reContent;
+
+    String url = type == 'Announcement' ? '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.get_announcement' : '/method/mobile_backend.mobile_backend.doctype.news.news.get_single_news';
+    if (DioHelper.dio == null) {
+      try {
+        DioHelper.init();
+      } catch (e) {}
+    }
+    data["user"] = await Palette.deviceID();
+    if (DioHelper.dio != null) {
+      final response = await DioHelper.dio!.post(
+          url,
+          data: data,
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+      if (response.statusCode == 200) {
+        for (var json in response.data["message"]) {
+          Content content = Content.fromJson(json);
+          reContent = content;
+        }
+      } else {
+        throw Exception('Something went wrong');
+      }
+    }
+    return reContent;
   }
 }

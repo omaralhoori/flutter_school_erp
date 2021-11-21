@@ -17,7 +17,7 @@ class Config {
       Uri.decodeFull(configContainer.get('userId', defaultValue: ""));
   String get user => configContainer.get('user');
   String? get primaryCacheKey {
-    if (baseUrl == null || userId == null) return null;
+    if (userId == null) return null;
     return "$baseUrl$userId";
   }
 
@@ -27,7 +27,6 @@ class Config {
   static String get baseUrl => "http://137.184.51.167:8000";
 
   Uri? get uri {
-    if (baseUrl == null) return null;
     return Uri.parse(baseUrl);
   }
 

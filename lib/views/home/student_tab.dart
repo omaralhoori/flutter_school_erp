@@ -1,11 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:school_erp/model/parent/student.dart';
 import 'package:school_erp/config/palette.dart';
-import 'package:school_erp/model/payment/parent_payment.dart';
-import 'package:school_erp/model/payment/student_extra_amount.dart';
-import 'package:school_erp/model/payment/student_transaction.dart';
 import 'package:school_erp/utils/navigation_helper.dart';
 import 'package:school_erp/views/base_view.dart';
 import 'package:school_erp/views/home/home_viewmodel.dart';

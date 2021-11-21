@@ -1,5 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:school_erp/views/content_preview_noti/content_preview_noti_view.dart';
 
 class Notifications {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -41,6 +44,7 @@ class Notifications {
     final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
     _firebaseMessaging.subscribeToTopic("news");
     _firebaseMessaging.subscribeToTopic("announcement");
+    _firebaseMessaging.subscribeToTopic("moon");
   }
 
   static Future<String> getDeviceToken() async {
@@ -64,10 +68,11 @@ class Notifications {
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   }
 
-  void handleBackgroundMessages() {
-    FirebaseMessaging.onMessageOpenedApp.first.then((value) {
+  void handleBackgroundMessages(GlobalKey<NavigatorState> navigatorKey) {
+    FirebaseMessaging.onMessageOpenedApp.first.then((RemoteMessage message) {
+      navigatorKey.currentState!.push(MaterialPageRoute(builder: (context) => ContentPreviewNotificationView(name: message.data['name'], type: message.data['type'],)));
       print(
-          "Message data: ${value.notification!.title} : ${value.notification!.body}");
+          "Message data: ${message.notification!.title} : ${message.notification!.body}, ${message.data}");
     });
   }
 }

@@ -1,9 +1,9 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:injectable/injectable.dart';
 import 'package:school_erp/app/locator.dart';
 import 'package:school_erp/model/comment.dart';
 import 'package:school_erp/model/content.dart';
 import 'package:school_erp/services/api/api.dart';
+import 'package:school_erp/storage/posts_storage.dart';
 
 import '../base_viewmodel.dart';
 
@@ -12,6 +12,26 @@ class ContentPreviewViewModel extends BaseViewModel {
   Content? _content;
   List<Comment> comments = [];
   Content? get content => _content;
+
+  Future<bool> getContent(String name, String type) async {
+    try {
+      Content? _content =
+      await locator<Api>().getContent(name, type);
+      print("assssssss: $_content");
+      this._content = _content;
+      // notifyListeners();
+      if (this._content != null) {
+        try {
+          PostsStorage.putContent(this._content!);
+        } catch (e) {
+          print(e);
+        }
+      }
+    } catch (dioError) {
+      this._content = PostsStorage.getItem(name, type);
+    }
+    return Future.value(true);
+  }
 
   void setContent(Content content) {
     _content = content;

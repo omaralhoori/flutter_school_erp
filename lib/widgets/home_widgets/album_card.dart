@@ -13,6 +13,7 @@ class AlbumCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    print("size: ${size.width*.4}");
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(0.0),
@@ -34,8 +35,8 @@ class AlbumCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
-              width: 140.0,
-              height: 140.0,
+              width: size.width*.39,
+              height: size.width*.39,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30.0),
                 image: DecorationImage(

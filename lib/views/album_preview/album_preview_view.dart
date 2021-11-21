@@ -54,7 +54,8 @@ class AlbumPreviewView extends StatelessWidget {
                   NavigationHelper.push(
                       context: context,
                       page: PhotoViewer(
-                        url: Config.baseUrl + this.album.fileUrl.split(',')[i],
+                        urls: this.album.fileUrl.split(','),
+                        index: i,
                       ));
                 },
                 child: CachedNetworkImage(

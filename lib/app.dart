@@ -23,7 +23,7 @@ class FrappeApp extends StatefulWidget {
 class _FrappeAppState extends State<FrappeApp> {
   bool _isLoggedIn = false;
   bool _isLoaded = false;
-
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   @override
   void initState() {
     _checkIfLoggedIn();
@@ -42,11 +42,13 @@ class _FrappeAppState extends State<FrappeApp> {
   Widget build(BuildContext context) {
     return Portal(
       child: LifeCycleManager(
+        navigatorKey: navigatorKey,
         child: StreamProvider<ConnectivityStatus>(
           initialData: ConnectivityStatus.offline,
           create: (context) =>
               ConnectivityService().connectionStatusController.stream,
           child: MaterialApp(
+            navigatorKey: navigatorKey,
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
             locale: context.locale,
