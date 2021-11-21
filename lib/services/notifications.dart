@@ -75,7 +75,6 @@ class Notifications {
                 name: message.data['name'],
                 type: message.data['type'],
               )));
-
       print(
           "Message data: ${message.notification!.title} : ${message.notification!.body}, ${message.data}");
     });
