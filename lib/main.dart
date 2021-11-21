@@ -14,7 +14,7 @@ void main() async {
   await initDb();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await Notifications.initFCM();
+  // await Notifications.initFCM();
   Notifications.subscribeToTopics();
   final List<Locale> systemLocales = WidgetsBinding.instance!.window.locales;
 

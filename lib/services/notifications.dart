@@ -28,7 +28,7 @@ class Notifications {
       throw Exception(e);
     }
   }
-
+/*
   static Future<void> initFCM() async {
     //final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
     FirebaseMessaging.onMessage.listen((RemoteMessage event) {
@@ -38,7 +38,7 @@ class Notifications {
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
       print('Message clicked!');
     });
-  }
+  }*/
 
   static void subscribeToTopics() {
     final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;

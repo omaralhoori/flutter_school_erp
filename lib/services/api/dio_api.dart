@@ -400,7 +400,7 @@ class DioApi implements Api {
 
   @override
   Future<List<Content>> getContents(int skip) async {
-    var data = {"limit": "2", "skip": skip.toString()};
+    var data = {"limit": "10", "skip": skip.toString()};
     List<Content> contentList = [];
     if (DioHelper.dio == null) {
       try {
@@ -424,6 +424,7 @@ class DioApi implements Api {
     }
     return contentList;
   }
+
 
   Future<Content?> getAnnouncement(String name) async {
     var data = {"announcement": name};
@@ -470,6 +471,8 @@ class DioApi implements Api {
       }
     }
   }
+
+
 
   Future<UserData?> getUserData() async {
     if (DioHelper.dio != null) {
@@ -788,31 +791,13 @@ class DioApi implements Api {
   }
 
   @override
-  Future<Content> getContent(String name, String type) async{
-    var data = type == 'Announcement' ? {'announcement': name} : {'news': name};
-    late Content reContent;
-
-    String url = type == 'Announcement' ? '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.get_announcement' : '/method/mobile_backend.mobile_backend.doctype.news.news.get_single_news';
-    if (DioHelper.dio == null) {
-      try {
-        DioHelper.init();
-      } catch (e) {}
+  Future<Content?> getContent(String name, String type) async{
+    if(type == 'News'){
+      return getNews(name);
+    }else if(type == 'Announcement'){
+      return getAnnouncement(name);
+    }else{
+      return null;
     }
-    data["user"] = await Palette.deviceID();
-    if (DioHelper.dio != null) {
-      final response = await DioHelper.dio!.post(
-          url,
-          data: data,
-          options: Options(contentType: Headers.formUrlEncodedContentType));
-      if (response.statusCode == 200) {
-        for (var json in response.data["message"]) {
-          Content content = Content.fromJson(json);
-          reContent = content;
-        }
-      } else {
-        throw Exception('Something went wrong');
-      }
-    }
-    return reContent;
   }
 }

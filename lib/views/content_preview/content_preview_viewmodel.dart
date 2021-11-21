@@ -17,7 +17,6 @@ class ContentPreviewViewModel extends BaseViewModel {
     try {
       Content? _content =
       await locator<Api>().getContent(name, type);
-      print("assssssss: $_content");
       this._content = _content;
       // notifyListeners();
       if (this._content != null) {
