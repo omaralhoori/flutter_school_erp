@@ -70,7 +70,11 @@ class Notifications {
 
   void handleBackgroundMessages(GlobalKey<NavigatorState> navigatorKey) {
     FirebaseMessaging.onMessageOpenedApp.first.then((RemoteMessage message) {
-      navigatorKey.currentState!.push(MaterialPageRoute(builder: (context) => ContentPreviewNotificationView(name: message.data['name'], type: message.data['type'],)));
+      navigatorKey.currentState!.push(MaterialPageRoute(
+          builder: (context) => ContentPreviewNotificationView(
+                name: message.data['name'],
+                type: message.data['type'],
+              )));
       print(
           "Message data: ${message.notification!.title} : ${message.notification!.body}, ${message.data}");
     });
