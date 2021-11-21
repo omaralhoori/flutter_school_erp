@@ -17,17 +17,21 @@ class GalleryTab extends StatelessWidget {
             if (snapshot.hasData) {
               return RefreshIndicator(
                 onRefresh: home.getAlbums,
-                child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 0
-                    ),
-                    itemCount: home.albums.length,
-                    itemBuilder: (ctxt, index) {
-                      return AlbumCard(
-                        album: home.albums[index],
-                      );
-                    }),
+                child: OrientationBuilder(
+                  builder: (context, orientation){
+                    return GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
+                            crossAxisSpacing: 0
+                        ),
+                        itemCount: home.albums.length,
+                        itemBuilder: (ctxt, index) {
+                          return AlbumCard(
+                            album: home.albums[index],
+                          );
+                        });
+                  },
+                ),
               );
             } else {
               return Center(child: CircularProgressIndicator());
