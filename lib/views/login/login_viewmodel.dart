@@ -2,6 +2,7 @@ import 'package:school_erp/model/login/login_request.dart';
 import 'package:school_erp/model/login/login_response.dart';
 import 'package:school_erp/utils/dio_helper.dart';
 import 'package:injectable/injectable.dart';
+import 'package:school_erp/utils/helpers.dart';
 import 'package:school_erp/utils/http.dart';
 
 import '../../app/locator.dart';
@@ -89,20 +90,22 @@ class LoginViewModel extends BaseViewModel {
   Future<void> loginMain() async {
     var usr = OfflineStorage.getItem("usr");
     var pwd = OfflineStorage.getItem("pwd");
-    if (usr != null && pwd != null)
-      try {
-        LoginRequest loginRequest =
-            LoginRequest(usr: usr["data"], pwd: pwd["data"]);
-        var response = await locator<Api>().login(
-          loginRequest,
-        );
-        if (response.verification != null) {
-        } else {
-          await Config.set('isLoggedIn', true);
-          await DioHelper.initCookies();
+    if (await verifyOnline()) {
+      if (usr != null && pwd != null)
+        try {
+          LoginRequest loginRequest =
+              LoginRequest(usr: usr["data"], pwd: pwd["data"]);
+          var response = await locator<Api>().login(
+            loginRequest,
+          );
+          if (response.verification != null) {
+          } else {
+            await Config.set('isLoggedIn', true);
+            await DioHelper.initCookies();
+          }
+        } catch (e) {
+          await Config.set('isLoggedIn', false);
         }
-      } catch (e) {
-        await Config.set('isLoggedIn', false);
-      }
+    }
   }
 }
