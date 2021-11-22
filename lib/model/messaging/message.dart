@@ -22,6 +22,10 @@ class Message extends HiveObject {
   late String? studentName;
   @HiveField(7)
   late List<Reply> replies;
+  @HiveField(8)
+  late String? thumbnail;
+  @HiveField(9)
+  late String? attachments;
 
   Message({
     required this.creation,
@@ -32,6 +36,8 @@ class Message extends HiveObject {
     required this.replies,
     this.studentNo,
     this.studentName,
+    this.thumbnail,
+    this.attachments,
   });
 
   Message.fromJson(Map<String, dynamic> json) {
@@ -42,6 +48,8 @@ class Message extends HiveObject {
     messageName = json['message_name'];
     studentNo = json['student_no'];
     studentName = json['student_name'];
+    thumbnail = json['thumbnail'];
+    attachments = json['attachments'];
     Iterable i = json["messages"];
     replies = List.from(i.map((message) => Reply.fromJson(message)));
     // for (var message in json["messages"]) {

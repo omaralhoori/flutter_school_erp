@@ -1,6 +1,10 @@
+import 'dart:math';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:school_erp/config/palette.dart';
+import 'package:school_erp/storage/config.dart';
 import 'package:school_erp/utils/navigation_helper.dart';
 import 'package:school_erp/views/base_view.dart';
 import 'package:school_erp/views/messaging/messaging_view.dart';
@@ -62,6 +66,7 @@ class _DirectMessagesViewState extends State<DirectMessagesView> {
                               : "",
                           isRead: unreadMessage == 0,
                           unreadMessages: unreadMessage,
+                          thumbnail: model.directMessages[index].thumbnail,
                         );
                       },
                     ),
@@ -81,6 +86,7 @@ class MessageGesture extends StatelessWidget {
   final String title;
   final String postTime;
   final String message;
+  final String? thumbnail;
   final bool isRead;
   final int unreadMessages;
   const MessageGesture({
@@ -91,10 +97,13 @@ class MessageGesture extends StatelessWidget {
     required this.message,
     required this.isRead,
     required this.unreadMessages,
+    this.thumbnail,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Random random = new Random();
+    int imageNum = random.nextInt(7) + 1;
     return GestureDetector(
       onTap: () {
         NavigationHelper.push(
@@ -108,6 +117,21 @@ class MessageGesture extends StatelessWidget {
             padding: EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
             child: Row(
               children: [
+                Container(
+                  margin: context.locale.languageCode == 'ar'
+                      ? EdgeInsets.only(left: 10)
+                      : EdgeInsets.only(right: 10),
+                  child: SizedBox(
+                    height: 40,
+                    width: 40,
+                    child: (thumbnail == null || thumbnail == "")
+                        ? Image(
+                            image: AssetImage(
+                                'assets/message_thumbnails/${imageNum}.png'))
+                        : CachedNetworkImage(
+                            imageUrl: Config.baseUrl + thumbnail!),
+                  ),
+                ),
                 Expanded(
                     child: Container(
                         child: Column(

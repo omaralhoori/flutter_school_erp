@@ -25,13 +25,15 @@ class MessageAdapter extends TypeAdapter<Message> {
       replies: (fields[7] as List).cast<Reply>(),
       studentNo: fields[5] as String?,
       studentName: fields[6] as String?,
+      thumbnail: fields[8] as String?,
+      attachments: fields[9] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Message obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.creation)
       ..writeByte(1)
@@ -47,7 +49,11 @@ class MessageAdapter extends TypeAdapter<Message> {
       ..writeByte(6)
       ..write(obj.studentName)
       ..writeByte(7)
-      ..write(obj.replies);
+      ..write(obj.replies)
+      ..writeByte(8)
+      ..write(obj.thumbnail)
+      ..writeByte(9)
+      ..write(obj.attachments);
   }
 
   @override

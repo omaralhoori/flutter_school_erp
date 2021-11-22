@@ -65,6 +65,7 @@ class _GroupMessagesViewState extends State<GroupMessagesView> {
                               : "",
                           isRead: unreadMessage == 0,
                           unreadMessages: unreadMessage,
+                          thumbnail: model.groupMessages[index].thumbnail,
                         );
                       },
                     ),
