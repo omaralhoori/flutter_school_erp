@@ -31,4 +31,8 @@ class PostVersionStorage {
     var k = type + "#@#" + name;
     storage.delete(k);
   }
+
+  static Future deleteVersions() async {
+    await storage.clear();
+  }
 }

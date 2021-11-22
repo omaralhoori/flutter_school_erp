@@ -29,7 +29,7 @@ initDb() async {
   locator<StorageService>().registerAdapter<Student>(StudentAdapter());
   locator<StorageService>().registerAdapter<Parent>(ParentAdapter());
 
-  await locator<StorageService>().initHiveBox('albums');
+  //await locator<StorageService>().initHiveBox('albums');
   await locator<StorageService>().initHiveBox('messages');
   await locator<StorageService>().initHiveBox('offline');
   await locator<StorageService>().initHiveBox('posts');

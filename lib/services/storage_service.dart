@@ -69,7 +69,7 @@ class StorageService {
           print(e);
         }
       });
-
+      await PostVersionStorage.deleteVersions();
       PostVersionStorage.putAllVersions(versions);
     }
   }
