@@ -10,16 +10,16 @@ import 'package:school_erp/utils/frappe_alert.dart';
 import 'package:school_erp/views/base_view.dart';
 import 'package:school_erp/views/home/home_viewmodel.dart';
 
-import '../frappe_button.dart';
+import '../widgets/frappe_button.dart';
 
-class ContactTab extends StatefulWidget {
-  const ContactTab({Key? key}) : super(key: key);
+class ContactView extends StatefulWidget {
+  const ContactView({Key? key}) : super(key: key);
 
   @override
-  _ContactTabState createState() => _ContactTabState();
+  _ContactViewState createState() => _ContactViewState();
 }
 
-class _ContactTabState extends State<ContactTab> {
+class _ContactViewState extends State<ContactView> {
   @override
   Widget build(BuildContext context) {
     // final Size size = MediaQuery.of(context).size;
@@ -27,18 +27,22 @@ class _ContactTabState extends State<ContactTab> {
     return BaseView<HomeViewModel>(
       builder: (context, home, _) {
         return Scaffold(
+          appBar: AppBar(
+              backgroundColor: Palette.appbarBackgroundColor,
+              leading: BackButton(
+                color: Palette.appbarForegroundColor,
+              ),
+              title: Text(
+                tr('Contact Us'),
+                style: TextStyle(color: Palette.appbarForegroundColor),
+              )),
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: Column(
                 children: [
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: 20),
-                    child: Text(
-                      tr('Contact Us'),
-                      style:
-                          TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                    ),
+                  SizedBox(
+                    height: 20,
                   ),
                   FormBuilder(
                     key: _fbKey,

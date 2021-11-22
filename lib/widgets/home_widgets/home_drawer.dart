@@ -5,6 +5,7 @@ import 'package:school_erp/config/palette.dart';
 import 'package:school_erp/storage/config.dart';
 import 'package:school_erp/utils/helpers.dart';
 import 'package:school_erp/utils/navigation_helper.dart';
+import 'package:school_erp/views/contact_view.dart';
 import 'package:school_erp/views/login/login_view.dart';
 import 'package:school_erp/views/profile/profile_view.dart';
 import 'package:school_erp/views/settings/settings_view.dart';
@@ -36,7 +37,6 @@ class HomeDrawer extends StatelessWidget {
                         width: 40.0,
                         height: 40.0,
                         decoration: BoxDecoration(
-                            color: Palette.appBarIconsColor.withOpacity(0.2),
                             border: Border.all(color: Palette.homeAppBarColor)),
                         alignment: Alignment.center,
                         child: FaIcon(FontAwesomeIcons.user)),
@@ -52,6 +52,32 @@ class HomeDrawer extends StatelessWidget {
           TextButton(
             onPressed: () {
               // TODO(hd01): Create setting page
+              NavigationHelper.push(context: context, page: ContactView());
+            },
+            child: Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 40.0,
+                    height: 40.0,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Palette.homeAppBarColor)),
+                    alignment: Alignment.center,
+                    child: Icon(Icons.mail_rounded),
+                  ),
+                  SizedBox(
+                    width: 5.0,
+                  ),
+                  Text(tr("Contact")),
+                ],
+              ),
+            ),
+          ),
+          Divider(),
+          TextButton(
+            onPressed: () {
+              // TODO(hd01): Create setting page
               NavigationHelper.push(context: context, page: SettingsViews());
             },
             child: Container(
@@ -62,7 +88,6 @@ class HomeDrawer extends StatelessWidget {
                       width: 40.0,
                       height: 40.0,
                       decoration: BoxDecoration(
-                          color: Palette.appBarIconsColor.withOpacity(0.2),
                           border: Border.all(color: Palette.homeAppBarColor)),
                       alignment: Alignment.center,
                       child: FaIcon(FontAwesomeIcons.cog)),
@@ -112,7 +137,6 @@ class HomeDrawer extends StatelessWidget {
                       width: 40.0,
                       height: 40.0,
                       decoration: BoxDecoration(
-                          color: Palette.appBarIconsColor.withOpacity(0.2),
                           border: Border.all(color: Palette.homeAppBarColor)),
                       alignment: Alignment.center,
                       child: FaIcon(FontAwesomeIcons.signOutAlt),
@@ -138,7 +162,6 @@ class HomeDrawer extends StatelessWidget {
                       width: 40.0,
                       height: 40.0,
                       decoration: BoxDecoration(
-                          color: Palette.appBarIconsColor.withOpacity(0.2),
                           border: Border.all(color: Palette.homeAppBarColor)),
                       alignment: Alignment.center,
                       child: FaIcon(FontAwesomeIcons.signInAlt),
