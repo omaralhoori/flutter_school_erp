@@ -609,16 +609,20 @@ class DioApi implements Api {
   }
 
   @override
-  Future<void> contentLike(Content content) async {
+  Future<void> contentLike(String name, String type) async {
     var data;
     String url;
-    if (content.contentType == 'News') {
+    if (type == 'News') {
       url = '/method/mobile_backend.mobile_backend.doctype.news.news.like_news';
-      data = {"news": content.name};
-    } else {
+      data = {"news": name};
+    } else if(type == 'Announcement') {
       url =
           '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.like_announcement';
-      data = {"announcement": content.name};
+      data = {"announcement": name};
+    }else{
+      url =
+      '/method/mobile_backend.mobile_backend.doctype.gallery_album.gallery_album.like_album';
+      data = {"album": name};
     }
     data["user"] = await Palette.deviceID();
     if (DioHelper.dio != null) {
@@ -629,16 +633,20 @@ class DioApi implements Api {
   }
 
   @override
-  Future<void> contentView(Content content) async {
+  Future<void> contentView(String name, String type) async {
     var data;
     String url;
-    if (content.contentType == 'News') {
+    if (type == 'News') {
       url = '/method/mobile_backend.mobile_backend.doctype.news.news.view_news';
-      data = {"news": content.name};
-    } else {
+      data = {"news": name};
+    } else if(type == 'Announcement'){
       url =
           '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.view_announcement';
-      data = {"announcement": content.name};
+      data = {"announcement": name};
+    }else{
+      url =
+      '/method/mobile_backend.mobile_backend.doctype.gallery_album.gallery_album.view_album';
+      data = {"album": name};
     }
     data["user"] = await Palette.deviceID();
     if (DioHelper.dio != null) {
@@ -649,17 +657,21 @@ class DioApi implements Api {
   }
 
   @override
-  Future<void> contentDisLike(Content content) async {
+  Future<void> contentDisLike(String name, String type) async {
     var data;
     String url;
-    if (content.contentType == 'News') {
+    if (type == 'News') {
       url =
           '/method/mobile_backend.mobile_backend.doctype.news.news.dislike_news';
-      data = {"news": content.name};
-    } else {
+      data = {"news": name};
+    } else if(type == 'Announcement'){
       url =
           '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.dislike_announcement';
-      data = {"announcement": content.name};
+      data = {"announcement": name};
+    }else{
+      url =
+      '/method/mobile_backend.mobile_backend.doctype.gallery_album.gallery_album.dislike_album';
+      data = {"album": name};
     }
     data["user"] = await Palette.deviceID();
     if (DioHelper.dio != null) {

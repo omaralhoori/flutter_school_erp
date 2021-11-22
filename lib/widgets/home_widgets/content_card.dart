@@ -90,12 +90,12 @@ class _PostButtonsState extends State<PostButtons> {
                 print('like');
                 widget.content.isLiked = 1;
                 widget.content.likes++;
-                locator<HomeViewModel>().likePost(widget.content);
+                locator<HomeViewModel>().likePost(widget.content.name, widget.content.contentType);
               } else {
                 print('dislike');
                 widget.content.isLiked = 0;
                 widget.content.likes--;
-                locator<HomeViewModel>().dislikePost(widget.content);
+                locator<HomeViewModel>().dislikePost(widget.content.name, widget.content.contentType);
               }
               setState(() {});
             },

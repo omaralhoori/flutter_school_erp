@@ -74,11 +74,11 @@ abstract class Api {
 
   Future<List<dynamic>> getUnreadMessages();
 
-  Future<void> contentLike(Content content);
+  Future<void> contentLike(String name, String type);
 
-  Future<void> contentDisLike(Content content);
+  Future<void> contentDisLike(String name, String type);
 
-  Future<void> contentView(Content content);
+  Future<void> contentView(String name, String type);
 
   Future<bool> addContentComment(Content content, String comment);
 

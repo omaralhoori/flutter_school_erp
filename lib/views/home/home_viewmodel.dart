@@ -22,65 +22,63 @@ class HomeViewModel extends BaseViewModel {
   int unreadDM = 0;
   int unreadGM = 0;
 
+  HomeViewModel(){
+    getParentData();
+  }
 
 
 
   Future<bool> getAlbums() async {
     try {
-
       this.albums = await locator<Api>().getGallery();
       getParentAlbums();
       if (this.albums.isNotEmpty) {
         await OfflineStorage.putItem('allAlbums', albums);
       }
-      if (this.parentAlbums.isNotEmpty) {
+      if (this.albums.isNotEmpty) {
         await OfflineStorage.putItem('parentAlbums', parentAlbums);
       }
     } catch (dioError) {
+      print("DioError: $dioError");
       var snapshot = await OfflineStorage.getItem('allAlbums');
       if (snapshot["data"] is List) {
         Iterable i = snapshot["data"];
         this.albums = List.from(i.map((e) => e as Album));
+      }
+      var snapshotParent = await OfflineStorage.getItem('parentAlbums');
+      if (snapshotParent["data"] is List) {
+        Iterable i = snapshotParent["data"];
+        this.parentAlbums = List.from(i.map((e) => e as Album));
       }
     }
     return Future.value(true);
   }
 
   void getParentAlbums() {
-    print("this.parentData!.branchCode: ${this.parentData!.branchCode}");
+    this.parentAlbums.clear();
     this.albums.forEach((album) {
-      print("album.section: ${album.section}");
-      print("album.classCode: ${album.classCode}");
       if(album.section != null){
-        print("album.section Not null: ${album.section}");
         this.parentData!.students.forEach((student) {
-          print("album.section: ${album.section}");
-          print("student.section: ${student.sectionCode}");
           if(album.section!.split('-').last == student.sectionCode){
-            this.parentAlbums.clear();
             this.parentAlbums.add(album);
           }
         });
       }
       else if(album.classCode != null){
-        print("album.classCode Not null: ${album.classCode}");
         this.parentData!.students.forEach((student) {
-          print("album.classCode: ${album.classCode}");
-          print("student.classCode: ${student.classCode}");
           if(album.classCode == student.classCode){
-            this.parentAlbums.clear();
             this.parentAlbums.add(album);
           }
         });
       }
       else if(album.branch != null){
         if(album.branch == this.parentData!.branchCode){
-          this.parentAlbums.clear();
           this.parentAlbums.add(album);
         }
       }
     });
-    print("parentAlbums: ${this.parentAlbums}");
+
+    print(this.parentAlbums);
     this.parentAlbums.forEach((element) {
       this.albums.remove(element);
     });
@@ -117,22 +115,22 @@ class HomeViewModel extends BaseViewModel {
     if (index < contentList.length) {
       if (contentList[index].isViewed == 0) {
         try {
-          locator<Api>().contentView(contentList[index]);
+          locator<Api>().contentView(contentList[index].name, contentList[index].contentType);
           contentList[index].isViewed = 1;
         } catch (e) {}
       }
     }
   }
 
-  Future likePost(Content content) async {
+  Future likePost(String name, String type) async {
     try {
-      locator<Api>().contentLike(content);
+      locator<Api>().contentLike(name, type);
     } catch (e) {}
   }
 
-  Future dislikePost(Content content) async {
+  Future dislikePost(String name, String type) async {
     try {
-      locator<Api>().contentDisLike(content);
+      locator<Api>().contentDisLike(name, type);
     } catch (e) {}
   }
 

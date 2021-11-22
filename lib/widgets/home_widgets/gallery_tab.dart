@@ -25,11 +25,12 @@ class GalleryTab extends StatelessWidget {
                     return SizedBox(
                       height: MediaQuery.of(context).size.height,
                       width: MediaQuery.of(context).size.width,
-                      child: Column(
-                        children: [
-                          Flexible(
-                            flex: 2,
-                            child: GridView.builder(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            GridView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
                                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
                                     crossAxisSpacing: 0
@@ -40,18 +41,17 @@ class GalleryTab extends StatelessWidget {
                                     album: home.parentAlbums[index],
                                   );
                                 }),
-                          ),
-                          Divider(),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              SizedBox(width: 10.0,),
-                              Text(tr("Other albums"), textAlign: TextAlign.start,),
-                            ],
-                          ),
-                          Flexible(
-                            flex: 3,
-                            child: GridView.builder(
+                            Divider(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                SizedBox(width: 10.0,),
+                                Text(tr("Other albums"), textAlign: TextAlign.start,),
+                              ],
+                            ),
+                            GridView.builder(
+                              shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
                                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
                                     crossAxisSpacing: 0
@@ -61,9 +61,9 @@ class GalleryTab extends StatelessWidget {
                                   return AlbumCard(
                                     album: home.albums[index],
                                   );
-                                }),
-                          )
-                        ],
+                                })
+                          ],
+                        ),
                       ),
                     );
                   },
