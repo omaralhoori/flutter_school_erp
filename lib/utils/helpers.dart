@@ -3,6 +3,8 @@ import 'package:school_erp/model/album.dart';
 import 'package:school_erp/model/message_type_enum.dart';
 import 'package:school_erp/model/messaging/message.dart';
 import 'package:school_erp/model/messaging/reply.dart';
+import 'package:school_erp/model/parent/parent.dart';
+import 'package:school_erp/model/parent/student.dart';
 import 'package:school_erp/storage/config.dart';
 import 'package:school_erp/model/content.dart';
 import 'package:school_erp/storage/offline_storage.dart';
@@ -24,6 +26,8 @@ initDb() async {
   locator<StorageService>().registerAdapter<MessageType>(MessageTypeAdapter());
   locator<StorageService>().registerAdapter<Reply>(ReplyAdapter());
   locator<StorageService>().registerAdapter<Message>(MessageAdapter());
+  locator<StorageService>().registerAdapter<Student>(StudentAdapter());
+  locator<StorageService>().registerAdapter<Parent>(ParentAdapter());
 
   await locator<StorageService>().initHiveBox('albums');
   await locator<StorageService>().initHiveBox('messages');

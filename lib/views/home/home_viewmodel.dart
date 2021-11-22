@@ -113,7 +113,28 @@ class HomeViewModel extends BaseViewModel {
   }
 
   Future<bool> getParentData() async {
-    parentData = await locator<Api>().getParentData();
+    // parentData = await locator<Api>().getParentData();
+    // OfflineStorage.putItem("parent", parentData);
+    //parentData = OfflineStorage.getItem("parent")["data"] as Parent;
+    try {
+      parentData = await locator<Api>().getParentData();
+      if (parentData == null) {
+        parentData = OfflineStorage.getItem("parent")["data"] as Parent;
+        return true;
+      }
+      try {
+        OfflineStorage.putItem("parent", parentData);
+      } catch (e) {
+        print(e);
+      }
+    } catch (e) {
+      try {
+        parentData = OfflineStorage.getItem("parent")["data"] as Parent;
+      } catch (e) {
+        print(e);
+      }
+    }
+
     return true;
   }
 }
