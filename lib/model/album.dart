@@ -24,6 +24,12 @@ class Album{
   late int isViewed;
   @HiveField(9)
   late int isLiked;
+  @HiveField(10)
+  String? section;
+  @HiveField(11)
+  String? classCode;
+  @HiveField(12)
+  String? branch;
 
   Album({
     required this.title,
@@ -36,6 +42,9 @@ class Album{
     required this.fileUrl,
     required this.isViewed,
     required this.isLiked,
+    required this.section,
+    required this.classCode,
+    required this.branch,
   });
 
   Album.fromJson(Map<String, dynamic> json) {
@@ -49,6 +58,9 @@ class Album{
     fileUrl = json['file_url'];
     isViewed = json['is_viewed'];
     isLiked = json['is_liked'];
+    section = json['section'];
+    classCode = json['class_code'];
+    branch = json['branch'];
   }
 
   Map<String, dynamic> toJson() {
@@ -63,6 +75,9 @@ class Album{
     data['file_url'] = this.fileUrl;
     data['is_viewed'] = this.isViewed;
     data['is_liked'] = this.isLiked;
+    data['section'] = this.section;
+    data['class_code'] = this.classCode;
+    data['branch'] = this.branch;
     return data;
   }
 }

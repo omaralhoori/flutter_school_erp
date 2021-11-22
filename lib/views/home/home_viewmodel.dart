@@ -16,15 +16,25 @@ import '../../storage/offline_storage.dart';
 class HomeViewModel extends BaseViewModel {
   List<Content> contentList = [];
   List<Album> albums = [];
+  List<Album> parentAlbums = [];
   ParentPayment? parentPayment;
   Parent? parentData;
   int unreadDM = 0;
   int unreadGM = 0;
+
+
+
+
   Future<bool> getAlbums() async {
     try {
+
       this.albums = await locator<Api>().getGallery();
+      getParentAlbums();
       if (this.albums.isNotEmpty) {
         await OfflineStorage.putItem('allAlbums', albums);
+      }
+      if (this.parentAlbums.isNotEmpty) {
+        await OfflineStorage.putItem('parentAlbums', parentAlbums);
       }
     } catch (dioError) {
       var snapshot = await OfflineStorage.getItem('allAlbums');
@@ -34,6 +44,46 @@ class HomeViewModel extends BaseViewModel {
       }
     }
     return Future.value(true);
+  }
+
+  void getParentAlbums() {
+    print("this.parentData!.branchCode: ${this.parentData!.branchCode}");
+    this.albums.forEach((album) {
+      print("album.section: ${album.section}");
+      print("album.classCode: ${album.classCode}");
+      if(album.section != null){
+        print("album.section Not null: ${album.section}");
+        this.parentData!.students.forEach((student) {
+          print("album.section: ${album.section}");
+          print("student.section: ${student.sectionCode}");
+          if(album.section!.split('-').last == student.sectionCode){
+            this.parentAlbums.clear();
+            this.parentAlbums.add(album);
+          }
+        });
+      }
+      else if(album.classCode != null){
+        print("album.classCode Not null: ${album.classCode}");
+        this.parentData!.students.forEach((student) {
+          print("album.classCode: ${album.classCode}");
+          print("student.classCode: ${student.classCode}");
+          if(album.classCode == student.classCode){
+            this.parentAlbums.clear();
+            this.parentAlbums.add(album);
+          }
+        });
+      }
+      else if(album.branch != null){
+        if(album.branch == this.parentData!.branchCode){
+          this.parentAlbums.clear();
+          this.parentAlbums.add(album);
+        }
+      }
+    });
+    print("parentAlbums: ${this.parentAlbums}");
+    this.parentAlbums.forEach((element) {
+      this.albums.remove(element);
+    });
   }
 
   Future<bool> getContent() async {
@@ -137,4 +187,6 @@ class HomeViewModel extends BaseViewModel {
 
     return true;
   }
+
+
 }
