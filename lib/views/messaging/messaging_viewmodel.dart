@@ -12,13 +12,21 @@ class MessagingViewModel extends BaseViewModel {
   List<Message> messages = [];
   List<Message> groupMessages = [];
   List<Message> directMessages = [];
+  List<String> attachments = [];
   init() async {
     await getMessages();
   }
 
   Message? getMessageByName(String name) {
     for (Message msg in messages) {
-      if (msg.name == name) return msg;
+      if (msg.name == name) {
+        this.attachments = [];
+        if (msg.attachments != null && msg.attachments != "")
+          this.attachments = msg.attachments!.split(';');
+        if (msg.thumbnail != null && msg.thumbnail != "")
+          this.attachments.removeWhere((element) => element == msg.thumbnail);
+        return msg;
+      }
     }
   }
 

@@ -4,9 +4,11 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:school_erp/config/palette.dart';
 import 'package:school_erp/model/messaging/message.dart';
 import 'package:school_erp/model/messaging/reply.dart';
+import 'package:school_erp/storage/config.dart';
 import 'package:school_erp/utils/frappe_alert.dart';
 import 'package:school_erp/views/base_view.dart';
 import 'package:school_erp/views/messaging/messaging_viewmodel.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MessagingView extends StatefulWidget {
   final String name;
@@ -100,12 +102,40 @@ class _MessagingViewState extends State<MessagingView> {
                     child: Padding(
                       padding: EdgeInsets.only(
                           left: 16, right: 16, top: 20, bottom: 10),
-                      child: Row(
+                      child: Column(
                         children: [
-                          Expanded(child: Text(message!.title)),
-                          Text(Palette.postingTime(
-                              DateTime.parse(message!.creation),
-                              context.locale.toString())),
+                          Row(
+                            children: [
+                              Expanded(child: Text(message!.title)),
+                              Text(Palette.postingTime(
+                                  DateTime.parse(message!.creation),
+                                  context.locale.toString())),
+                            ],
+                          ),
+                          if (model.attachments.length > 0)
+                            Container(
+                              margin: EdgeInsets.symmetric(vertical: 10),
+                              child: Text(
+                                tr("Attachments"),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16),
+                              ),
+                            ),
+                          ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: model.attachments.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  margin: EdgeInsets.symmetric(vertical: 5),
+                                  child: InkWell(
+                                    child: Text(model.attachments[index]
+                                        .split('/')
+                                        .last),
+                                    onTap: () => launch(Config.baseUrl +
+                                        model.attachments[index]),
+                                  ),
+                                );
+                              })
                         ],
                       ),
                     ),
