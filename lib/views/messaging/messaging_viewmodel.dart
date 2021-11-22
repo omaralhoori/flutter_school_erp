@@ -1,8 +1,10 @@
 import 'package:injectable/injectable.dart';
 import 'package:school_erp/app/locator.dart';
+import 'package:school_erp/model/message_type_enum.dart';
 import 'package:school_erp/model/messaging/message.dart';
 import 'package:school_erp/model/messaging/reply.dart';
 import 'package:school_erp/services/api/api.dart';
+import 'package:school_erp/storage/messages_storage.dart';
 import 'package:school_erp/utils/enums.dart';
 import 'package:school_erp/views/base_viewmodel.dart';
 import 'package:school_erp/views/home/home_viewmodel.dart';
@@ -63,7 +65,18 @@ class MessagingViewModel extends BaseViewModel {
   }
 
   Future<bool> getMessages() async {
-    messages = await locator<Api>().getMessages();
+    try {
+      messages = await locator<Api>().getMessages();
+      try {
+        await MessagesStorage.deleteMessages();
+        MessagesStorage.putAllMessages(messages);
+      } catch (e) {
+        print(e);
+      }
+    } catch (e) {
+      messages = MessagesStorage.getMessages();
+    }
+
     //notifyListeners();
     return true;
   }

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:school_erp/model/album.dart';
+import 'package:school_erp/model/message_type_enum.dart';
 import 'package:school_erp/model/messaging/message.dart';
 import 'package:school_erp/model/messaging/reply.dart';
 import 'package:school_erp/storage/config.dart';
@@ -20,6 +21,7 @@ initDb() async {
   locator<StorageService>().registerAdapter<PostVersion>(PostVersionAdapter());
   locator<StorageService>().registerAdapter<Album>(AlbumAdapter());
   locator<StorageService>().registerAdapter<Content>(ContentAdapter());
+  locator<StorageService>().registerAdapter<MessageType>(MessageTypeAdapter());
   locator<StorageService>().registerAdapter<Reply>(ReplyAdapter());
   locator<StorageService>().registerAdapter<Message>(MessageAdapter());
 

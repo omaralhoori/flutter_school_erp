@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
+import 'package:school_erp/model/message_type_enum.dart';
 import 'package:school_erp/model/messaging/reply.dart';
-import 'package:school_erp/utils/enums.dart';
 import 'package:school_erp/utils/helpers.dart';
 part '../../adapters/message.g.dart';
 
