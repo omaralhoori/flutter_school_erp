@@ -88,12 +88,12 @@ class _LoginViewState extends State<LoginView> {
                                 ]),
                                 textDirection: TextDirection.ltr,
                                 decoration: Palette.formFieldDecoration(
-                                  label: el.tr("Email Address"),
+                                  label: el.tr("Mobile no"),
                                 ),
                               ),
                               field: DoctypeField(
                                   fieldname: "email",
-                                  label: el.tr("Email Address")),
+                                  label: el.tr("Mobile no")),
                             ),
                             PasswordField(),
                             FrappeFlatButton(

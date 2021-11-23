@@ -1,10 +1,13 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:school_erp/model/parent/parent.dart';
 import 'package:school_erp/model/parent/student.dart';
 import 'package:school_erp/config/palette.dart';
+import 'package:school_erp/storage/config.dart';
+import 'package:school_erp/storage/offline_storage.dart';
 import 'package:school_erp/utils/navigation_helper.dart';
 import 'package:school_erp/views/base_view.dart';
 import 'package:school_erp/views/home/home_viewmodel.dart';
@@ -77,8 +80,8 @@ class _StudentTabState extends State<StudentTab> {
 
 class ParentCard extends StatelessWidget {
   final Parent parent;
-  const ParentCard({Key? key, required this.parent}) : super(key: key);
-
+  ParentCard({Key? key, required this.parent}) : super(key: key);
+  String? userImage = OfflineStorage.getItem("userImage")["data"];
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -91,11 +94,16 @@ class ParentCard extends StatelessWidget {
         children: [
           Container(
             margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            child: Image(
-              width: 100,
-              height: 100,
-              image: AssetImage('assets/user-avatar.png'),
-            ),
+            child: userImage == null
+                ? Image(
+                    width: 100,
+                    height: 100,
+                    image: AssetImage('assets/user-avatar.png'),
+                  )
+                : CachedNetworkImage(
+                    width: 100,
+                    height: 100,
+                    imageUrl: Config.baseUrl + userImage!),
           ),
           Flexible(
             child: Column(

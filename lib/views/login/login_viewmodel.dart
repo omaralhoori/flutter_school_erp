@@ -1,5 +1,6 @@
 import 'package:school_erp/model/login/login_request.dart';
 import 'package:school_erp/model/login/login_response.dart';
+import 'package:school_erp/model/user_data.dart';
 import 'package:school_erp/utils/dio_helper.dart';
 import 'package:injectable/injectable.dart';
 import 'package:school_erp/utils/helpers.dart';
@@ -71,6 +72,23 @@ class LoginViewModel extends BaseViewModel {
           'pwd',
           loginRequest.pwd,
         );
+        UserData? userData = await locator<Api>().getUserData();
+        if (userData != null) {
+          OfflineStorage.putItem(
+            'fullName',
+            userData.fullName,
+          );
+          OfflineStorage.putItem(
+            'email',
+            userData.email,
+          );
+          if (userData.userImage != null) {
+            OfflineStorage.putItem(
+              'userImage',
+              userData.userImage,
+            );
+          }
+        }
         await updateDeviceToken();
         await DioHelper.initCookies();
 
