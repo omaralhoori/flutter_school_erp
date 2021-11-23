@@ -33,11 +33,11 @@ class Parent extends HiveObject {
   Parent.fromJson(Map<String, dynamic> json) {
     contractNo = json['contract_no'] ?? '';
     name = json['name'] ?? '';
-    branchCode = json['branch_code'];
-    branchName = json['branch_name'];
-    yearName = json['year_name'];
+    branchCode = json['branch_code'] ?? '';
+    branchName = json['branch_name'] ?? '';
+    yearName = json['year_name'] ?? '';
     mobileNo = json['mobile_no'] ?? '';
-    Iterable i = json['students'];
+    Iterable i = json['students'] ?? [];
     students = List.from(i.map((e) => Student.fromJson(e)));
   }
 }

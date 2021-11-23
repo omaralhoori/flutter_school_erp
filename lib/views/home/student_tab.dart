@@ -93,17 +93,25 @@ class ParentCard extends StatelessWidget {
       child: Row(
         children: [
           Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle, color: Colors.white,
+              //image: DecorationImage(image: AssetImage('assets/user-avatar.png'))
+            ),
             margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             child: userImage == null
                 ? Image(
+                    fit: BoxFit.fill,
                     width: 100,
                     height: 100,
                     image: AssetImage('assets/user-avatar.png'),
                   )
-                : CachedNetworkImage(
-                    width: 100,
-                    height: 100,
-                    imageUrl: Config.baseUrl + userImage!),
+                : ClipOval(
+                    child: CachedNetworkImage(
+                        fit: BoxFit.cover,
+                        width: 100,
+                        height: 100,
+                        imageUrl: Config.baseUrl + userImage!),
+                  ),
           ),
           Flexible(
             child: Column(
@@ -137,8 +145,11 @@ class StudentCard extends StatelessWidget {
     Colors.green.shade100
   ];
   int colorIndex = Random().nextInt(5);
+
   @override
   Widget build(BuildContext context) {
+    String gender = student.gender == 'Female' ? 'g' : 'b';
+    int photoNum = int.parse(student.no) % 4 + 1;
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       child: GestureDetector(
@@ -160,6 +171,11 @@ class StudentCard extends StatelessWidget {
                         color: bgColors[
                             colorIndex], //Palette.studentCardBackgroundColor,
                         shape: BoxShape.rectangle,
+                        image: DecorationImage(
+                            fit: BoxFit.contain,
+                            alignment: Alignment.centerRight,
+                            image: AssetImage(
+                                'assets/students_images/${gender}${photoNum}.png')),
                         borderRadius: BorderRadius.circular(8),
                         boxShadow: [
                           BoxShadow(
@@ -171,7 +187,9 @@ class StudentCard extends StatelessWidget {
                       child: Text(
                         student.name,
                         style: TextStyle(
-                            color: textColor, fontWeight: FontWeight.bold),
+                            color: textColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14),
                       ),
                     ),
                   ),

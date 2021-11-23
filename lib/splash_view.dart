@@ -17,41 +17,44 @@ class SplashView extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Palette.fontColorPrimary,
-            Palette.indicatorColor,
-          ],
-        ),
-      ),
       alignment: Alignment.center,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Container(
+            child: Image(
+                fit: BoxFit.contain, image: AssetImage('assets/home-hero.jpg')),
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          Text(
+            tr("Welcome to our school."),
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          Text(
+            tr("Lets get you started!"),
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          SizedBox(
+            height: 10,
+          ),
           TextButton(
             onPressed: () {
               NavigationHelper.push(context: context, page: LoginView());
             },
             child: Container(
-              width: size.width * .6,
-              height: size.width * .1,
+              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 40),
+              padding: EdgeInsets.symmetric(vertical: 15),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [
-                  Palette.appBarIconsColor,
-                  Palette.indicatorColor,
-                ]),
-                borderRadius: BorderRadius.circular(25.0),
-              ),
+                  borderRadius: BorderRadius.circular(10.0),
+                  color: Palette.primaryButtonColor),
               child: Text(
                 tr("Login"),
-                style: Theme.of(context).textTheme.bodyText2,
+                style: TextStyle(color: Colors.white),
               ),
             ),
-          ),
-          SizedBox(
-            height: size.height * .35,
           ),
           BaseView<LoginViewModel>(
             builder: (context, login, _) {
@@ -65,14 +68,16 @@ class SplashView extends StatelessWidget {
                       context: context, page: HomeView());
                 },
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
                       Icons.arrow_back_ios,
-                      color: Palette.homeAppBarColor,
+                      color: Colors.black54,
+                      size: 14,
                     ),
                     Text(
                       tr("Skip"),
-                      style: Theme.of(context).textTheme.bodyText2,
+                      style: TextStyle(color: Colors.black54),
                     ),
                   ],
                 ),

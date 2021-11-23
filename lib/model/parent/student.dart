@@ -16,6 +16,8 @@ class Student extends HiveObject {
   late String sectionCode;
   @HiveField(5)
   late String sectionName;
+  @HiveField(6)
+  late String gender;
 
   Student({
     required this.no,
@@ -24,6 +26,7 @@ class Student extends HiveObject {
     required this.className,
     required this.sectionCode,
     required this.sectionName,
+    required this.gender,
   });
 
   Student.fromJson(Map<String, dynamic> json) {
@@ -33,5 +36,6 @@ class Student extends HiveObject {
     className = json['class_name'];
     sectionCode = json['section_code'];
     sectionName = json['section_name'];
+    gender = json['student_gender'];
   }
 }

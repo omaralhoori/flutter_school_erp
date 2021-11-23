@@ -46,34 +46,7 @@ class _StudentViewState extends State<StudentView> {
                       const EdgeInsets.symmetric(vertical: 16, horizontal: 18),
                   child: Column(
                     children: [
-                      StudentInfo(
-                        label: tr("No: "),
-                        value: student.no,
-                      ),
-                      StudentInfo(
-                        label: tr("Name: "),
-                        value: student.name,
-                      ),
-                      StudentInfo(
-                        label: tr("Class: "),
-                        value: student.classCode + ' - ' + student.className,
-                      ),
-                      StudentInfo(
-                        label: tr("Section: "),
-                        value:
-                            student.sectionCode + ' - ' + student.sectionName,
-                      ),
-                      SizedBox(
-                        height: 16,
-                        child: Container(
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(vertical: 20),
-                            decoration: BoxDecoration(
-                                border: Border(
-                                    bottom: BorderSide(color: Colors.black26))),
-                          ),
-                        ),
-                      ),
+                      StudentInfoCard(student: student),
                       Wrap(
                         children: [
                           StudentTool(
@@ -106,6 +79,72 @@ class _StudentViewState extends State<StudentView> {
             ),
           ));
     });
+  }
+}
+
+class StudentInfoCard extends StatelessWidget {
+  const StudentInfoCard({
+    Key? key,
+    required this.student,
+  }) : super(key: key);
+
+  final Student student;
+
+  @override
+  Widget build(BuildContext context) {
+    String gender = student.gender == 'Female' ? 'g' : 'b';
+    int photoNum = int.parse(student.no) % 4 + 1;
+    return Container(
+      margin: EdgeInsets.all(10),
+      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+      decoration: BoxDecoration(
+        color: Colors.green.shade100, //Palette.studentCardBackgroundColor,
+        shape: BoxShape.rectangle,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+              color: Colors.black12, blurRadius: 10, offset: Offset(0, 10))
+        ],
+        image: DecorationImage(
+            fit: BoxFit.contain,
+            alignment: Alignment.centerRight,
+            image:
+                AssetImage('assets/students_images/${gender}${photoNum}.png')),
+      ),
+      child: Column(
+        children: [
+          StudentInfo(
+            label: tr("No: "),
+            value: student.no,
+          ),
+          StudentInfo(
+            label: tr("Name: "),
+            value: student.name,
+          ),
+          StudentInfo(
+            label: tr("Class: "),
+            value: student.classCode + ' - ' + student.className,
+          ),
+          StudentInfo(
+            label: tr("Section: "),
+            value: student.sectionCode + ' - ' + student.sectionName,
+          ),
+          // SizedBox(
+          //   height: 16,
+          //   child: Container(
+          //     child: Container(
+          //       padding:
+          //           const EdgeInsets.symmetric(vertical: 20),
+          //       decoration: BoxDecoration(
+          //           border: Border(
+          //               bottom:
+          //                   BorderSide(color: Colors.black26))),
+          //     ),
+          //   ),
+          // ),
+        ],
+      ),
+    );
   }
 }
 
@@ -178,7 +217,11 @@ class StudentInfo extends StatelessWidget {
               label,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            Text(value)
+            Flexible(
+              child: Text(
+                value,
+              ),
+            )
           ],
         ),
       ],
