@@ -56,6 +56,7 @@ class AlbumCard extends StatelessWidget {
                     fit: BoxFit.fill),
               ),
             ),
+            SizedBox(height: 3.0,),
             SizedBox(
               width: 140.0,
               child: Row(

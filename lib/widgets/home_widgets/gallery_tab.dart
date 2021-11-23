@@ -28,7 +28,8 @@ class GalleryTab extends StatelessWidget {
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            GridView.builder(
+                            if(home.parentAlbums.isNotEmpty)
+                              GridView.builder(
                                 shrinkWrap: true,
                                 physics: NeverScrollableScrollPhysics(),
                                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -41,8 +42,10 @@ class GalleryTab extends StatelessWidget {
                                     album: home.parentAlbums[index],
                                   );
                                 }),
-                            Divider(),
-                            Row(
+                            if(home.parentAlbums.isNotEmpty)
+                              Divider(),
+                            if(home.parentAlbums.isNotEmpty)
+                              Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 SizedBox(width: 10.0,),
