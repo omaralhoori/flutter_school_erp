@@ -21,7 +21,7 @@ class GalleryTab extends StatelessWidget {
               return RefreshIndicator(
                 onRefresh: home.getAlbums,
                 child: OrientationBuilder(
-                  builder: (context, orientation){
+                  builder: (context, orientation) {
                     return SizedBox(
                       height: MediaQuery.of(context).size.height,
                       width: MediaQuery.of(context).size.width,
@@ -30,10 +30,13 @@ class GalleryTab extends StatelessWidget {
                           Flexible(
                             flex: 2,
                             child: GridView.builder(
-                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
-                                    crossAxisSpacing: 0
-                                ),
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount:
+                                            orientation == Orientation.portrait
+                                                ? 2
+                                                : 3,
+                                        crossAxisSpacing: 0),
                                 itemCount: home.parentAlbums.length,
                                 itemBuilder: (ctxt, index) {
                                   return AlbumCard(
@@ -45,17 +48,25 @@ class GalleryTab extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              SizedBox(width: 10.0,),
-                              Text(tr("Other albums"), textAlign: TextAlign.start,),
+                              SizedBox(
+                                width: 10.0,
+                              ),
+                              Text(
+                                tr("Other albums"),
+                                textAlign: TextAlign.start,
+                              ),
                             ],
                           ),
                           Flexible(
                             flex: 3,
                             child: GridView.builder(
-                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
-                                    crossAxisSpacing: 0
-                                ),
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount:
+                                            orientation == Orientation.portrait
+                                                ? 2
+                                                : 3,
+                                        crossAxisSpacing: 0),
                                 itemCount: home.albums.length,
                                 itemBuilder: (ctxt, index) {
                                   return AlbumCard(
@@ -75,7 +86,6 @@ class GalleryTab extends StatelessWidget {
           },
         );
       },
-
     );
   }
 }
