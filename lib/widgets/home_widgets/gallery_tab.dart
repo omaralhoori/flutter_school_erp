@@ -25,56 +25,45 @@ class GalleryTab extends StatelessWidget {
                     return SizedBox(
                       height: MediaQuery.of(context).size.height,
                       width: MediaQuery.of(context).size.width,
-                      child: Column(
-                        children: [
-                          Flexible(
-                            flex: 2,
-                            child: GridView.builder(
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount:
-                                            orientation == Orientation.portrait
-                                                ? 2
-                                                : 3,
-                                        crossAxisSpacing: 0),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            GridView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
+                                    crossAxisSpacing: 0
+                                ),
                                 itemCount: home.parentAlbums.length,
                                 itemBuilder: (ctxt, index) {
                                   return AlbumCard(
                                     album: home.parentAlbums[index],
                                   );
                                 }),
-                          ),
-                          Divider(),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                width: 10.0,
-                              ),
-                              Text(
-                                tr("Other albums"),
-                                textAlign: TextAlign.start,
-                              ),
-                            ],
-                          ),
-                          Flexible(
-                            flex: 3,
-                            child: GridView.builder(
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount:
-                                            orientation == Orientation.portrait
-                                                ? 2
-                                                : 3,
-                                        crossAxisSpacing: 0),
+                            Divider(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                SizedBox(width: 10.0,),
+                                Text(tr("Other albums"), textAlign: TextAlign.start,),
+                              ],
+                            ),
+                            GridView.builder(
+                              shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
+                                    crossAxisSpacing: 0
+                                ),
                                 itemCount: home.albums.length,
                                 itemBuilder: (ctxt, index) {
                                   return AlbumCard(
                                     album: home.albums[index],
                                   );
-                                }),
-                          )
-                        ],
+                                })
+                          ],
+                        ),
                       ),
                     );
                   },
