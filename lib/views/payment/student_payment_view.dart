@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:school_erp/config/palette.dart';
 import 'package:school_erp/views/base_view.dart';
 import 'package:school_erp/views/payment/payment_viewmodel.dart';
 import 'package:school_erp/widgets/payment_widgets.dart';
@@ -23,7 +24,12 @@ class _StudentPaymentViewState extends State<StudentPaymentView> {
     return BaseView<PaymentViewModel>(
       builder: (context, model, _) {
         return Scaffold(
-          appBar: AppBar(),
+          appBar: AppBar(
+            backgroundColor: Palette.appbarBackgroundColor,
+            leading: BackButton(
+              color: Palette.appbarForegroundColor,
+            ),
+          ),
           body: FutureBuilder(
             future: model.getStudentPayments(studentNo),
             builder: (context, snapshot) {

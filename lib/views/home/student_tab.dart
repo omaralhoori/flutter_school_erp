@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:school_erp/model/parent/parent.dart';
 import 'package:school_erp/model/parent/student.dart';
 import 'package:school_erp/config/palette.dart';
 import 'package:school_erp/utils/navigation_helper.dart';
@@ -19,74 +22,113 @@ class _StudentTabState extends State<StudentTab> {
   Widget build(BuildContext context) {
     return BaseView<HomeViewModel>(
       builder: (context, home, _) {
-        return FutureBuilder(
-            future: home.getParentData(),
-            builder: (context, snapshot) {
-              return RefreshIndicator(
-                onRefresh: () async {
-                  await home.getParentData();
-                  setState(() {});
-                },
-                child: SingleChildScrollView(
-                  child: snapshot.hasData
-                      ? home.parentData != null
-                          ? Padding(
-                              padding: const EdgeInsets.only(top: 16.0),
-                              child: Center(
-                                child: Column(
-                                  children: [
-                                    Text(tr("Branch") +
-                                        ": " +
-                                        home.parentData!.branchCode +
-                                        " - " +
-                                        home.parentData!.branchName),
-                                    SizedBox(
-                                      height: 16,
-                                    ),
-                                    Text(tr("Year") +
-                                        ": " +
-                                        home.parentData!.yearName),
-                                    SizedBox(
-                                      height: 16,
-                                    ),
-                                    Text(tr("Contract No") +
-                                        ": " +
-                                        home.parentData!.contractNo),
-                                    SizedBox(
-                                      height: 16,
-                                    ),
-                                    ListView.builder(
-                                        shrinkWrap: true,
-                                        itemCount:
-                                            home.parentData!.students.length,
-                                        itemBuilder: (context, index) {
-                                          return StudentCard(
-                                              student: home
-                                                  .parentData!.students[index]);
-                                        })
-                                  ],
+        return Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage(
+                      'assets/students_images/stuednts_tab_background.png'),
+                  fit: BoxFit.contain,
+                  alignment: Alignment.bottomCenter)),
+          child: FutureBuilder(
+              future: home.getParentData(),
+              builder: (context, snapshot) {
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    await home.getParentData();
+                    setState(() {});
+                  },
+                  child: SingleChildScrollView(
+                    child: snapshot.hasData
+                        ? home.parentData != null
+                            ? Padding(
+                                padding: const EdgeInsets.only(top: 16.0),
+                                child: Center(
+                                  child: Column(
+                                    children: [
+                                      ParentCard(parent: home.parentData!),
+                                      ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount:
+                                              home.parentData!.students.length,
+                                          itemBuilder: (context, index) {
+                                            return StudentCard(
+                                                student: home.parentData!
+                                                    .students[index]);
+                                          })
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            )
-                          : Center(
-                              child: Text(
-                                tr("No data."),
-                                textAlign: TextAlign.center,
-                              ),
-                            )
-                      : Center(child: CircularProgressIndicator()),
-                ),
-              );
-            });
+                              )
+                            : Center(
+                                child: Text(
+                                  tr("No data."),
+                                  textAlign: TextAlign.center,
+                                ),
+                              )
+                        : Center(child: CircularProgressIndicator()),
+                  ),
+                );
+              }),
+        );
       },
     );
   }
 }
 
+class ParentCard extends StatelessWidget {
+  final Parent parent;
+  const ParentCard({Key? key, required this.parent}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 30),
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      decoration: BoxDecoration(
+          color: Colors.orange.shade50,
+          borderRadius: BorderRadius.circular(10)),
+      child: Row(
+        children: [
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            child: Image(
+              width: 100,
+              height: 100,
+              image: AssetImage('assets/user-avatar.png'),
+            ),
+          ),
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                StudentInfo(
+                    label: tr("Branch") + ": ",
+                    value: parent.branchCode + " - " + parent.branchName),
+                StudentInfo(label: tr("Year") + ": ", value: parent.yearName),
+                StudentInfo(
+                    label: tr("Contract No") + ": ", value: parent.contractNo),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class StudentCard extends StatelessWidget {
-  const StudentCard({Key? key, required this.student}) : super(key: key);
+  StudentCard({Key? key, required this.student}) : super(key: key);
   final Student student;
   final Color textColor = Palette.studentCardForegroundColor;
+  final List<Color> bgColors = [
+    Colors.amber.shade200,
+    Colors.purple.shade100,
+    Colors.blue.shade100,
+    Colors.red.shade100,
+    Colors.green.shade100
+  ];
+  int colorIndex = Random().nextInt(5);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -107,7 +149,8 @@ class StudentCard extends StatelessWidget {
                     margin: EdgeInsets.only(left: 40.0),
                     height: 80,
                     decoration: BoxDecoration(
-                        color: Palette.studentCardBackgroundColor,
+                        color: bgColors[
+                            colorIndex], //Palette.studentCardBackgroundColor,
                         shape: BoxShape.rectangle,
                         borderRadius: BorderRadius.circular(8),
                         boxShadow: [
@@ -143,7 +186,7 @@ class StudentCard extends StatelessWidget {
                     child: Container(
                       margin: new EdgeInsets.symmetric(vertical: 16),
                       decoration: BoxDecoration(
-                          color: Palette.studentCardBackgroundColor,
+                          color: bgColors[colorIndex],
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(

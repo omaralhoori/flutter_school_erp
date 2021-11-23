@@ -32,62 +32,76 @@ class _StudentViewState extends State<StudentView> {
               style: TextStyle(color: Palette.appbarForegroundColor),
             ),
           ),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 18),
-              child: Column(
-                children: [
-                  StudentInfo(
-                    label: tr("No: "),
-                    value: student.no,
-                  ),
-                  StudentInfo(
-                    label: tr("Name: "),
-                    value: student.name,
-                  ),
-                  StudentInfo(
-                    label: tr("Class: "),
-                    value: student.classCode + ' - ' + student.className,
-                  ),
-                  StudentInfo(
-                    label: tr("Section: "),
-                    value: student.sectionCode + ' - ' + student.sectionName,
-                  ),
-                  SizedBox(
-                    height: 16,
-                    child: Container(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 20),
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(color: Colors.black26))),
-                      ),
-                    ),
-                  ),
-                  Wrap(
+          body: SizedBox.expand(
+            child: Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage(
+                          'assets/students_images/student_view_bg.png'),
+                      fit: BoxFit.contain,
+                      alignment: Alignment.bottomCenter)),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 16, horizontal: 18),
+                  child: Column(
                     children: [
-                      StudentTool(
-                        icon: Icons.mail,
-                        title: tr("Messages"),
-                        onTab: () {
-                          NavigationHelper.push(
-                              context: context,
-                              page: GroupMessagesView(studentNo: student.no));
-                        },
-                        backgroundColor: Colors.purple.shade100,
+                      StudentInfo(
+                        label: tr("No: "),
+                        value: student.no,
                       ),
-                      StudentTool(
-                        icon: Icons.payments_outlined,
-                        title: tr("Payments"),
-                        onTab: () {
-                          NavigationHelper.push(
-                              context: context,
-                              page: StudentPaymentView(studentNo: student.no));
-                        },
+                      StudentInfo(
+                        label: tr("Name: "),
+                        value: student.name,
                       ),
+                      StudentInfo(
+                        label: tr("Class: "),
+                        value: student.classCode + ' - ' + student.className,
+                      ),
+                      StudentInfo(
+                        label: tr("Section: "),
+                        value:
+                            student.sectionCode + ' - ' + student.sectionName,
+                      ),
+                      SizedBox(
+                        height: 16,
+                        child: Container(
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 20),
+                            decoration: BoxDecoration(
+                                border: Border(
+                                    bottom: BorderSide(color: Colors.black26))),
+                          ),
+                        ),
+                      ),
+                      Wrap(
+                        children: [
+                          StudentTool(
+                            icon: Icons.mail,
+                            title: tr("Messages"),
+                            onTab: () {
+                              NavigationHelper.push(
+                                  context: context,
+                                  page:
+                                      GroupMessagesView(studentNo: student.no));
+                            },
+                            backgroundColor: Colors.purple.shade100,
+                          ),
+                          StudentTool(
+                            icon: Icons.payments_outlined,
+                            title: tr("Payments"),
+                            onTab: () {
+                              NavigationHelper.push(
+                                  context: context,
+                                  page: StudentPaymentView(
+                                      studentNo: student.no));
+                            },
+                          ),
+                        ],
+                      )
                     ],
-                  )
-                ],
+                  ),
+                ),
               ),
             ),
           ));
