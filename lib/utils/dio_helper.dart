@@ -5,7 +5,7 @@ import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../model/config.dart';
+import '../storage/config.dart';
 
 class DioHelper {
   static Dio? dio;
@@ -15,7 +15,7 @@ class DioHelper {
     var cookieJar = await getCookiePath();
     dio = Dio(
       BaseOptions(
-        baseUrl: "${Config().baseUrl}/api",
+        baseUrl: "${Config.baseUrl}/api",
       ),
     )..interceptors.add(
         CookieManager(cookieJar),

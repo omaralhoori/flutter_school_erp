@@ -19,7 +19,11 @@ class Palette {
   static Color appbarForegroundColor = Color(0xFFFFFFFF);
   static Color appbarBackgroundColor = appBarIconsColor;
 
+  static Color studentCardBackgroundColor = Colors.green.shade100;
+  static const Color studentCardForegroundColor = Colors.black87;
+
   static ThemeData customTheme = ThemeData(
+    backgroundColor: appbarBackgroundColor,
     textTheme: TextTheme(
       bodyText1: TextStyle(
         color: fontColorPrimary,
@@ -36,8 +40,8 @@ class Palette {
     primaryColor: Colors.white,
     colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.black54),
     appBarTheme: AppBarTheme(
-      backgroundColor: appBarIconsColor,
-      foregroundColor: homeAppBarColor,
+      backgroundColor: homeAppBarColor,
+      foregroundColor: appBarIconsColor,
     ),
     scaffoldBackgroundColor: homeAppBarColor,
   );
@@ -188,7 +192,6 @@ class Palette {
     if (Platform.isAndroid) {
       androidInfo = await deviceInfo.androidInfo;
       deviceID = androidInfo.androidId;
-      print(androidInfo.androidId);
     }
     if (Platform.isIOS) {
       iosInfo = await deviceInfo.iosInfo;

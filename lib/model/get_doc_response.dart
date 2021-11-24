@@ -29,7 +29,7 @@ class Docinfo {
   late List<Attachments> attachments;
   late List<AttachmentLogs>? attachmentLogs;
   late List<Communication> communications;
-  late List<Comment> comments;
+  //late List<Comment> comments;
   int? totalComments;
   late List<Version> versions;
   late List<Assignments> assignments;
@@ -50,7 +50,7 @@ class Docinfo {
     required this.attachments,
     this.attachmentLogs,
     required this.communications,
-    required this.comments,
+    //required this.comments,
     this.totalComments,
     required this.versions,
     required this.assignments,
@@ -87,12 +87,12 @@ class Docinfo {
         communications.add(Communication.fromJson(v));
       });
     }
-    if (json['comments'] != null) {
-      comments = [];
-      json['comments'].forEach((v) {
-        comments.add(Comment.fromJson(v));
-      });
-    }
+    // if (json['comments'] != null) {
+    //   comments = [];
+    //   json['comments'].forEach((v) {
+    //     comments.add(Comment.fromJson(v));
+    //   });
+    // }
     totalComments = json['total_comments'];
     if (json['versions'] != null) {
       versions = [];
@@ -171,7 +171,7 @@ class Docinfo {
     }
     data['communications'] =
         this.communications.map((v) => v.toJson()).toList();
-    data['comments'] = this.comments.map((v) => v.toJson()).toList();
+    //data['comments'] = this.comments.map((v) => v.toJson()).toList();
     data['total_comments'] = this.totalComments;
     data['versions'] = this.versions.map((v) => v.toJson()).toList();
     data['assignments'] = this.assignments.map((v) => v.toJson()).toList();
@@ -358,39 +358,39 @@ class Communication {
   }
 }
 
-class Comment {
-  late String name;
-  late String creation;
-  late String content;
-  late String owner;
-  late String commentType;
+// class Comment {
+//   late String name;
+//   late String creation;
+//   late String content;
+//   late String owner;
+//   late String commentType;
 
-  Comment({
-    required this.name,
-    required this.creation,
-    required this.content,
-    required this.owner,
-    required this.commentType,
-  });
+//   Comment({
+//     required this.name,
+//     required this.creation,
+//     required this.content,
+//     required this.owner,
+//     required this.commentType,
+//   });
 
-  Comment.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    creation = json['creation'];
-    content = json['content'];
-    owner = json['owner'];
-    commentType = json['comment_type'];
-  }
+//   Comment.fromJson(Map<String, dynamic> json) {
+//     name = json['name'];
+//     creation = json['creation'];
+//     content = json['content'];
+//     owner = json['owner'];
+//     commentType = json['comment_type'];
+//   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['creation'] = this.creation;
-    data['content'] = this.content;
-    data['owner'] = this.owner;
-    data['comment_type'] = this.commentType;
-    return data;
-  }
-}
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = new Map<String, dynamic>();
+//     data['name'] = this.name;
+//     data['creation'] = this.creation;
+//     data['content'] = this.content;
+//     data['owner'] = this.owner;
+//     data['comment_type'] = this.commentType;
+//     return data;
+//   }
+// }
 
 class Version {
   late String name;

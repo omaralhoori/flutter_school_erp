@@ -27,13 +27,16 @@ class AlbumAdapter extends TypeAdapter<Album> {
       fileUrl: fields[7] as String,
       isViewed: fields[8] as int,
       isLiked: fields[9] as int,
+      section: fields[10] as String?,
+      classCode: fields[11] as String?,
+      branch: fields[12] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Album obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(13)
       ..writeByte(0)
       ..write(obj.creation)
       ..writeByte(1)
@@ -53,7 +56,13 @@ class AlbumAdapter extends TypeAdapter<Album> {
       ..writeByte(8)
       ..write(obj.isViewed)
       ..writeByte(9)
-      ..write(obj.isLiked);
+      ..write(obj.isLiked)
+      ..writeByte(10)
+      ..write(obj.section)
+      ..writeByte(11)
+      ..write(obj.classCode)
+      ..writeByte(12)
+      ..write(obj.branch);
   }
 
   @override

@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:school_erp/model/config.dart';
+import 'package:school_erp/storage/config.dart';
+import 'package:school_erp/utils/navigation_helper.dart';
+import 'package:school_erp/widgets/photo_viewer.dart';
 
 class CustomSlider extends StatefulWidget {
   const CustomSlider({
@@ -13,7 +15,8 @@ class CustomSlider extends StatefulWidget {
   State<CustomSlider> createState() => _CustomSliderState();
 }
 
-class _CustomSliderState extends State<CustomSlider> with SingleTickerProviderStateMixin {
+class _CustomSliderState extends State<CustomSlider>
+    with SingleTickerProviderStateMixin {
   late final int _numDots;
   late final TabController _controller;
 
@@ -22,7 +25,6 @@ class _CustomSliderState extends State<CustomSlider> with SingleTickerProviderSt
     super.initState();
     _numDots = widget.filesUrl.length;
     _controller = TabController(length: _numDots, vsync: this);
-
   }
 
   void _setIndex(int i) {
@@ -42,18 +44,31 @@ class _CustomSliderState extends State<CustomSlider> with SingleTickerProviderSt
           PageView.builder(
             itemCount: widget.filesUrl.length,
             onPageChanged: _setIndex,
-            itemBuilder: (context, i){
-              return CachedNetworkImage(
-                imageUrl: Config().baseUrl! + widget.filesUrl[i],
+            itemBuilder: (context, i) {
+              return InkWell(
+                onTap: () {
+                  NavigationHelper.push(
+                      context: context,
+                      page: PhotoViewer(
+                        urls: widget.filesUrl,
+                        index: i,
+                      ));
+                },
+                child: CachedNetworkImage(
+                  imageUrl: Config.baseUrl + widget.filesUrl[i],
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                ),
               );
             },
           ),
-          if(_numDots > 1)
+          if (_numDots > 1)
             Positioned(
               bottom: 0,
               right: size.width * .4,
               left: size.width * .4,
-              child: TabPageSelector(controller: _controller,),
+              child: TabPageSelector(
+                controller: _controller,
+              ),
             ),
         ],
       ),

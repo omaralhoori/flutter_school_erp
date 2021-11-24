@@ -5,7 +5,7 @@ import 'package:school_erp/config/palette.dart';
 import 'package:school_erp/form/controls/read_only.dart';
 import 'package:school_erp/form/controls/text.dart';
 import 'package:school_erp/model/common.dart';
-import 'package:school_erp/model/config.dart';
+import 'package:school_erp/storage/config.dart';
 import 'package:school_erp/model/doctype_response.dart';
 import 'package:school_erp/widgets/custom_expansion_tile.dart';
 import 'package:school_erp/widgets/section.dart';

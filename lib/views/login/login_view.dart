@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:school_erp/config/frappe_palette.dart';
 import 'package:school_erp/form/controls/control.dart';
-import 'package:school_erp/model/config.dart';
+import 'package:school_erp/storage/config.dart';
 import 'package:school_erp/model/doctype_response.dart';
 import 'package:school_erp/model/login/login_request.dart';
 import 'package:school_erp/model/login/login_response.dart';
@@ -34,35 +34,21 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     return BaseView<LoginViewModel>(
       onModelReady: (model) {
         model.init();
       },
       builder: (context, model, child) => Scaffold(
         backgroundColor: Colors.white,
-        body: SingleChildScrollView(
-          child: Container(
-            width: size.width,
-            height: size.height,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Palette.fontColorPrimary,
-                  Palette.indicatorColor,
-                ],
-              ),
-            ),
+        body: SafeArea(
+          child: SingleChildScrollView(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                SizedBox(
-                  height: 60,
-                ),
-                FrappeLogo(),
                 SizedBox(
                   height: 24,
                 ),
+                FrappeLogo(),
                 Title(),
                 SizedBox(
                   height: 24,
@@ -102,12 +88,12 @@ class _LoginViewState extends State<LoginView> {
                                 ]),
                                 textDirection: TextDirection.ltr,
                                 decoration: Palette.formFieldDecoration(
-                                  label: el.tr("Email Address"),
+                                  label: el.tr("Mobile no"),
                                 ),
                               ),
                               field: DoctypeField(
                                   fieldname: "email",
-                                  label: el.tr("Email Address")),
+                                  label: el.tr("Mobile no")),
                             ),
                             PasswordField(),
                             FrappeFlatButton(
@@ -184,28 +170,6 @@ class _LoginViewState extends State<LoginView> {
                                 }
                               },
                             ),
-                            const SizedBox(height: 15),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                ElevatedButton(
-                                  onPressed: () async {
-                                    await context.setLocale(Locale('en'));
-                                  },
-                                  child: Text(
-                                    "English",
-                                  ),
-                                ),
-                                ElevatedButton(
-                                  onPressed: () async {
-                                    await context.setLocale(Locale('ar'));
-                                  },
-                                  child: Text(
-                                    "العربية",
-                                  ),
-                                ),
-                              ],
-                            ),
                           ],
                         ),
                       ),
@@ -228,7 +192,7 @@ class _LoginViewState extends State<LoginView> {
                     children: [
                       Icon(
                         Icons.arrow_back_ios,
-                        color: Palette.homeAppBarColor,
+                        color: Palette.fontColorPrimary,
                       ),
                       Text(
                         el.tr("Skip"),
@@ -363,7 +327,7 @@ class Title extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      'Login to Frappe',
+      el.tr('Alfityan School'),
       style: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.bold,
@@ -376,9 +340,9 @@ class FrappeLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Image(
-      image: AssetImage('assets/frappe_icon.jpg'),
-      width: 60,
-      height: 60,
+      image: AssetImage('assets/app_logo.png'),
+      width: 120,
+      height: 90,
     );
   }
 }

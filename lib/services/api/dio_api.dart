@@ -2,7 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:school_erp/config/palette.dart';
 import 'package:school_erp/model/album.dart';
+import 'package:school_erp/model/announcement.dart';
+import 'package:school_erp/model/comment.dart';
 import 'package:school_erp/model/common.dart';
 import 'package:school_erp/model/contact_message_request.dart';
 import 'package:school_erp/model/content.dart';
@@ -10,12 +13,16 @@ import 'package:school_erp/model/doctype_response.dart';
 import 'package:school_erp/model/get_doc_response.dart';
 import 'package:school_erp/model/login/login_request.dart';
 import 'package:school_erp/model/login/login_response.dart';
-import 'package:school_erp/model/models.dart';
-import 'package:school_erp/model/offline_storage.dart';
+import 'package:school_erp/model/messaging/message.dart';
+import 'package:school_erp/model/post_version.dart';
+import 'package:school_erp/storage/offline_storage.dart';
+import 'package:school_erp/model/parent/parent.dart';
+import 'package:school_erp/model/payment/parent_payment.dart';
 import 'package:school_erp/model/update_profile_response.dart';
 import 'package:school_erp/model/user_data.dart';
 import 'package:school_erp/utils/dio_helper.dart';
 import 'package:school_erp/utils/helpers.dart';
+import 'package:school_erp/utils/http.dart';
 
 import '../../services/api/api.dart';
 
@@ -25,7 +32,7 @@ class DioApi implements Api {
       final response = await DioHelper.dio!.post(
         '/method/login',
         data: loginRequest.toJson(),
-        options: Options(validateStatus: (status) => status! < 500),
+        options: Options(validateStatus: (status) => status! < 600),
       );
 
       if (response.statusCode != HttpStatus.ok ||
@@ -346,6 +353,7 @@ class DioApi implements Api {
         DioHelper.init();
       } catch (e) {}
     }
+    data["user"] = await Palette.deviceID();
     if (DioHelper.dio != null) {
       final response = await DioHelper.dio!.post(
           '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.get_announcements',
@@ -372,6 +380,7 @@ class DioApi implements Api {
         DioHelper.init();
       } catch (e) {}
     }
+    data["user"] = await Palette.deviceID();
     if (DioHelper.dio != null) {
       final response = await DioHelper.dio!.post(
           '/method/mobile_backend.mobile_backend.doctype.gallery_album.gallery_album.get_albums',
@@ -390,14 +399,15 @@ class DioApi implements Api {
   }
 
   @override
-  Future<List<Content>> getContents() async {
-    var data = {};
+  Future<List<Content>> getContents(int skip) async {
+    var data = {"limit": "10", "skip": skip.toString()};
     List<Content> contentList = [];
     if (DioHelper.dio == null) {
       try {
         DioHelper.init();
       } catch (e) {}
     }
+    data["user"] = await Palette.deviceID();
     if (DioHelper.dio != null) {
       final response = await DioHelper.dio!.post(
           '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.get_all_contents',
@@ -414,6 +424,55 @@ class DioApi implements Api {
     }
     return contentList;
   }
+
+
+  Future<Content?> getAnnouncement(String name) async {
+    var data = {"announcement": name};
+    if (DioHelper.dio == null) {
+      try {
+        DioHelper.init();
+      } catch (e) {}
+    }
+    data["user"] = await Palette.deviceID();
+    if (DioHelper.dio != null) {
+      final response = await DioHelper.dio!.post(
+          '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.get_announcement',
+          data: data,
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+      if (response.statusCode == 200) {
+        for (var json in response.data["message"]) {
+          return Content.fromJson(json);
+        }
+      } else {
+        throw Exception('Something went wrong');
+      }
+    }
+  }
+
+  Future<Content?> getNews(String name) async {
+    var data = {"news": name};
+    if (DioHelper.dio == null) {
+      try {
+        DioHelper.init();
+      } catch (e) {}
+    }
+    data["user"] = await Palette.deviceID();
+    if (DioHelper.dio != null) {
+      final response = await DioHelper.dio!.post(
+          '/method/mobile_backend.mobile_backend.doctype.news.news.get_single_news',
+          data: data,
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+      if (response.statusCode == 200) {
+        for (var json in response.data["message"]) {
+          return Content.fromJson(json);
+        }
+      } else {
+        throw Exception('Something went wrong');
+      }
+    }
+  }
+
+
 
   Future<UserData?> getUserData() async {
     if (DioHelper.dio != null) {
@@ -464,5 +523,293 @@ class DioApi implements Api {
       }
     }
     return {"errorMessage": "Something went wrong"};
+  }
+
+  Future<void> updateDeviceToken(String token) async {
+    var data = {"device_token": token};
+    if (DioHelper.dio != null) {
+      await DioHelper.dio!.post(
+          '/method/mobile_backend.mobile_backend.notification.update_device_token',
+          data: data,
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+    }
+  }
+
+  Future<List<Message>> getMessages() async {
+    if (DioHelper.dio != null) {
+      final response = await DioHelper.dio!.post(
+          '/method/mobile_backend.mobile_backend.doctype.school_messaging.school_messaging.get_messages',
+          data: {},
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+      if (response.statusCode == 200) {
+        Iterable i = response.data["message"];
+        List<Message> messages = List.from(
+            i.map((message) => Message.fromJson(message))); //List.empty();
+        // for (var message in response.data["message"]) {
+        //   messages.add(Message.fromJson(message));
+        // }
+        return messages;
+      } else {
+        throw Exception('Something went wrong');
+      }
+    }
+    return [];
+  }
+
+  Future<String> addMessageReply(String message, String messageName) async {
+    if (DioHelper.dio != null) {
+      final response = await DioHelper.dio!.post(
+          '/method/mobile_backend.mobile_backend.doctype.school_messaging.school_messaging.add_reply',
+          data: {"reply": message, "message_name": messageName},
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+      if (response.statusCode == 200) {
+        return response.data["message"]["name"];
+      } else {
+        return "";
+      }
+    }
+    return "";
+  }
+
+  Future<bool> deleteMessageRpelies(String message, String replies) async {
+    if (DioHelper.dio != null) {
+      final response = await DioHelper.dio!.post(
+          '/method/mobile_backend.mobile_backend.doctype.school_messaging.school_messaging.delete_replies',
+          data: {"message_name": message, "replies": replies},
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    return false;
+  }
+
+  Future<void> viewMessage(String messageName) async {
+    if (DioHelper.dio != null) {
+      await DioHelper.dio!.post(
+          '/method/mobile_backend.mobile_backend.doctype.school_messaging.school_messaging.view_message',
+          data: {"message_name": messageName},
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+    }
+  }
+
+  Future<List<dynamic>> getUnreadMessages() async {
+    if (DioHelper.dio != null) {
+      final response = await DioHelper.dio!.post(
+          '/method/mobile_backend.mobile_backend.doctype.school_messaging.school_messaging.get_unread_messages',
+          data: {},
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+      if (response.statusCode == 200) {
+        return response.data["message"];
+      }
+    }
+    return [];
+  }
+
+  @override
+  Future<void> contentLike(String name, String type) async {
+    var data;
+    String url;
+    if (type == 'News') {
+      url = '/method/mobile_backend.mobile_backend.doctype.news.news.like_news';
+      data = {"news": name};
+    } else if(type == 'Announcement') {
+      url =
+          '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.like_announcement';
+      data = {"announcement": name};
+    }else{
+      url =
+      '/method/mobile_backend.mobile_backend.doctype.gallery_album.gallery_album.like_album';
+      data = {"album": name};
+    }
+    data["user"] = await Palette.deviceID();
+    if (DioHelper.dio != null) {
+      await DioHelper.dio!.post(url,
+          data: data,
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+    }
+  }
+
+  @override
+  Future<void> contentView(String name, String type) async {
+    var data;
+    String url;
+    if (type == 'News') {
+      url = '/method/mobile_backend.mobile_backend.doctype.news.news.view_news';
+      data = {"news": name};
+    } else if(type == 'Announcement'){
+      url =
+          '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.view_announcement';
+      data = {"announcement": name};
+    }else{
+      url =
+      '/method/mobile_backend.mobile_backend.doctype.gallery_album.gallery_album.view_album';
+      data = {"album": name};
+    }
+    data["user"] = await Palette.deviceID();
+    if (DioHelper.dio != null) {
+      await DioHelper.dio!.post(url,
+          data: data,
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+    }
+  }
+
+  @override
+  Future<void> contentDisLike(String name, String type) async {
+    var data;
+    String url;
+    if (type == 'News') {
+      url =
+          '/method/mobile_backend.mobile_backend.doctype.news.news.dislike_news';
+      data = {"news": name};
+    } else if(type == 'Announcement'){
+      url =
+          '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.dislike_announcement';
+      data = {"announcement": name};
+    }else{
+      url =
+      '/method/mobile_backend.mobile_backend.doctype.gallery_album.gallery_album.dislike_album';
+      data = {"album": name};
+    }
+    data["user"] = await Palette.deviceID();
+    if (DioHelper.dio != null) {
+      await DioHelper.dio!.post(url,
+          data: data,
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+    }
+  }
+
+  Future<List<PostVersion>?> getContentVersions() async {
+    if (DioHelper.dio != null) {
+      final response = await DioHelper.dio!.post(
+          '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.get_contents_version',
+          data: {},
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+
+      if (response.statusCode == 200) {
+        Iterable i = response.data["message"];
+        List<PostVersion> comments =
+            List.from(i.map((message) => PostVersion.fromJson(message)));
+        return comments;
+      }
+    }
+    return null;
+  }
+
+  Future<List<Comment>> getContentComments(Content content) async {
+    var data;
+    String url;
+    if (content.contentType == 'News') {
+      url =
+          '/method/mobile_backend.mobile_backend.doctype.news.news.get_comments';
+      data = {"news": content.name};
+    } else {
+      url =
+          '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.get_comments';
+      data = {"announcement": content.name};
+    }
+    data["user"] = await Palette.deviceID();
+    if (DioHelper.dio != null) {
+      final response = await DioHelper.dio!.post(url,
+          data: data,
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+      if (response.statusCode == 200) {
+        Iterable i = response.data["message"];
+        List<Comment> comments =
+            List.from(i.map((message) => Comment.fromJson(message)));
+        return comments;
+      }
+    }
+    return [];
+  }
+
+  Future<bool> addContentComment(Content content, String comment) async {
+    var data;
+    String url;
+    if (content.contentType == 'News') {
+      url =
+          '/method/mobile_backend.mobile_backend.doctype.news.news.add_comment';
+      data = {"news": content.name};
+    } else {
+      url =
+          '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.add_comment';
+      data = {"announcement": content.name};
+    }
+    data["user"] = await Palette.deviceID();
+    data["comment"] = comment;
+    if (DioHelper.dio != null) {
+      final response = await DioHelper.dio!.post(url,
+          data: data,
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+      if (response.statusCode == 200) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  Future downloadPaymentPdf({String? studentNo}) async {
+    if (DioHelper.dio != null) {
+      //String url = '/method/mobile_backend.mobile_backend.pdf.get_transactions_pdf?PBRN=$branch&PYEAR=$year&PCONNO=$contract';
+      String url =
+          '/method/mobile_backend.mobile_backend.pdf.get_parent_transactions_pdf';
+      if (studentNo != null) {
+        url += "?PSTD=$studentNo";
+      }
+      String fileName = "payments.pdf";
+      openFile(url: url, fileName: fileName);
+    }
+  }
+
+  Future<ParentPayment?> getParentPayments(String? studentNo) async {
+    var data = {};
+    if (studentNo != null) {
+      data["PSTD"] = studentNo;
+    }
+    if (DioHelper.dio != null) {
+      try {
+        final response = await DioHelper.dio!.post(
+            '/method/mobile_backend.mobile_backend.pdf.get_user_payments',
+            data: data,
+            options: Options(contentType: Headers.formUrlEncodedContentType));
+        if (response.statusCode == 200) {
+          return ParentPayment.fromJson(response.data["message"]);
+        }
+      } catch (e) {
+        print(e);
+      }
+    }
+    return null;
+  }
+
+  Future<Parent?> getParentData() async {
+    var data = {};
+    if (DioHelper.dio != null) {
+      try {
+        final response = await DioHelper.dio!.post(
+            '/method/mobile_backend.mobile_backend.user.get_parent_data',
+            data: data,
+            options: Options(contentType: Headers.formUrlEncodedContentType));
+        if (response.statusCode == 200) {
+          return Parent.fromJson(response.data["message"]);
+        }
+      } catch (e) {
+        print(e);
+      }
+    }
+    return null;
+  }
+
+  @override
+  Future<Content?> getContent(String name, String type) async{
+    if(type == 'News'){
+      return getNews(name);
+    }else if(type == 'Announcement'){
+      return getAnnouncement(name);
+    }else{
+      return null;
+    }
   }
 }

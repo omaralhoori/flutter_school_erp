@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:school_erp/views/base_view.dart';
 import 'package:school_erp/views/home/home_viewmodel.dart';
@@ -15,19 +17,60 @@ class GalleryTab extends StatelessWidget {
           future: home.getAlbums(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
+              print(home.parentAlbums);
               return RefreshIndicator(
                 onRefresh: home.getAlbums,
-                child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 0
-                    ),
-                    itemCount: home.albums.length,
-                    itemBuilder: (ctxt, index) {
-                      return AlbumCard(
-                        album: home.albums[index],
-                      );
-                    }),
+                child: OrientationBuilder(
+                  builder: (context, orientation) {
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            if(home.parentAlbums.isNotEmpty)
+                              GridView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
+                                    crossAxisSpacing: 0
+                                ),
+                                itemCount: home.parentAlbums.length,
+                                itemBuilder: (ctxt, index) {
+                                  return AlbumCard(
+                                    album: home.parentAlbums[index],
+                                  );
+                                }),
+                            if(home.parentAlbums.isNotEmpty)
+                              Divider(),
+                            if(home.parentAlbums.isNotEmpty)
+                              Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                SizedBox(width: 10.0,),
+                                Text(tr("Other albums"), textAlign: TextAlign.start,),
+                              ],
+                            ),
+                            GridView.builder(
+                              shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
+                                    crossAxisSpacing: 0
+                                ),
+                                itemCount: home.albums.length,
+                                itemBuilder: (ctxt, index) {
+                                  return AlbumCard(
+                                    album: home.albums[index],
+                                  );
+                                })
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
               );
             } else {
               return Center(child: CircularProgressIndicator());
@@ -35,7 +78,6 @@ class GalleryTab extends StatelessWidget {
           },
         );
       },
-
     );
   }
 }
