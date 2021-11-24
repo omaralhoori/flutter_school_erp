@@ -109,7 +109,7 @@ class StudentInfoCard extends StatelessWidget {
             fit: BoxFit.contain,
             alignment: Alignment.centerRight,
             image:
-                AssetImage('assets/students_images/${gender}${photoNum}.png')),
+                AssetImage('assets/students_images/$gender$photoNum.png')),
       ),
       child: Column(
         children: [

@@ -80,9 +80,9 @@ abstract class Api {
 
   Future<void> contentView(String name, String type);
 
-  Future<bool> addContentComment(Content content, String comment);
+  Future<bool> addContentComment(String name, String type, String comment);
 
-  Future<List<Comment>> getContentComments(Content content);
+  Future<List<Comment>> getContentComments(String name, String type);
 
   Future<List<PostVersion>?> getContentVersions();
 

@@ -102,7 +102,7 @@ class _StudentRefreshState extends State<StudentRefresh> {
 class ParentCard extends StatelessWidget {
   final Parent parent;
   ParentCard({Key? key, required this.parent}) : super(key: key);
-  String? userImage = OfflineStorage.getItem("userImage")["data"];
+  final String? userImage = OfflineStorage.getItem("userImage")["data"];
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -195,7 +195,7 @@ class StudentCard extends StatelessWidget {
                             fit: BoxFit.contain,
                             alignment: Alignment.centerRight,
                             image: AssetImage(
-                                'assets/students_images/${gender}${photoNum}.png')),
+                                'assets/students_images/$gender$photoNum.png')),
                         borderRadius: BorderRadius.circular(8),
                         boxShadow: [
                           BoxShadow(

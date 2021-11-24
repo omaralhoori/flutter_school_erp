@@ -40,7 +40,6 @@ class _ContentTabState extends State<ContentTab> {
                             triggerFetchMoreSize) {
                           _scrollLock = true;
                           await home.getContent();
-                          print(home.contentList.length);
                           _scrollLock = false;
                         }
                       }

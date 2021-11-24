@@ -127,7 +127,7 @@ class MessageGesture extends StatelessWidget {
                     child: (thumbnail == null || thumbnail == "")
                         ? Image(
                             image: AssetImage(
-                                'assets/message_thumbnails/${imageNum}.png'))
+                                'assets/message_thumbnails/$imageNum.png'))
                         : CachedNetworkImage(
                             imageUrl: Config.baseUrl + thumbnail!),
                   ),

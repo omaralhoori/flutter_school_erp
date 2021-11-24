@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:school_erp/model/album.dart';
 import 'package:school_erp/model/contact_message_request.dart';
 import 'package:school_erp/model/content.dart';
@@ -6,6 +8,7 @@ import 'package:school_erp/model/payment/parent_payment.dart';
 import 'package:school_erp/storage/posts_storage.dart';
 import 'package:school_erp/views/base_viewmodel.dart';
 import 'package:injectable/injectable.dart';
+import 'package:school_erp/widgets/home_widgets/gallery_tab.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../app/locator.dart';
@@ -16,14 +19,37 @@ import '../../storage/offline_storage.dart';
 class HomeViewModel extends BaseViewModel {
   List<Content> contentList = [];
   List<Album> albums = [];
+  List<Album> filteredAlbums = [];
   List<Album> parentAlbums = [];
+  List<Album> filteredParentAlbums = [];
+
+  List<String> branchList = [];
+  List<String> sectionList = [];
+  List<String> classList = [];
+
+  List<RankModel> _branches = [];
+  List<RankModel> _sections = [];
+  List<RankModel> _classes = [];
+
   ParentPayment? parentPayment;
   Parent? parentData;
   int unreadDM = 0;
   int unreadGM = 0;
 
+  bool _filterOn = false;
+  bool get filterOn => _filterOn;
+  set filterOn(bool val){
+    this._filterOn = val;
+    notifyListeners();
+  }
+
   HomeViewModel() {
     getParentData();
+    getAlbums().then((value) {
+      _branches = List.generate(branchList.length, (index) => RankModel(text: branchList[index], isSelected: false));
+      _sections = List.generate(sectionList.length, (index) => RankModel(text: sectionList[index], isSelected: false));
+      _classes = List.generate(classList.length, (index) => RankModel(text: classList[index], isSelected: false));
+    });
   }
 
   Future<bool> getAlbums() async {
@@ -55,6 +81,7 @@ class HomeViewModel extends BaseViewModel {
   void getParentAlbums() {
     this.parentAlbums.clear();
     this.albums.forEach((album) {
+      getRankListItems(album);
       if (album.section != null) {
         this.parentData!.students.forEach((student) {
           if (album.section!.split('-').last == student.sectionCode) {
@@ -74,7 +101,6 @@ class HomeViewModel extends BaseViewModel {
       }
     });
 
-    print(this.parentAlbums);
     this.parentAlbums.forEach((element) {
       this.albums.remove(element);
     });
@@ -181,4 +207,101 @@ class HomeViewModel extends BaseViewModel {
     }
     return true;
   }
+
+  void getRankListItems(Album album) {
+    if(album.branch != null) {
+      if(!branchList.contains(album.branch)){
+        branchList.add(album.branch!);
+      }
+    }
+    if(album.section != null){
+      if(!sectionList.contains(album.section)){
+        sectionList.add(album.section!);
+      }
+    }
+    if(album.classCode != null){
+      if(!classList.contains(album.classCode)){
+        classList.add(album.classCode!);
+      }
+    }
+  }
+
+  void setFilter(List<String> selectedBranches, List<String> selectedSections, List<String> selectedClasses) {
+    filteredAlbums = albums.where((element) => selectedBranches.contains(element.branch) || selectedSections.contains(element.section) || selectedClasses.contains(element.classCode)).toList();
+    filteredParentAlbums = parentAlbums.where((element) => selectedBranches.contains(element.branch) || selectedSections.contains(element.section) || selectedClasses.contains(element.classCode)).toList();
+    filteredAlbums.forEach((element) {
+      print("albums: ${element.branch}");
+    });
+    filteredParentAlbums.forEach((element) {
+      print("parentAlbums: ${element.branch}");
+    });
+  }
+
+  void showAlertDialog(BuildContext context) {
+    Widget cancelButton = TextButton(
+      child: Text(tr('Cancel')),
+      onPressed:  () {
+        filterOn = false;
+        Navigator.pop(context);
+      },
+    );
+    Widget continueButton = TextButton(
+      child: Text(tr('Confirm')),
+      onPressed:  () {
+        List<RankModel> selectedBranches = _branches.where((element) => element.isSelected).toList();
+        List<RankModel> selectedSections = _sections.where((element) => element.isSelected).toList();
+        List<RankModel> selectedClasses = _classes.where((element) => element.isSelected).toList();
+        locator<HomeViewModel>().setFilter(
+          List.generate(selectedBranches.length, (index) => selectedBranches[index].text),
+          List.generate(selectedSections.length, (index) => selectedSections[index].text),
+          List.generate(selectedClasses.length, (index) => selectedClasses[index].text),
+        );
+        filterOn = true;
+        Navigator.pop(context);
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      title: Text(tr('Filter')),
+      content: SizedBox(
+        height: 200.0,
+        width: 280.0,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(tr('Branch')),
+              RankFilter(rankList: _branches,),
+              Text(tr('Section: ')),
+              RankFilter(rankList: _sections, split: true,),
+              Text(tr('Class: ')),
+              RankFilter(rankList: _classes,),
+            ],
+          ),
+        ),
+      ),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+}
+class RankModel{
+  final String text;
+  bool isSelected;
+
+  RankModel({
+    required this.text,
+    required this.isSelected,
+  });
+
+
 }

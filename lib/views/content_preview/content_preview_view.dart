@@ -47,7 +47,7 @@ class _ContentPreviewViewState extends State<ContentPreviewView> {
               Expanded(
                   child: RefreshIndicator(
                 onRefresh: () async {
-                  await model.fetchComments(content);
+                  await model.fetchComments(content.name, content.contentType);
                   setState(() {});
                 },
                 child: SingleChildScrollView(
@@ -72,7 +72,7 @@ class _ContentPreviewViewState extends State<ContentPreviewView> {
                       PostButtons(content: content,),
                       Divider(),
                       FutureBuilder(
-                          future: model.fetchComments(content),
+                          future: model.fetchComments(content.name, content.contentType),
                           builder: (context, snapshot) {
                             return snapshot.hasData
                                 ? ListView.builder(
@@ -123,7 +123,7 @@ class _ContentPreviewViewState extends State<ContentPreviewView> {
                               String comment = formValue["message"] ?? '';
                               if (comment == '') return;
                               bool result =
-                                  await model.addComment(content, comment);
+                                  await model.addComment(content.name, content.contentType, comment);
                               if (!result) {
                                 FrappeAlert.errorAlert(
                                     title: tr("Something went wrong"),

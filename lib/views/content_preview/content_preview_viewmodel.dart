@@ -37,16 +37,16 @@ class ContentPreviewViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<bool> fetchComments(Content content) async {
+  Future<bool> fetchComments(String name, String type) async {
     try {
-      comments = await locator<Api>().getContentComments(content);
+      comments = await locator<Api>().getContentComments(name, type);
     } catch (e) {}
     return true;
   }
 
-  Future<bool> addComment(Content content, String comment) async {
+  Future<bool> addComment(String name, String type, String comment) async {
     try {
-      return await locator<Api>().addContentComment(content, comment);
+      return await locator<Api>().addContentComment(name, type, comment);
     } catch (e) {}
     return false;
   }

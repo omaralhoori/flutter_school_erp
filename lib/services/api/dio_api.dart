@@ -698,17 +698,19 @@ class DioApi implements Api {
     return null;
   }
 
-  Future<List<Comment>> getContentComments(Content content) async {
+  Future<List<Comment>> getContentComments(String name, String type) async {
     var data;
     String url;
-    if (content.contentType == 'News') {
+    if (type == 'News') {
+      url = '/method/mobile_backend.mobile_backend.doctype.news.news.get_comments';
+      data = {"news": name};
+    } else if (type == 'Announcement'){
+      url = '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.get_comments';
+      data = {"announcement": name};
+    }else{
       url =
-          '/method/mobile_backend.mobile_backend.doctype.news.news.get_comments';
-      data = {"news": content.name};
-    } else {
-      url =
-          '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.get_comments';
-      data = {"announcement": content.name};
+      '/method/mobile_backend.mobile_backend.doctype.gallery_album.gallery_album.get_comments';
+      data = {"album": name};
     }
     data["user"] = await Palette.deviceID();
     if (DioHelper.dio != null) {
@@ -725,17 +727,21 @@ class DioApi implements Api {
     return [];
   }
 
-  Future<bool> addContentComment(Content content, String comment) async {
+  Future<bool> addContentComment(String name, String type, String comment) async {
     var data;
     String url;
-    if (content.contentType == 'News') {
+    if (type == 'News') {
       url =
           '/method/mobile_backend.mobile_backend.doctype.news.news.add_comment';
-      data = {"news": content.name};
-    } else {
+      data = {"news": name};
+    } else if(type == 'Announcement'){
       url =
           '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.add_comment';
-      data = {"announcement": content.name};
+      data = {"announcement": name};
+    }else{
+      url =
+      '/method/mobile_backend.mobile_backend.doctype.gallery_album.gallery_album.add_comment';
+      data = {"album": name};
     }
     data["user"] = await Palette.deviceID();
     data["comment"] = comment;

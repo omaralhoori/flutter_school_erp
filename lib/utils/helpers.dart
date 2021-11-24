@@ -15,7 +15,6 @@ import 'package:school_erp/services/storage_service.dart';
 
 import '../app/locator.dart';
 import 'dio_helper.dart';
-import 'enums.dart';
 
 initDb() async {
   await locator<StorageService>().initHiveStorage();
