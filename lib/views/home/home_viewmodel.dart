@@ -22,11 +22,9 @@ class HomeViewModel extends BaseViewModel {
   int unreadDM = 0;
   int unreadGM = 0;
 
-  HomeViewModel(){
+  HomeViewModel() {
     getParentData();
   }
-
-
 
   Future<bool> getAlbums() async {
     try {
@@ -57,22 +55,20 @@ class HomeViewModel extends BaseViewModel {
   void getParentAlbums() {
     this.parentAlbums.clear();
     this.albums.forEach((album) {
-      if(album.section != null){
+      if (album.section != null) {
         this.parentData!.students.forEach((student) {
-          if(album.section!.split('-').last == student.sectionCode){
+          if (album.section!.split('-').last == student.sectionCode) {
             this.parentAlbums.add(album);
           }
         });
-      }
-      else if(album.classCode != null){
+      } else if (album.classCode != null) {
         this.parentData!.students.forEach((student) {
-          if(album.classCode == student.classCode){
+          if (album.classCode == student.classCode) {
             this.parentAlbums.add(album);
           }
         });
-      }
-      else if(album.branch != null){
-        if(album.branch == this.parentData!.branchCode){
+      } else if (album.branch != null) {
+        if (album.branch == this.parentData!.branchCode) {
           this.parentAlbums.add(album);
         }
       }
@@ -115,7 +111,8 @@ class HomeViewModel extends BaseViewModel {
     if (index < contentList.length) {
       if (contentList[index].isViewed == 0) {
         try {
-          locator<Api>().contentView(contentList[index].name, contentList[index].contentType);
+          locator<Api>().contentView(
+              contentList[index].name, contentList[index].contentType);
           contentList[index].isViewed = 1;
         } catch (e) {}
       }
@@ -182,9 +179,6 @@ class HomeViewModel extends BaseViewModel {
         print(e);
       }
     }
-
     return true;
   }
-
-
 }

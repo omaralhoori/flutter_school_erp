@@ -13,14 +13,9 @@ import 'package:school_erp/views/base_view.dart';
 import 'package:school_erp/views/home/home_viewmodel.dart';
 import 'package:school_erp/views/student/student_view.dart';
 
-class StudentTab extends StatefulWidget {
+class StudentTab extends StatelessWidget {
   const StudentTab({Key? key}) : super(key: key);
 
-  @override
-  _StudentTabState createState() => _StudentTabState();
-}
-
-class _StudentTabState extends State<StudentTab> {
   @override
   Widget build(BuildContext context) {
     return BaseView<HomeViewModel>(
@@ -35,45 +30,71 @@ class _StudentTabState extends State<StudentTab> {
           child: FutureBuilder(
               future: home.getParentData(),
               builder: (context, snapshot) {
-                return RefreshIndicator(
-                  onRefresh: () async {
-                    await home.getParentData();
-                    setState(() {});
-                  },
-                  child: SingleChildScrollView(
-                    child: snapshot.hasData
-                        ? home.parentData != null
-                            ? Padding(
-                                padding: const EdgeInsets.only(top: 16.0),
-                                child: Center(
-                                  child: Column(
-                                    children: [
-                                      ParentCard(parent: home.parentData!),
-                                      ListView.builder(
-                                          shrinkWrap: true,
-                                          itemCount:
-                                              home.parentData!.students.length,
-                                          itemBuilder: (context, index) {
-                                            return StudentCard(
-                                                student: home.parentData!
-                                                    .students[index]);
-                                          })
-                                    ],
-                                  ),
-                                ),
-                              )
-                            : Center(
-                                child: Text(
-                                  tr("No data."),
-                                  textAlign: TextAlign.center,
-                                ),
-                              )
-                        : Center(child: CircularProgressIndicator()),
-                  ),
+                return StudentRefresh(
+                  snapshot: snapshot,
+                  parentData: home.parentData,
+                  onRefresh: home.getParentData,
                 );
               }),
         );
       },
+    );
+  }
+}
+
+class StudentRefresh extends StatefulWidget {
+  const StudentRefresh(
+      {Key? key,
+      required this.snapshot,
+      required this.onRefresh,
+      this.parentData})
+      : super(key: key);
+  final AsyncSnapshot<Object?> snapshot;
+  final Parent? parentData;
+  final Future<bool> Function() onRefresh;
+
+  @override
+  _StudentRefreshState createState() => _StudentRefreshState();
+}
+
+class _StudentRefreshState extends State<StudentRefresh> {
+  @override
+  Widget build(BuildContext context) {
+    return RefreshIndicator(
+      onRefresh: () async {
+        //await home.getParentData();
+        await widget.onRefresh();
+        setState(() {});
+      },
+      child: SingleChildScrollView(
+        child: widget.snapshot.hasData
+            ? widget.parentData != null
+                ? Padding(
+                    padding: const EdgeInsets.only(top: 16.0),
+                    child: Center(
+                      child: Column(
+                        children: [
+                          ParentCard(parent: widget.parentData!),
+                          ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: widget.parentData!.students.length,
+                              itemBuilder: (context, index) {
+                                return StudentCard(
+                                    student:
+                                        widget.parentData!.students[index]);
+                              })
+                        ],
+                      ),
+                    ),
+                  )
+                : Center(
+                    child: Text(
+                      tr("No data."),
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+            : Center(child: CircularProgressIndicator()),
+      ),
     );
   }
 }
@@ -144,8 +165,7 @@ class StudentCard extends StatelessWidget {
     Colors.red.shade100,
     Colors.green.shade100
   ];
-  int colorIndex = Random().nextInt(5);
-
+  final int colorIndex = Random().nextInt(5);
   @override
   Widget build(BuildContext context) {
     String gender = student.gender == 'Female' ? 'g' : 'b';
