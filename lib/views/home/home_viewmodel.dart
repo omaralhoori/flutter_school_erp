@@ -5,6 +5,7 @@ import 'package:school_erp/model/contact_message_request.dart';
 import 'package:school_erp/model/content.dart';
 import 'package:school_erp/model/parent/parent.dart';
 import 'package:school_erp/model/payment/parent_payment.dart';
+import 'package:school_erp/storage/config.dart';
 import 'package:school_erp/storage/posts_storage.dart';
 import 'package:school_erp/views/base_viewmodel.dart';
 import 'package:injectable/injectable.dart';
@@ -38,7 +39,7 @@ class HomeViewModel extends BaseViewModel {
 
   bool _filterOn = false;
   bool get filterOn => _filterOn;
-  set filterOn(bool val){
+  set filterOn(bool val) {
     this._filterOn = val;
     notifyListeners();
   }
@@ -46,9 +47,12 @@ class HomeViewModel extends BaseViewModel {
   HomeViewModel() {
     getParentData();
     getAlbums().then((value) {
-      _branches = List.generate(branchList.length, (index) => RankModel(text: branchList[index], isSelected: false));
-      _sections = List.generate(sectionList.length, (index) => RankModel(text: sectionList[index], isSelected: false));
-      _classes = List.generate(classList.length, (index) => RankModel(text: classList[index], isSelected: false));
+      _branches = List.generate(branchList.length,
+          (index) => RankModel(text: branchList[index], isSelected: false));
+      _sections = List.generate(sectionList.length,
+          (index) => RankModel(text: sectionList[index], isSelected: false));
+      _classes = List.generate(classList.length,
+          (index) => RankModel(text: classList[index], isSelected: false));
     });
   }
 
@@ -79,31 +83,33 @@ class HomeViewModel extends BaseViewModel {
   }
 
   void getParentAlbums() {
-    this.parentAlbums.clear();
-    this.albums.forEach((album) {
-      getRankListItems(album);
-      if (album.section != null) {
-        this.parentData!.students.forEach((student) {
-          if (album.section!.split('-').last == student.sectionCode) {
+    if (!Config().isGuest) {
+      this.parentAlbums.clear();
+      this.albums.forEach((album) {
+        getRankListItems(album);
+        if (album.section != null) {
+          this.parentData!.students.forEach((student) {
+            if (album.section!.split('-').last == student.sectionCode) {
+              this.parentAlbums.add(album);
+            }
+          });
+        } else if (album.classCode != null) {
+          this.parentData!.students.forEach((student) {
+            if (album.classCode == student.classCode) {
+              this.parentAlbums.add(album);
+            }
+          });
+        } else if (album.branch != null) {
+          if (album.branch == this.parentData!.branchCode) {
             this.parentAlbums.add(album);
           }
-        });
-      } else if (album.classCode != null) {
-        this.parentData!.students.forEach((student) {
-          if (album.classCode == student.classCode) {
-            this.parentAlbums.add(album);
-          }
-        });
-      } else if (album.branch != null) {
-        if (album.branch == this.parentData!.branchCode) {
-          this.parentAlbums.add(album);
         }
-      }
-    });
+      });
 
-    this.parentAlbums.forEach((element) {
-      this.albums.remove(element);
-    });
+      this.parentAlbums.forEach((element) {
+        this.albums.remove(element);
+      });
+    }
   }
 
   Future<bool> getContent() async {
@@ -158,19 +164,21 @@ class HomeViewModel extends BaseViewModel {
   }
 
   Future<void> getUnreadMessages() async {
-    unreadDM = 0;
-    unreadGM = 0;
-    var messages = await locator<Api>().getUnreadMessages();
-    for (var msg in messages) {
-      if (msg["message_type"] != null) {
-        if (msg["message_type"] == "School Direct Message") {
-          unreadDM = msg["unread_messages"];
-        } else if (msg["message_type"] == "School Group Message") {
-          unreadGM = msg["unread_messages"];
+    if (!Config().isGuest) {
+      unreadDM = 0;
+      unreadGM = 0;
+      var messages = await locator<Api>().getUnreadMessages();
+      for (var msg in messages) {
+        if (msg["message_type"] != null) {
+          if (msg["message_type"] == "School Direct Message") {
+            unreadDM = msg["unread_messages"];
+          } else if (msg["message_type"] == "School Group Message") {
+            unreadGM = msg["unread_messages"];
+          }
         }
       }
+      notifyListeners();
     }
-    notifyListeners();
   }
 
   Future<Map> sendContactMessage(ContactMessageRequest request) async {
@@ -187,48 +195,62 @@ class HomeViewModel extends BaseViewModel {
     // parentData = await locator<Api>().getParentData();
     // OfflineStorage.putItem("parent", parentData);
     //parentData = OfflineStorage.getItem("parent")["data"] as Parent;
-    try {
-      parentData = await locator<Api>().getParentData();
-      if (parentData == null) {
-        parentData = OfflineStorage.getItem("parent")["data"] as Parent;
-        return true;
-      }
+    if (!Config().isGuest) {
       try {
-        OfflineStorage.putItem("parent", parentData);
+        parentData = await locator<Api>().getParentData();
+        if (parentData == null) {
+          parentData = OfflineStorage.getItem("parent")["data"] as Parent;
+          return true;
+        }
+        try {
+          OfflineStorage.putItem("parent", parentData);
+        } catch (e) {
+          print(e);
+        }
       } catch (e) {
-        print(e);
-      }
-    } catch (e) {
-      try {
-        parentData = OfflineStorage.getItem("parent")["data"] as Parent;
-      } catch (e) {
-        print(e);
+        try {
+          parentData = OfflineStorage.getItem("parent")["data"] as Parent;
+        } catch (e) {
+          print(e);
+        }
       }
     }
+
     return true;
   }
 
   void getRankListItems(Album album) {
-    if(album.branch != null) {
-      if(!branchList.contains(album.branch)){
+    if (album.branch != null) {
+      if (!branchList.contains(album.branch)) {
         branchList.add(album.branch!);
       }
     }
-    if(album.section != null){
-      if(!sectionList.contains(album.section)){
+    if (album.section != null) {
+      if (!sectionList.contains(album.section)) {
         sectionList.add(album.section!);
       }
     }
-    if(album.classCode != null){
-      if(!classList.contains(album.classCode)){
+    if (album.classCode != null) {
+      if (!classList.contains(album.classCode)) {
         classList.add(album.classCode!);
       }
     }
   }
 
-  void setFilter(List<String> selectedBranches, List<String> selectedSections, List<String> selectedClasses) {
-    filteredAlbums = albums.where((element) => selectedBranches.contains(element.branch) || selectedSections.contains(element.section) || selectedClasses.contains(element.classCode)).toList();
-    filteredParentAlbums = parentAlbums.where((element) => selectedBranches.contains(element.branch) || selectedSections.contains(element.section) || selectedClasses.contains(element.classCode)).toList();
+  void setFilter(List<String> selectedBranches, List<String> selectedSections,
+      List<String> selectedClasses) {
+    filteredAlbums = albums
+        .where((element) =>
+            selectedBranches.contains(element.branch) ||
+            selectedSections.contains(element.section) ||
+            selectedClasses.contains(element.classCode))
+        .toList();
+    filteredParentAlbums = parentAlbums
+        .where((element) =>
+            selectedBranches.contains(element.branch) ||
+            selectedSections.contains(element.section) ||
+            selectedClasses.contains(element.classCode))
+        .toList();
     filteredAlbums.forEach((element) {
       print("albums: ${element.branch}");
     });
@@ -240,21 +262,27 @@ class HomeViewModel extends BaseViewModel {
   void showAlertDialog(BuildContext context) {
     Widget cancelButton = TextButton(
       child: Text(tr('Cancel')),
-      onPressed:  () {
+      onPressed: () {
         filterOn = false;
         Navigator.pop(context);
       },
     );
     Widget continueButton = TextButton(
       child: Text(tr('Confirm')),
-      onPressed:  () {
-        List<RankModel> selectedBranches = _branches.where((element) => element.isSelected).toList();
-        List<RankModel> selectedSections = _sections.where((element) => element.isSelected).toList();
-        List<RankModel> selectedClasses = _classes.where((element) => element.isSelected).toList();
+      onPressed: () {
+        List<RankModel> selectedBranches =
+            _branches.where((element) => element.isSelected).toList();
+        List<RankModel> selectedSections =
+            _sections.where((element) => element.isSelected).toList();
+        List<RankModel> selectedClasses =
+            _classes.where((element) => element.isSelected).toList();
         locator<HomeViewModel>().setFilter(
-          List.generate(selectedBranches.length, (index) => selectedBranches[index].text),
-          List.generate(selectedSections.length, (index) => selectedSections[index].text),
-          List.generate(selectedClasses.length, (index) => selectedClasses[index].text),
+          List.generate(
+              selectedBranches.length, (index) => selectedBranches[index].text),
+          List.generate(
+              selectedSections.length, (index) => selectedSections[index].text),
+          List.generate(
+              selectedClasses.length, (index) => selectedClasses[index].text),
         );
         filterOn = true;
         Navigator.pop(context);
@@ -271,11 +299,18 @@ class HomeViewModel extends BaseViewModel {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(tr('Branch')),
-              RankFilter(rankList: _branches,),
+              RankFilter(
+                rankList: _branches,
+              ),
               Text(tr('Section: ')),
-              RankFilter(rankList: _sections, split: true,),
+              RankFilter(
+                rankList: _sections,
+                split: true,
+              ),
               Text(tr('Class: ')),
-              RankFilter(rankList: _classes,),
+              RankFilter(
+                rankList: _classes,
+              ),
             ],
           ),
         ),
@@ -292,9 +327,9 @@ class HomeViewModel extends BaseViewModel {
       },
     );
   }
-
 }
-class RankModel{
+
+class RankModel {
   final String text;
   bool isSelected;
 
@@ -302,6 +337,4 @@ class RankModel{
     required this.text,
     required this.isSelected,
   });
-
-
 }

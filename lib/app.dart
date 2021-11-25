@@ -22,6 +22,7 @@ class FrappeApp extends StatefulWidget {
 
 class _FrappeAppState extends State<FrappeApp> {
   bool _isLoggedIn = false;
+  bool _isGuest = false;
   bool _isLoaded = false;
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   @override
@@ -33,6 +34,7 @@ class _FrappeAppState extends State<FrappeApp> {
   void _checkIfLoggedIn() {
     setState(() {
       _isLoggedIn = Config().isLoggedIn;
+      _isGuest = Config().isGuest;
     });
 
     _isLoaded = true;
@@ -64,7 +66,9 @@ class _FrappeAppState extends State<FrappeApp> {
                 body: _isLoaded
                     ? _isLoggedIn
                         ? HomeView()
-                        : SplashView()
+                        : _isGuest
+                            ? HomeView()
+                            : SplashView()
                     : Center(
                         child: CircularProgressIndicator(),
                       ),
