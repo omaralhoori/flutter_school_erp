@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>438822645350-kbv48lv126ueshh2vtrlpaotmicemppd.apps.googleusercontent.com</string>
+	<string>438822645350-9nb2hibcqsk5f8jrprvgo55qv04mncog.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.438822645350-kbv48lv126ueshh2vtrlpaotmicemppd</string>
+	<string>com.googleusercontent.apps.438822645350-9nb2hibcqsk5f8jrprvgo55qv04mncog</string>
 	<key>API_KEY</key>
 	<string>AIzaSyAzk6tfqh4kxzGe0Og4jrpTLyTEzAzTig0</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.schoolErp</string>
+	<string>com.alfityan.school</string>
 	<key>PROJECT_ID</key>
 	<string>school-erp-baff3</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:438822645350:ios:ae5ba4b9197328717ec7a7</string>
+	<string>1:438822645350:ios:f34728ae5e7c072f7ec7a7</string>
 </dict>
 </plist>

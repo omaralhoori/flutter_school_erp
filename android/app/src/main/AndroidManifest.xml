@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.school_erp">
+    package="com.alfityan.school">
    <application
         android:label="Alfityan School"
         android:icon="@mipmap/ic_launcher">
