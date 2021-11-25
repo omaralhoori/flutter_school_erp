@@ -26,7 +26,6 @@ class _GroupMessagesViewState extends State<GroupMessagesView> {
     }, builder: (context, model, child) {
       Future<void> onrefresh() async {
         await model.getGroupMessages(studentNo);
-        setState(() {});
       }
 
       return Scaffold(
@@ -42,35 +41,8 @@ class _GroupMessagesViewState extends State<GroupMessagesView> {
             future: model.getGroupMessages(studentNo),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return RefreshIndicator(
-                  onRefresh: onrefresh,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 16, right: 16, top: 10),
-                    child: ListView.builder(
-                      itemCount: model.groupMessages.length,
-                      itemBuilder: (context, index) {
-                        int unreadMessage = 0;
-                        for (var replay in model.groupMessages[index].replies) {
-                          if (replay.isAdministration == 1 &&
-                              replay.isRead == 0) {
-                            unreadMessage += 1;
-                          }
-                        }
-                        return MessageGesture(
-                          name: model.groupMessages[index].name,
-                          title: model.groupMessages[index].title,
-                          postTime: model.groupMessages[index].creation,
-                          message: model.groupMessages[index].replies.isNotEmpty
-                              ? model.groupMessages[index].replies.last.message
-                              : "",
-                          isRead: unreadMessage == 0,
-                          unreadMessages: unreadMessage,
-                          thumbnail: model.groupMessages[index].thumbnail,
-                        );
-                      },
-                    ),
-                  ),
-                );
+                return MessagesRefresh(
+                    onRefresh: onrefresh, messages: model.groupMessages);
               } else {
                 return Center(child: CircularProgressIndicator());
               }
