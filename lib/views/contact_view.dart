@@ -28,12 +28,15 @@ class _ContactViewState extends State<ContactView> {
       builder: (context, home, _) {
         return Stack(
           children: [
-            Image(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                fit: BoxFit.cover,
-                image: AssetImage('assets/contact_bg.png')),
+            Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      fit: BoxFit.contain,
+                      image: AssetImage('assets/contact_bg.png'),
+                      alignment: Alignment.bottomCenter)),
+            ),
             Scaffold(
+              backgroundColor: Colors.transparent,
               appBar: AppBar(
                   backgroundColor: Palette.appbarBackgroundColor,
                   leading: BackButton(
@@ -45,11 +48,6 @@ class _ContactViewState extends State<ContactView> {
                   )),
               body: SizedBox.expand(
                 child: Container(
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          fit: BoxFit.contain,
-                          image: AssetImage('assets/contact_bg.png'),
-                          alignment: Alignment.bottomCenter)),
                   child: SingleChildScrollView(
                     child: Container(
                       padding: const EdgeInsets.all(20.0),
@@ -102,7 +100,8 @@ class _ContactViewState extends State<ContactView> {
                                     ),
                                   ),
                                   field: DoctypeField(
-                                      fieldname: "subject", label: tr("Subject")),
+                                      fieldname: "subject",
+                                      label: tr("Subject")),
                                 ),
                                 buildDecoratedControl(
                                     control: FormBuilderTextField(
@@ -136,27 +135,32 @@ class _ContactViewState extends State<ContactView> {
                                                 await Palette.deviceID();
                                             ContactMessageRequest request =
                                                 ContactMessageRequest(
-                                                    senderName:
-                                                        formValue["sender_name"],
+                                                    senderName: formValue[
+                                                        "sender_name"],
                                                     email: formValue["email"],
-                                                    subject: formValue["subject"],
-                                                    message: formValue["message"],
+                                                    subject:
+                                                        formValue["subject"],
+                                                    message:
+                                                        formValue["message"],
                                                     user: deviceId);
                                             var response = await home
                                                 .sendContactMessage(request);
                                             if (response["message"] != null) {
                                               FrappeAlert.successAlert(
-                                                  title: tr(response["message"]),
+                                                  title:
+                                                      tr(response["message"]),
                                                   context: context);
                                               setState(() {
-                                                _fbKey.currentState!.patchValue({
+                                                _fbKey.currentState!
+                                                    .patchValue({
                                                   "sender_name": "",
                                                   "email": "",
                                                   "subject": "",
                                                   "message": "",
                                                 });
                                               });
-                                            } else if (response["errorMessage"] !=
+                                            } else if (response[
+                                                    "errorMessage"] !=
                                                 null) {
                                               FrappeAlert.errorAlert(
                                                   title: tr(
@@ -164,8 +168,8 @@ class _ContactViewState extends State<ContactView> {
                                                   context: context);
                                             } else {
                                               FrappeAlert.errorAlert(
-                                                  title:
-                                                      tr("Something went wrong"),
+                                                  title: tr(
+                                                      "Something went wrong"),
                                                   context: context);
                                             }
                                           }
