@@ -7,9 +7,9 @@ import 'package:school_erp/model/parent/parent.dart';
 import 'package:school_erp/model/payment/parent_payment.dart';
 import 'package:school_erp/storage/config.dart';
 import 'package:school_erp/storage/posts_storage.dart';
+import 'package:school_erp/views/album_preview/album_preview_view.dart';
 import 'package:school_erp/views/base_viewmodel.dart';
 import 'package:injectable/injectable.dart';
-import 'package:school_erp/widgets/home_widgets/gallery_tab.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../app/locator.dart';
@@ -25,12 +25,12 @@ class HomeViewModel extends BaseViewModel {
   List<Album> filteredParentAlbums = [];
 
   List<String> branchList = [];
-  List<String> sectionList = [];
   List<String> classList = [];
+  List<String> sectionList = [];
 
   List<RankModel> _branches = [];
-  List<RankModel> _sections = [];
   List<RankModel> _classes = [];
+  List<RankModel> _sections = [];
 
   ParentPayment? parentPayment;
   Parent? parentData;
@@ -48,11 +48,7 @@ class HomeViewModel extends BaseViewModel {
     getParentData();
     getAlbums().then((value) {
       _branches = List.generate(branchList.length,
-          (index) => RankModel(text: branchList[index], isSelected: false));
-      _sections = List.generate(sectionList.length,
-          (index) => RankModel(text: sectionList[index], isSelected: false));
-      _classes = List.generate(classList.length,
-          (index) => RankModel(text: classList[index], isSelected: false));
+          (index) => RankModel(text: branchList[index], rankType: RankType.Branch, isSelected: false));
     });
   }
 
@@ -219,44 +215,32 @@ class HomeViewModel extends BaseViewModel {
     return true;
   }
 
+
+
+
+
+
+
   void getRankListItems(Album album) {
     if (album.branch != null) {
       if (!branchList.contains(album.branch)) {
         branchList.add(album.branch!);
       }
     }
-    if (album.section != null) {
-      if (!sectionList.contains(album.section)) {
-        sectionList.add(album.section!);
-      }
-    }
-    if (album.classCode != null) {
-      if (!classList.contains(album.classCode)) {
-        classList.add(album.classCode!);
-      }
-    }
   }
 
   void setFilter(List<String> selectedBranches, List<String> selectedSections,
       List<String> selectedClasses) {
-    filteredAlbums = albums
-        .where((element) =>
-            selectedBranches.contains(element.branch) ||
-            selectedSections.contains(element.section) ||
-            selectedClasses.contains(element.classCode))
-        .toList();
-    filteredParentAlbums = parentAlbums
-        .where((element) =>
-            selectedBranches.contains(element.branch) ||
-            selectedSections.contains(element.section) ||
-            selectedClasses.contains(element.classCode))
-        .toList();
-    filteredAlbums.forEach((element) {
-      print("albums: ${element.branch}");
-    });
-    filteredParentAlbums.forEach((element) {
-      print("parentAlbums: ${element.branch}");
-    });
+    if(selectedClasses.isNotEmpty){
+      filteredAlbums = albums.where((element) => selectedBranches.contains(element.branch) && selectedClasses.contains(element.classCode)).toList();
+      filteredParentAlbums = parentAlbums.where((element) => selectedBranches.contains(element.branch) && selectedClasses.contains(element.classCode)).toList();
+    }else if(selectedSections.isNotEmpty){
+      filteredAlbums = albums.where((element) => selectedBranches.contains(element.branch) && selectedClasses.contains(element.classCode) && selectedSections.contains(element.section!.split('-').last)).toList();
+      filteredParentAlbums = parentAlbums.where((element) => selectedBranches.contains(element.branch) && selectedClasses.contains(element.classCode) && selectedSections.contains(element.section!.split('-').last)).toList();
+    }else{
+      filteredAlbums = albums.where((element) => selectedBranches.contains(element.branch)).toList();
+      filteredParentAlbums = parentAlbums.where((element) => selectedBranches.contains(element.branch)).toList();
+    }
   }
 
   void showAlertDialog(BuildContext context) {
@@ -264,6 +248,11 @@ class HomeViewModel extends BaseViewModel {
       child: Text(tr('Cancel')),
       onPressed: () {
         filterOn = false;
+        _branches.forEach((element) {
+          element.isSelected = false;
+        });
+        _sections.clear();
+        _classes.clear();
         Navigator.pop(context);
       },
     );
@@ -272,53 +261,115 @@ class HomeViewModel extends BaseViewModel {
       onPressed: () {
         List<RankModel> selectedBranches =
             _branches.where((element) => element.isSelected).toList();
-        List<RankModel> selectedSections =
-            _sections.where((element) => element.isSelected).toList();
         List<RankModel> selectedClasses =
             _classes.where((element) => element.isSelected).toList();
-        locator<HomeViewModel>().setFilter(
-          List.generate(
-              selectedBranches.length, (index) => selectedBranches[index].text),
-          List.generate(
-              selectedSections.length, (index) => selectedSections[index].text),
-          List.generate(
-              selectedClasses.length, (index) => selectedClasses[index].text),
-        );
-        filterOn = true;
+        List<RankModel> selectedSections =
+            _sections.where((element) => element.isSelected).toList();
+        if(selectedBranches.isEmpty){
+          _filterOn = false;
+        }else{
+          locator<HomeViewModel>().setFilter(
+            List.generate(
+                selectedBranches.length, (index) => selectedBranches[index].text),
+            List.generate(
+                selectedSections.length, (index) => selectedSections[index].text),
+            List.generate(
+                selectedClasses.length, (index) => selectedClasses[index].text),
+          );
+          filterOn = true;
+        }
         Navigator.pop(context);
       },
     );
-    AlertDialog alert = AlertDialog(
-      title: Text(tr('Filter')),
-      content: SizedBox(
-        height: 200.0,
-        width: 280.0,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(tr('Branch')),
-              RankFilter(
-                rankList: _branches,
+    Widget alert = StatefulBuilder(
+        builder: (context, setState){
+          return AlertDialog(
+            title: Text(tr('Filter')),
+            content: SizedBox(
+              height: 250.0,
+              width: 280.0,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(tr('Branch')),
+                    Wrap(
+                      direction: Axis.horizontal,
+                      children: List.generate(_branches.length, (i) => SizedBox(
+                        width: 77.0,
+                        child: Row(
+                          children: [
+                            Checkbox(
+                              value: _branches[i].isSelected,
+                              onChanged: (value){
+                                setState((){
+                                  _branches[i].isSelected = !_branches[i].isSelected;
+                                  filterChanged(_branches[i]);
+                                });
+                              },
+                            ),
+                            Text(_branches[i].text),
+                          ],
+                        ),
+                      )),
+                    ),
+                    if(_classes.isNotEmpty)
+                      Text(tr('Class: ')),
+                    if(_classes.isNotEmpty)
+                      Wrap(
+                      direction: Axis.horizontal,
+                      children: List.generate(_classes.length, (i) => SizedBox(
+                        width: 77.0,
+                        child: Row(
+                          children: [
+                            Checkbox(
+                              value: _classes[i].isSelected,
+                              onChanged: (value){
+                                setState((){
+                                  _classes[i].isSelected = !_classes[i].isSelected;
+                                  filterChanged(_classes[i]);
+                                });
+                              },
+                            ),
+                            Text(_classes[i].text),
+                          ],
+                        ),
+                      )),
+                    ),
+                    if(_sections.isNotEmpty)
+                      Text(tr('Section: ')),
+                    if(_sections.isNotEmpty)
+                      Wrap(
+                      direction: Axis.horizontal,
+                      children: List.generate(_sections.length, (i) => SizedBox(
+                        width: 77.0,
+                        child: Row(
+                          children: [
+                            Checkbox(
+                              value: _sections[i].isSelected,
+                              onChanged: (value){
+                                setState((){
+                                  _sections[i].isSelected = !_sections[i].isSelected;
+                                  filterChanged(_sections[i]);
+                                });
+                              },
+                            ),
+                            Text(_sections[i].text),
+                          ],
+                        ),
+                      )),
+                    ),
+                  ],
+                ),
               ),
-              Text(tr('Section: ')),
-              RankFilter(
-                rankList: _sections,
-                split: true,
-              ),
-              Text(tr('Class: ')),
-              RankFilter(
-                rankList: _classes,
-              ),
+            ),
+            actions: [
+              cancelButton,
+              continueButton,
             ],
-          ),
-        ),
-      ),
-      actions: [
-        cancelButton,
-        continueButton,
-      ],
+          );
+        },
     );
     showDialog(
       context: context,
@@ -327,14 +378,62 @@ class HomeViewModel extends BaseViewModel {
       },
     );
   }
+
+  void filterChanged(RankModel rank) {
+    if(rank.rankType == RankType.Branch) {
+      List<Album> a = [...albums.where((element) => element.branch == rank.text).toList(), ...parentAlbums.where((element) => element.branch == rank.text).toList()];
+      a.forEach((album) {
+        if (album.classCode != null) {
+          if(!classList.contains(album.classCode)) {
+              if (rank.isSelected) {
+                classList.add(album.classCode!);
+              }else{
+                classList.remove(album.classCode);
+              }
+            }
+        }
+      });
+      _classes = List.generate(classList.length,
+              (index) => RankModel(text: classList[index], rankType: RankType.Class, isSelected: false));
+    }
+    else if(rank.rankType == RankType.Class){
+      List<Album> a = [...albums.where((element) => element.classCode == rank.text).toList(), ...parentAlbums.where((element) => element.classCode == rank.text).toList()];
+      a.forEach((album) {
+        if (album.section != null) {
+          if(!sectionList.contains(album.section!.split('-').last)){
+            if (rank.isSelected) {
+              sectionList.add(album.section!.split('-').last);
+            }else{
+              sectionList.remove(album.section!.split('-').last);
+            }
+          }
+        }
+      });
+      _sections = List.generate(sectionList.length,
+              (index) => RankModel(text: sectionList[index], rankType: RankType.Section, isSelected: false));
+    }
+    bool branchEmpty = _branches.where((element) => element.isSelected).toList().isEmpty;
+    if(branchEmpty){
+      _classes.clear();
+      classList.clear();
+      _sections.clear();
+      sectionList.clear();
+    }else if(classList.isEmpty){
+      _sections.clear();
+      sectionList.clear();
+    }
+  }
 }
+
 
 class RankModel {
   final String text;
+  final RankType rankType;
   bool isSelected;
 
   RankModel({
     required this.text,
+    required this.rankType,
     required this.isSelected,
   });
 }

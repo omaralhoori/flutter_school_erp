@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:school_erp/app/locator.dart';
 import 'package:school_erp/views/base_view.dart';
 import 'package:school_erp/views/home/home_viewmodel.dart';
 
@@ -61,9 +62,11 @@ class GalleryTab extends StatelessWidget {
                                   );
                                 }),
                             if((home.filterOn ? home.filteredParentAlbums : home.parentAlbums).isNotEmpty)
-                              Divider(),
+                              if((home.filterOn ? home.filteredAlbums : home.albums).isNotEmpty)
+                                Divider(),
                             if((home.filterOn ? home.filteredParentAlbums : home.parentAlbums).isNotEmpty)
-                              Row(
+                              if((home.filterOn ? home.filteredAlbums : home.albums).isNotEmpty)
+                                Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 SizedBox(width: 10.0,),
@@ -127,6 +130,7 @@ class _RankFilterState extends State<RankFilter> {
                 setState(() {
                   widget.rankList[i].isSelected = !widget.rankList[i].isSelected;
                 });
+                locator<HomeViewModel>().filterChanged(widget.rankList[i]);
               },
             ),
             Text(widget.split ? widget.rankList[i].text.split('-').last : widget.rankList[i].text),
