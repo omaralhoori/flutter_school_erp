@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_form_builder/l10n/messages_ar.dart';
 import 'package:school_erp/config/palette.dart';
 import 'package:school_erp/model/messaging/message.dart';
 import 'package:school_erp/storage/config.dart';

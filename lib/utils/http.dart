@@ -73,6 +73,7 @@ String getAbsoluteUrl(String url) {
 }
 
 Future<File?> downloadFile(String url, String name) async {
+  if(Platform.isIOS) return null;
   final appStorage = await getExternalStorageDirectory();
   final file = File('${appStorage!.path}/$name');
   try {
