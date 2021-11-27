@@ -12,6 +12,8 @@ class GalleryTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+
     return BaseView<HomeViewModel>(
       builder: (context, home, _) {
         return FutureBuilder(
@@ -20,77 +22,71 @@ class GalleryTab extends StatelessWidget {
             if (snapshot.hasData) {
               return RefreshIndicator(
                 onRefresh: home.getAlbums,
-                child: OrientationBuilder(
-                  builder: (context, orientation) {
-                    return SizedBox(
-                      height: MediaQuery.of(context).size.height,
-                      width: MediaQuery.of(context).size.width,
-                      child: SingleChildScrollView(
-                        child: Column(
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Row(
                           children: [
-                            Row(
-                              children: [
-                                SizedBox(width: 10.0,),
-                                TextButton(
-                                  onPressed: (){
-                                    home.showAlertDialog(context);
-                                  },
-                                  child: SizedBox(
-                                    width: MediaQuery.of(context).size.width * .3,
-                                    child: Row(
-                                      children: [
-                                        Icon(Icons.filter_alt),
-                                        Text(tr('Filter'), style: Theme.of(context).textTheme.bodyText1,),
-                                      ],
-                                    ),
-                                  ),
+                            SizedBox(width: 10.0,),
+                            TextButton(
+                              onPressed: (){
+                                home.showAlertDialog(context);
+                              },
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width * .3,
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.filter_alt),
+                                    Text(tr('Filter'), style: Theme.of(context).textTheme.bodyText1,),
+                                  ],
                                 ),
-                              ],
+                              ),
                             ),
-                            if((home.filterOn ? home.filteredParentAlbums : home.parentAlbums).isNotEmpty)
-                              GridView.builder(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
-                                    crossAxisSpacing: 0
-                                ),
-                                itemCount: (home.filterOn ? home.filteredParentAlbums : home.parentAlbums).length,
-                                itemBuilder: (ctxt, index) {
-                                  return AlbumCard(
-                                    album: (home.filterOn ? home.filteredParentAlbums : home.parentAlbums)[index],
-                                  );
-                                }),
-                            if((home.filterOn ? home.filteredParentAlbums : home.parentAlbums).isNotEmpty)
-                              if((home.filterOn ? home.filteredAlbums : home.albums).isNotEmpty)
-                                Divider(),
-                            if((home.filterOn ? home.filteredParentAlbums : home.parentAlbums).isNotEmpty)
-                              if((home.filterOn ? home.filteredAlbums : home.albums).isNotEmpty)
-                                Row(
+                          ],
+                        ),
+                        if((home.filterOn ? home.filteredParentAlbums : home.parentAlbums).isNotEmpty)
+                          GridView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: (size.width / 180.0).round(),
+                              ),
+                              itemCount: (home.filterOn ? home.filteredParentAlbums : home.parentAlbums).length,
+                              itemBuilder: (ctxt, index) {
+                                return AlbumCard(
+                                  album: (home.filterOn ? home.filteredParentAlbums : home.parentAlbums)[index],
+                                );
+                              }),
+                        if((home.filterOn ? home.filteredParentAlbums : home.parentAlbums).isNotEmpty)
+                          if((home.filterOn ? home.filteredAlbums : home.albums).isNotEmpty)
+                            Divider(),
+                        if((home.filterOn ? home.filteredParentAlbums : home.parentAlbums).isNotEmpty)
+                          if((home.filterOn ? home.filteredAlbums : home.albums).isNotEmpty)
+                            Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 SizedBox(width: 10.0,),
                                 Text(tr("Other albums"), textAlign: TextAlign.start,),
                               ],
                             ),
-                            GridView.builder(
-                              shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
-                                    crossAxisSpacing: 0
-                                ),
-                                itemCount: (home.filterOn ? home.filteredAlbums : home.albums).length,
-                                itemBuilder: (ctxt, index) {
-                                  return AlbumCard(
-                                    album: (home.filterOn ? home.filteredAlbums : home.albums)[index],
-                                  );
-                                })
-                          ],
-                        ),
-                      ),
-                    );
-                  },
+                        GridView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: (size.width / 180.0).round(),
+                            ),
+                            itemCount: (home.filterOn ? home.filteredAlbums : home.albums).length,
+                            itemBuilder: (ctxt, index) {
+                              return AlbumCard(
+                                album: (home.filterOn ? home.filteredAlbums : home.albums)[index],
+                              );
+                            })
+                      ],
+                    ),
+                  ),
                 ),
               );
             } else {

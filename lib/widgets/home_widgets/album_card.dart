@@ -15,76 +15,70 @@ class AlbumCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(0.0),
-      ),
-      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-      width: size.width,
-      child: InkWell(
-        splashColor: Colors.blue.withAlpha(30),
-        onTap: () {
-          // TODO(ac01): Add new page to show comments and News details
-          if (album.isViewed == 0) {
-            try {
-              locator<Api>().contentView(album.name, '');
-              album.isViewed = 1;
-              album.views++;
-            } catch (e) {}
-          }
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => AlbumPreviewView(
-                        album: album,
-                      )));
+    final cellSized = (size.width / (size.width / 180.0)) - 60;
+    return InkWell(
+      splashColor: Colors.blue.withAlpha(30),
+      onTap: () {
+        // TODO(ac01): Add new page to show comments and News details
+        if (album.isViewed == 0) {
+          try {
+            locator<Api>().contentView(album.name, '');
+            album.isViewed = 1;
+            album.views++;
+          } catch (e) {}
+        }
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => AlbumPreviewView(
+                      album: album,
+                    )));
 
 
-        },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              width: 130.0,
-              height: 130.0,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30.0),
-                image: DecorationImage(
-                    image: CachedNetworkImageProvider(
-                        Config.baseUrl + this.album.fileUrl.split(',').first),
-                    fit: BoxFit.fill),
-              ),
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            width: cellSized,
+            height: cellSized,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(cellSized/4),
+              image: DecorationImage(
+                  image: CachedNetworkImageProvider(
+                      Config.baseUrl + this.album.fileUrl.split(',').first),
+                  fit: BoxFit.fill),
             ),
-            SizedBox(height: 3.0,),
-            SizedBox(
-              width: 140.0,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 17.0,
-                    height: 17.0,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        color: Palette.appBarIconsColor.withOpacity(0.3),
-                        border: Border.all(color: Palette.appBarIconsColor),
-                        borderRadius: BorderRadius.circular(5.0)),
-                    child: Text(
-                      "${this.album.fileUrl.split(',').length}",
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                  ),
-                  SizedBox(width: 15,),
-                  Text(
-                    this.album.title,
+          ),
+          SizedBox(height: cellSized / 45,),
+          SizedBox(
+            width: cellSized,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: cellSized / 7,
+                  height: cellSized / 7,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: Palette.appBarIconsColor.withOpacity(0.3),
+                      border: Border.all(color: Palette.appBarIconsColor),
+                      borderRadius: BorderRadius.circular(5.0)),
+                  child: Text(
+                    "${this.album.fileUrl.split(',').length}",
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
-                ],
-              ),
+                ),
+                SizedBox(width: cellSized / 8,),
+                Text(
+                  this.album.title,
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
