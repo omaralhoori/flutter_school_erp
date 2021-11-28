@@ -15,7 +15,7 @@ class AlbumCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    final cellSized = (size.width / (size.width / 180.0)) - 60;
+    final double cellSized = 120; //(size.width / (size.width / 180.0)) - 60;
     return InkWell(
       splashColor: Colors.blue.withAlpha(30),
       onTap: () {
@@ -33,52 +33,62 @@ class AlbumCard extends StatelessWidget {
                 builder: (context) => AlbumPreviewView(
                       album: album,
                     )));
-
-
       },
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            width: cellSized,
-            height: cellSized,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(cellSized/4),
-              image: DecorationImage(
-                  image: CachedNetworkImageProvider(
-                      Config.baseUrl + this.album.fileUrl.split(',').first),
-                  fit: BoxFit.fill),
-            ),
-          ),
-          SizedBox(height: cellSized / 45,),
-          SizedBox(
-            width: cellSized,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: cellSized / 7,
-                  height: cellSized / 7,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      color: Palette.appBarIconsColor.withOpacity(0.3),
-                      border: Border.all(color: Palette.appBarIconsColor),
-                      borderRadius: BorderRadius.circular(5.0)),
-                  child: Text(
-                    "${this.album.fileUrl.split(',').length}",
-                    style: Theme.of(context).textTheme.bodyText1,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: SingleChildScrollView(
+          physics: NeverScrollableScrollPhysics(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                padding: EdgeInsets.all(5),
+                width: cellSized,
+                height: cellSized,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(cellSized / 4),
+                  image: DecorationImage(
+                      image: CachedNetworkImageProvider(
+                          Config.baseUrl + this.album.fileUrl.split(',').first),
+                      fit: BoxFit.fill),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    // width: cellSized / 7,
+                    // height: cellSized / 7,
+                    padding: EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        color: Palette.appBarIconsColor.withOpacity(0.3),
+                        border: Border.all(color: Palette.appBarIconsColor),
+                        borderRadius: BorderRadius.circular(5.0)),
+                    child: Text(
+                      "${this.album.fileUrl.split(',').length}",
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
                   ),
-                ),
-                SizedBox(width: cellSized / 8,),
-                Text(
-                  this.album.title,
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              ],
-            ),
+                  SizedBox(
+                    width: cellSized / 8,
+                  ),
+                  Flexible(
+                    child: Text(
+                      this.album.title,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

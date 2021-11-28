@@ -1,3 +1,4 @@
+import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 import 'package:school_erp/app/locator.dart';
 import 'package:school_erp/model/update_profile_response.dart';
@@ -9,9 +10,11 @@ import 'package:school_erp/views/base_viewmodel.dart';
 class ProfileViewModel extends BaseViewModel {
   String _email = "";
   String _fullName = "";
+  String? _profileImage = "";
 
   String get email => _email;
   String get fullName => _fullName;
+  String? get profileImage => _profileImage;
 
   setEmail(String email) {
     _email = email;
@@ -19,6 +22,10 @@ class ProfileViewModel extends BaseViewModel {
 
   setFullName(String fullName) {
     _fullName = fullName;
+  }
+
+  setProfileImage(String? profileImage) {
+    _profileImage = profileImage;
   }
 
   init() async {
@@ -30,6 +37,7 @@ class ProfileViewModel extends BaseViewModel {
     if (userData != null) {
       setEmail(userData.email);
       setFullName(userData.fullName);
+      setProfileImage(userData.userImage);
       notifyListeners();
     }
   }
@@ -39,5 +47,9 @@ class ProfileViewModel extends BaseViewModel {
         await locator<Api>().updateUserProfile(userData);
 
     return response;
+  }
+
+  Future<String?> uploadUserPorfileImage(XFile image) async {
+    return await locator<Api>().updateUserProfileImage(image);
   }
 }

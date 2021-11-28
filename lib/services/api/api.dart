@@ -1,3 +1,4 @@
+import 'package:image_picker/image_picker.dart';
 import 'package:school_erp/model/album.dart';
 import 'package:school_erp/model/announcement.dart';
 import 'package:school_erp/model/comment.dart';
@@ -59,6 +60,8 @@ abstract class Api {
   Future<UserData?> getUserData();
 
   Future<UpdateProfileResponse> updateUserProfile(UserData userData);
+
+  Future<String?> updateUserProfileImage(XFile image);
 
   Future<Map> sendContactMessage(ContactMessageRequest request);
 

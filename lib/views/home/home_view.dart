@@ -122,6 +122,8 @@ class _HomeViewState extends State<HomeView> {
                                 child: AppBarTab(
                                   label: tr("Students"),
                                   icon: Icons.contact_page,
+                                  notify: model.unreadGM > 00,
+                                  rtlDir: rtlDir,
                                 ),
                               ),
                           ],
