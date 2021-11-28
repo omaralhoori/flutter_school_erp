@@ -196,6 +196,7 @@ class _ProfileImagePickerState extends State<ProfileImagePicker> {
                     image: AssetImage('assets/user-avatar.png'),
                   )
                 : CachedNetworkImage(
+                    fit: BoxFit.cover,
                     imageUrl: Config.baseUrl + widget.imageUrl!,
                     width: 160,
                     height: 160,

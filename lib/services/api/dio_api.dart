@@ -16,6 +16,7 @@ import 'package:school_erp/model/login/login_request.dart';
 import 'package:school_erp/model/login/login_response.dart';
 import 'package:school_erp/model/messaging/message.dart';
 import 'package:school_erp/model/post_version.dart';
+import 'package:school_erp/storage/config.dart';
 import 'package:school_erp/storage/offline_storage.dart';
 import 'package:school_erp/model/parent/parent.dart';
 import 'package:school_erp/model/payment/parent_payment.dart';
@@ -24,6 +25,7 @@ import 'package:school_erp/model/user_data.dart';
 import 'package:school_erp/utils/dio_helper.dart';
 import 'package:school_erp/utils/helpers.dart';
 import 'package:school_erp/utils/http.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../services/api/api.dart';
 
@@ -777,6 +779,13 @@ class DioApi implements Api {
   }
 
   Future downloadPaymentPdf({String? studentNo}) async {
+    // String url =
+    //     '/method/mobile_backend.mobile_backend.pdf.get_parent_transactions_pdf';
+    // if (studentNo != null) {
+    //   url += "?PSTD=$studentNo";
+    // }
+    // String fullUrl = "${Config.baseUrl}/api${url}";
+    // launch(fullUrl);
     if (DioHelper.dio != null) {
       //String url = '/method/mobile_backend.mobile_backend.pdf.get_transactions_pdf?PBRN=$branch&PYEAR=$year&PCONNO=$contract';
       String url =

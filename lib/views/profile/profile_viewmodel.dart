@@ -4,6 +4,7 @@ import 'package:school_erp/app/locator.dart';
 import 'package:school_erp/model/update_profile_response.dart';
 import 'package:school_erp/model/user_data.dart';
 import 'package:school_erp/services/api/api.dart';
+import 'package:school_erp/storage/offline_storage.dart';
 import 'package:school_erp/views/base_viewmodel.dart';
 
 @lazySingleton
@@ -50,6 +51,10 @@ class ProfileViewModel extends BaseViewModel {
   }
 
   Future<String?> uploadUserPorfileImage(XFile image) async {
-    return await locator<Api>().updateUserProfileImage(image);
+    String? imageUrl = await locator<Api>().updateUserProfileImage(image);
+    if (imageUrl != null) {
+      OfflineStorage.putItem("userImage", imageUrl);
+    }
+    return imageUrl;
   }
 }
