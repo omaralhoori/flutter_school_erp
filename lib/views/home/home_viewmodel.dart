@@ -320,7 +320,7 @@ class HomeViewModel extends BaseViewModel {
                     children: List.generate(
                         _branches.length,
                         (i) => ConstrainedBox(
-                              constraints: const BoxConstraints(maxWidth: 77.0),
+                              constraints: const BoxConstraints(maxWidth: 90.0),
                               child: Row(
                                 children: [
                                   Checkbox(
@@ -333,7 +333,7 @@ class HomeViewModel extends BaseViewModel {
                                       });
                                     },
                                   ),
-                                  Text(_branches[i].text),
+                                  Text(_branches[i].text, overflow: TextOverflow.ellipsis,),
                                 ],
                               ),
                             )),
@@ -344,9 +344,8 @@ class HomeViewModel extends BaseViewModel {
                       direction: Axis.horizontal,
                       children: List.generate(
                           _classes.length,
-                          (i) => ConstrainedBox(
-                                constraints:
-                                    const BoxConstraints(maxWidth: 77.0),
+                          (i) => Container(
+                            width: 90,
                                 child: Row(
                                   children: [
                                     Checkbox(
@@ -359,7 +358,7 @@ class HomeViewModel extends BaseViewModel {
                                         });
                                       },
                                     ),
-                                    Text(_classes[i].text),
+                                    Text(_classes[i].text, overflow: TextOverflow.ellipsis),
                                   ],
                                 ),
                               )),
@@ -370,24 +369,24 @@ class HomeViewModel extends BaseViewModel {
                       direction: Axis.horizontal,
                       children: List.generate(
                           _sections.length,
-                          (i) => SizedBox(
-                                width: 77.0,
-                                child: Row(
-                                  children: [
-                                    Checkbox(
-                                      value: _sections[i].isSelected,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _sections[i].isSelected =
-                                              !_sections[i].isSelected;
-                                          filterChanged(_sections[i]);
-                                        });
-                                      },
-                                    ),
-                                    Text(_sections[i].text),
-                                  ],
+                          (i) => Container(
+                            width: 90,
+                            child: Row(
+                              children: [
+                                Checkbox(
+                                  value: _sections[i].isSelected,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _sections[i].isSelected =
+                                          !_sections[i].isSelected;
+                                      filterChanged(_sections[i]);
+                                    });
+                                  },
                                 ),
-                              )),
+                                Text(_sections[i].text, overflow: TextOverflow.ellipsis),
+                              ],
+                            ),
+                          )),
                     ),
                 ],
               ),

@@ -41,7 +41,7 @@ class StudentPaymentWidget extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          if (parentPayment.students.length > 0 && !Platform.isIOS)
+          if (parentPayment.students.length > 0 )
             Container(
               margin: EdgeInsets.only(bottom: 30, top: 10),
               child: Row(
