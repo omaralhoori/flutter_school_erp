@@ -37,182 +37,72 @@ class AlbumPreviewView extends StatelessWidget {
           color: Palette.appbarForegroundColor,
         ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if(album.branch != null && album.section != null && album.branch != null)
-            Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              RankCard(
-                rankType: RankType.Branch,
-                rankText: '${album.branch}',
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (album.branch != null &&
+                album.section != null &&
+                album.branch != null)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  RankCard(
+                    rankType: RankType.Branch,
+                    rankText: '${album.branch}',
+                  ),
+                  RankCard(
+                    rankType: RankType.Section,
+                    rankText: '${album.section!.split('-').last}',
+                  ),
+                  RankCard(
+                    rankType: RankType.Class,
+                    rankText: '${album.classCode}',
+                  ),
+                ],
               ),
-              RankCard(
-                rankType: RankType.Section,
-                rankText: '${album.section!.split('-').last}',
-              ),
-              RankCard(
-                rankType: RankType.Class,
-                rankText: '${album.classCode}',
-              ),
-              /*
-              Container(
-                width: MediaQuery.of(context).size.width*.33,
-                decoration: BoxDecoration(
-                  color: Colors.blue.shade100,
-                  borderRadius: BorderRadius.only(bottomRight: Radius.circular(25.0)),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    SizedBox(height: 5.0,),
-                    Text(
-                      tr('Branch'),
-                      style: Theme.of(context).textTheme.bodyText2,
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 20.0),
-                      decoration: BoxDecoration(
-                          color: Colors.blue.shade100,
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 10,
-                                offset: Offset(2, 0))
-                          ]),
-                      child: SizedBox(
-                        height: 50,
-                        width: 50,
-                        child: Center(
-                            child: Text(
-                              '${album.branch}',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            )),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width*.33,
-                decoration: BoxDecoration(
-                  color: Colors.green.shade100,
-                  borderRadius: BorderRadius.only(bottomRight: Radius.circular(25.0), bottomLeft: Radius.circular(25.0)),
-                ),
-                child: Column(
-                  children: [
-                    SizedBox(height: 5.0,),
-                    Text(
-                      tr('Section'),
-                      style: Theme.of(context).textTheme.bodyText2,
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 20.0),
-                      decoration: BoxDecoration(
-                          color: Colors.green.shade100,
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 10,
-                                offset: Offset(2, 0))
-                          ]),
-                      child: SizedBox(
-                        height: 50,
-                        width: 50,
-                        child: Center(
-                            child: Text(
-                              '${album.section!.split('-').last}',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            )),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width*.33,
-                decoration: BoxDecoration(
-                  color: Colors.red.shade100,
-                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(25.0)),
-                ),
-                child: Column(
-                  children: [
-                    SizedBox(height: 5.0,),
-                    Text(
-                      tr('Class'),
-                      style: Theme.of(context).textTheme.bodyText2,
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 20.0),
-                      decoration: BoxDecoration(
-                          color: Colors.red.shade100,
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 10,
-                                offset: Offset(2, 0))
-                          ]),
-                      child: SizedBox(
-                        height: 50,
-                        width: 50,
-                        child: Center(
-                            child: Text(
-                              '${album.classCode}',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            )),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              */
-            ],
-          ),
-          Flexible(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.all(5.0),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
               child: Text(
-                "${tr("Description")}: ${album.description}",
+                "${album.description}",
                 style: Theme.of(context).textTheme.bodyText1,
                 textAlign: TextAlign.start,
               ),
             ),
-          ),
-          Divider(),
-          PostButtons(album: album,),
-          Divider(),
-          Flexible(
-            flex: 7,
-            child: StaggeredGridView.countBuilder(
-              crossAxisCount: 4,
-              itemCount: this.album.fileUrl.split(',').length,
-              itemBuilder: (context, i) => InkWell(
-                onTap: () {
-                  NavigationHelper.push(
-                      context: context,
-                      page: PhotoViewer(
-                        urls: this.album.fileUrl.split(','),
-                        index: i,
-                      ));
-                },
-                child: CachedNetworkImage(
-                  imageUrl: Config.baseUrl + this.album.fileUrl.split(',')[i],
-                  fit: BoxFit.cover,
-                ),
-              ),
-              staggeredTileBuilder: (i) =>
-                  StaggeredTile.count(2, i.isEven ? 2 : 1),
-              mainAxisSpacing: 4.0,
-              crossAxisSpacing: 4.0,
+            Divider(),
+            PostButtons(
+              album: album,
             ),
-          )
-        ],
+            Divider(),
+            Container(
+              child: StaggeredGridView.countBuilder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                crossAxisCount: 4,
+                itemCount: this.album.fileUrl.split(',').length,
+                itemBuilder: (context, i) => InkWell(
+                  onTap: () {
+                    NavigationHelper.push(
+                        context: context,
+                        page: PhotoViewer(
+                          urls: this.album.fileUrl.split(','),
+                          index: i,
+                        ));
+                  },
+                  child: CachedNetworkImage(
+                    imageUrl: Config.baseUrl + this.album.fileUrl.split(',')[i],
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                staggeredTileBuilder: (i) =>
+                    StaggeredTile.count(2, i.isEven ? 2 : 1),
+                mainAxisSpacing: 4.0,
+                crossAxisSpacing: 4.0,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -230,7 +120,6 @@ class _CommentFieldState extends State<CommentField> {
   GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
   @override
   Widget build(BuildContext context) {
-
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 80.0,
@@ -248,8 +137,7 @@ class _CommentFieldState extends State<CommentField> {
                 child: FormBuilderTextField(
                   name: 'message',
                   decoration: Palette.formFieldDecoration(
-                      label: tr("Message"),
-                      hint: tr("Write comment...")),
+                      label: tr("Message"), hint: tr("Write comment...")),
                 ),
               ),
               SizedBox(
@@ -265,14 +153,14 @@ class _CommentFieldState extends State<CommentField> {
                         String comment = formValue["message"] ?? '';
                         if (comment == '') return;
                         final model = locator<ContentPreviewViewModel>();
-                        bool result = await model.addComment(widget.name, '', comment);
+                        bool result =
+                            await model.addComment(widget.name, '', comment);
                         if (!result) {
                           FrappeAlert.errorAlert(
                               title: tr("Something went wrong"),
                               context: context);
                         } else {
-                          _fbKey.currentState!
-                              .patchValue({"message": ""});
+                          _fbKey.currentState!.patchValue({"message": ""});
                           setState(() {});
                           FrappeAlert.successAlert(
                               title: tr("Comment added successfully"),
@@ -345,7 +233,7 @@ class _PostButtonsState extends State<PostButtons> {
         Flexible(
           flex: 1,
           child: InteractionButton(
-            onPressed: (){
+            onPressed: () {
               showModalBottomSheet<void>(
                 context: context,
                 builder: (BuildContext context) {
@@ -360,22 +248,25 @@ class _PostButtonsState extends State<PostButtons> {
                             name: widget.album.name,
                           ),
                           FutureBuilder(
-                              future: model.fetchComments(widget.album.name, 'album'),
+                              future: model.fetchComments(
+                                  widget.album.name, 'album'),
                               builder: (context, snapshot) {
                                 return snapshot.hasData
                                     ? ListView.builder(
-                                    physics: BouncingScrollPhysics(
-                                        parent:
-                                        AlwaysScrollableScrollPhysics()),
-                                    padding: EdgeInsets.all(10),
-                                    itemCount: model.comments.length,
-                                    shrinkWrap: true,
-                                    itemBuilder: (context, index) {
-                                      return CommentItem(
-                                        senderName: model.comments[index].userName,
-                                        comment: model.comments[index].comment,
-                                      );
-                                    })
+                                        physics: BouncingScrollPhysics(
+                                            parent:
+                                                AlwaysScrollableScrollPhysics()),
+                                        padding: EdgeInsets.all(10),
+                                        itemCount: model.comments.length,
+                                        shrinkWrap: true,
+                                        itemBuilder: (context, index) {
+                                          return CommentItem(
+                                            senderName:
+                                                model.comments[index].userName,
+                                            comment:
+                                                model.comments[index].comment,
+                                          );
+                                        })
                                     : CircularProgressIndicator();
                               }),
                         ],
@@ -418,71 +309,51 @@ class RankCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width*.33,
+      width: MediaQuery.of(context).size.width * .33,
       decoration: BoxDecoration(
-        color:
-        rankType == RankType.Branch
-            ?
-        Colors.blue.shade100
-            :
-        rankType == RankType.Section
-            ?
-        Colors.green.shade100
-            :
-        rankType == RankType.Class
-            ?
-        Colors.red.shade100
-            :
-        Colors.blue.shade100,
-        borderRadius:
-        rankType == RankType.Branch
-            ?
-        BorderRadius.only(bottomRight: Radius.circular(25.0))
-            :
-        rankType == RankType.Section
-            ?
-        BorderRadius.only(bottomRight: Radius.circular(25.0), bottomLeft: Radius.circular(25.0))
-            :
-        rankType == RankType.Class
-            ?
-        BorderRadius.only(bottomLeft: Radius.circular(25.0))
-            :
-        BorderRadius.circular(0.0),
+        color: rankType == RankType.Branch
+            ? Colors.blue.shade100
+            : rankType == RankType.Section
+                ? Colors.green.shade100
+                : rankType == RankType.Class
+                    ? Colors.red.shade100
+                    : Colors.blue.shade100,
+        borderRadius: rankType == RankType.Branch
+            ? BorderRadius.only(bottomRight: Radius.circular(25.0))
+            : rankType == RankType.Section
+                ? BorderRadius.only(
+                    bottomRight: Radius.circular(25.0),
+                    bottomLeft: Radius.circular(25.0))
+                : rankType == RankType.Class
+                    ? BorderRadius.only(bottomLeft: Radius.circular(25.0))
+                    : BorderRadius.circular(0.0),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          SizedBox(height: 5.0,),
+          SizedBox(
+            height: 5.0,
+          ),
           Text(
             rankType == RankType.Branch
-                ?
-            tr('Branch')
-                :
-            rankType == RankType.Section
-                ?
-            tr('Section: ').replaceAll(':', '')
-                :
-            rankType == RankType.Class
-                ?
-            tr('Class: ').replaceAll(':', ''):'',
+                ? tr('Branch')
+                : rankType == RankType.Section
+                    ? tr('Section: ').replaceAll(':', '')
+                    : rankType == RankType.Class
+                        ? tr('Class: ').replaceAll(':', '')
+                        : '',
             style: Theme.of(context).textTheme.bodyText2,
           ),
           Container(
             margin: const EdgeInsets.only(top: 20.0),
             decoration: BoxDecoration(
                 color: rankType == RankType.Branch
-                    ?
-                Colors.blue.shade100
-                    :
-                rankType == RankType.Section
-                    ?
-                Colors.green.shade100
-                    :
-                rankType == RankType.Class
-                    ?
-                Colors.red.shade100
-                    :
-                Colors.blue.shade100,
+                    ? Colors.blue.shade100
+                    : rankType == RankType.Section
+                        ? Colors.green.shade100
+                        : rankType == RankType.Class
+                            ? Colors.red.shade100
+                            : Colors.blue.shade100,
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
@@ -495,9 +366,9 @@ class RankCard extends StatelessWidget {
               width: 50,
               child: Center(
                   child: Text(
-                    rankText,
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  )),
+                rankText,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              )),
             ),
           ),
         ],
@@ -506,7 +377,7 @@ class RankCard extends StatelessWidget {
   }
 }
 
-enum RankType{
+enum RankType {
   Branch,
   Section,
   Class,

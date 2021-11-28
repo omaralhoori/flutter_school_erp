@@ -105,9 +105,12 @@ class ParentCard extends StatelessWidget {
   final String? userImage = OfflineStorage.getItem("userImage")["data"];
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double imagesSize = width > 360 ? 100 : 75;
+    double edgeRation = width > 360 ? 1 : 2;
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 30),
-      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      margin: EdgeInsets.symmetric(horizontal: 30 / edgeRation),
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20 / edgeRation),
       decoration: BoxDecoration(
           color: Colors.orange.shade50,
           borderRadius: BorderRadius.circular(10)),
@@ -122,15 +125,15 @@ class ParentCard extends StatelessWidget {
             child: userImage == null
                 ? Image(
                     fit: BoxFit.fill,
-                    width: 100,
-                    height: 100,
+                    width: imagesSize,
+                    height: imagesSize,
                     image: AssetImage('assets/user-avatar.png'),
                   )
                 : ClipOval(
                     child: CachedNetworkImage(
                         fit: BoxFit.cover,
-                        width: 100,
-                        height: 100,
+                        width: imagesSize,
+                        height: imagesSize,
                         imageUrl: Config.baseUrl + userImage!),
                   ),
           ),

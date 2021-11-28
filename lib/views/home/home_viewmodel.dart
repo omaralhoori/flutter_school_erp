@@ -47,8 +47,12 @@ class HomeViewModel extends BaseViewModel {
   HomeViewModel() {
     getParentData();
     getAlbums().then((value) {
-      _branches = List.generate(branchList.length,
-          (index) => RankModel(text: branchList[index], rankType: RankType.Branch, isSelected: false));
+      _branches = List.generate(
+          branchList.length,
+          (index) => RankModel(
+              text: branchList[index],
+              rankType: RankType.Branch,
+              isSelected: false));
     });
   }
 
@@ -216,12 +220,6 @@ class HomeViewModel extends BaseViewModel {
     return true;
   }
 
-
-
-
-
-
-
   void getRankListItems(Album album) {
     if (album.branch != null) {
       if (!branchList.contains(album.branch)) {
@@ -232,15 +230,37 @@ class HomeViewModel extends BaseViewModel {
 
   void setFilter(List<String> selectedBranches, List<String> selectedSections,
       List<String> selectedClasses) {
-    if(selectedSections.isNotEmpty && selectedClasses.isNotEmpty){
-      filteredAlbums = albums.where((element) => selectedBranches.contains(element.branch) && selectedClasses.contains(element.classCode) && selectedSections.contains(element.section!.split('-').last)).toList();
-      filteredParentAlbums = parentAlbums.where((element) => selectedBranches.contains(element.branch) && selectedClasses.contains(element.classCode) && selectedSections.contains(element.section!.split('-').last)).toList();
-    }else if(selectedClasses.isNotEmpty){
-      filteredAlbums = albums.where((element) => selectedBranches.contains(element.branch) && selectedClasses.contains(element.classCode)).toList();
-      filteredParentAlbums = parentAlbums.where((element) => selectedBranches.contains(element.branch) && selectedClasses.contains(element.classCode)).toList();
-    }else{
-      filteredAlbums = albums.where((element) => selectedBranches.contains(element.branch)).toList();
-      filteredParentAlbums = parentAlbums.where((element) => selectedBranches.contains(element.branch)).toList();
+    if (selectedSections.isNotEmpty && selectedClasses.isNotEmpty) {
+      filteredAlbums = albums
+          .where((element) =>
+              selectedBranches.contains(element.branch) &&
+              selectedClasses.contains(element.classCode) &&
+              selectedSections.contains(element.section!.split('-').last))
+          .toList();
+      filteredParentAlbums = parentAlbums
+          .where((element) =>
+              selectedBranches.contains(element.branch) &&
+              selectedClasses.contains(element.classCode) &&
+              selectedSections.contains(element.section!.split('-').last))
+          .toList();
+    } else if (selectedClasses.isNotEmpty) {
+      filteredAlbums = albums
+          .where((element) =>
+              selectedBranches.contains(element.branch) &&
+              selectedClasses.contains(element.classCode))
+          .toList();
+      filteredParentAlbums = parentAlbums
+          .where((element) =>
+              selectedBranches.contains(element.branch) &&
+              selectedClasses.contains(element.classCode))
+          .toList();
+    } else {
+      filteredAlbums = albums
+          .where((element) => selectedBranches.contains(element.branch))
+          .toList();
+      filteredParentAlbums = parentAlbums
+          .where((element) => selectedBranches.contains(element.branch))
+          .toList();
     }
   }
 
@@ -267,14 +287,14 @@ class HomeViewModel extends BaseViewModel {
             _classes.where((element) => element.isSelected).toList();
         List<RankModel> selectedSections =
             _sections.where((element) => element.isSelected).toList();
-        if(selectedBranches.isEmpty){
+        if (selectedBranches.isEmpty) {
           _filterOn = false;
-        }else{
+        } else {
           locator<HomeViewModel>().setFilter(
-            List.generate(
-                selectedBranches.length, (index) => selectedBranches[index].text),
-            List.generate(
-                selectedSections.length, (index) => selectedSections[index].text),
+            List.generate(selectedBranches.length,
+                (index) => selectedBranches[index].text),
+            List.generate(selectedSections.length,
+                (index) => selectedSections[index].text),
             List.generate(
                 selectedClasses.length, (index) => selectedClasses[index].text),
           );
@@ -284,97 +304,101 @@ class HomeViewModel extends BaseViewModel {
       },
     );
     Widget alert = StatefulBuilder(
-        builder: (context, setState){
-          print("size.width: ${size.width*.65 / 3}");
-          print("size.height: ${size.height * .4}");
-          return AlertDialog(
-            title: Text(tr('Filter')),
-            content: SizedBox(
-              height: size.height * .4,
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(tr('Branch')),
+      builder: (context, setState) {
+        return AlertDialog(
+          title: Text(tr('Filter')),
+          content: SizedBox(
+            height: size.height * .4,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(tr('Branch')),
+                  Wrap(
+                    direction: Axis.horizontal,
+                    children: List.generate(
+                        _branches.length,
+                        (i) => ConstrainedBox(
+                              constraints: const BoxConstraints(maxWidth: 77.0),
+                              child: Row(
+                                children: [
+                                  Checkbox(
+                                    value: _branches[i].isSelected,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _branches[i].isSelected =
+                                            !_branches[i].isSelected;
+                                        filterChanged(_branches[i]);
+                                      });
+                                    },
+                                  ),
+                                  Text(_branches[i].text),
+                                ],
+                              ),
+                            )),
+                  ),
+                  if (_classes.isNotEmpty) Text(tr('Class: ')),
+                  if (_classes.isNotEmpty)
                     Wrap(
                       direction: Axis.horizontal,
-                      children: List.generate(_branches.length,
-                              (i) => ConstrainedBox(
-                                constraints: const BoxConstraints(maxWidth: 77.0),
+                      children: List.generate(
+                          _classes.length,
+                          (i) => ConstrainedBox(
+                                constraints:
+                                    const BoxConstraints(maxWidth: 77.0),
                                 child: Row(
                                   children: [
                                     Checkbox(
-                                      value: _branches[i].isSelected,
-                                      onChanged: (value){
-                                        setState((){
-                                          _branches[i].isSelected = !_branches[i].isSelected;
-                                          filterChanged(_branches[i]);
+                                      value: _classes[i].isSelected,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _classes[i].isSelected =
+                                              !_classes[i].isSelected;
+                                          filterChanged(_classes[i]);
                                         });
                                       },
                                     ),
-                                    Text(_branches[i].text),
+                                    Text(_classes[i].text),
                                   ],
-                        ),
+                                ),
                               )),
                     ),
-                    if(_classes.isNotEmpty)
-                      Text(tr('Class: ')),
-                    if(_classes.isNotEmpty)
-                      Wrap(
+                  if (_sections.isNotEmpty) Text(tr('Section: ')),
+                  if (_sections.isNotEmpty)
+                    Wrap(
                       direction: Axis.horizontal,
-                      children: List.generate(_classes.length, (i) =>
-                          ConstrainedBox(
-                            constraints: const BoxConstraints(maxWidth: 77.0),
-                        child: Row(
-                          children: [
-                            Checkbox(
-                              value: _classes[i].isSelected,
-                              onChanged: (value){
-                                setState((){
-                                  _classes[i].isSelected = !_classes[i].isSelected;
-                                  filterChanged(_classes[i]);
-                                });
-                              },
-                            ),
-                            Text(_classes[i].text),
-                          ],
-                        ),
-                      )),
+                      children: List.generate(
+                          _sections.length,
+                          (i) => SizedBox(
+                                width: 77.0,
+                                child: Row(
+                                  children: [
+                                    Checkbox(
+                                      value: _sections[i].isSelected,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _sections[i].isSelected =
+                                              !_sections[i].isSelected;
+                                          filterChanged(_sections[i]);
+                                        });
+                                      },
+                                    ),
+                                    Text(_sections[i].text),
+                                  ],
+                                ),
+                              )),
                     ),
-                    if(_sections.isNotEmpty)
-                      Text(tr('Section: ')),
-                    if(_sections.isNotEmpty)
-                      Wrap(
-                      direction: Axis.horizontal,
-                      children: List.generate(_sections.length, (i) => SizedBox(
-                        width: 77.0,
-                        child: Row(
-                          children: [
-                            Checkbox(
-                              value: _sections[i].isSelected,
-                              onChanged: (value){
-                                setState((){
-                                  _sections[i].isSelected = !_sections[i].isSelected;
-                                  filterChanged(_sections[i]);
-                                });
-                              },
-                            ),
-                            Text(_sections[i].text),
-                          ],
-                        ),
-                      )),
-                    ),
-                  ],
-                ),
+                ],
               ),
             ),
-            actions: [
-              cancelButton,
-              continueButton,
-            ],
-          );
-        },
+          ),
+          actions: [
+            cancelButton,
+            continueButton,
+          ],
+        );
+      },
     );
     showDialog(
       context: context,
@@ -385,51 +409,66 @@ class HomeViewModel extends BaseViewModel {
   }
 
   void filterChanged(RankModel rank) {
-    if(rank.rankType == RankType.Branch) {
-      List<Album> a = [...albums.where((element) => element.branch == rank.text).toList(), ...parentAlbums.where((element) => element.branch == rank.text).toList()];
+    if (rank.rankType == RankType.Branch) {
+      List<Album> a = [
+        ...albums.where((element) => element.branch == rank.text).toList(),
+        ...parentAlbums.where((element) => element.branch == rank.text).toList()
+      ];
       a.forEach((album) {
         if (album.classCode != null) {
-          if(!classList.contains(album.classCode)) {
-              if (rank.isSelected) {
-                classList.add(album.classCode!);
-              }else{
-                classList.remove(album.classCode);
-              }
+          if (!classList.contains(album.classCode)) {
+            if (rank.isSelected) {
+              classList.add(album.classCode!);
+            } else {
+              classList.remove(album.classCode);
             }
+          }
         }
       });
-      _classes = List.generate(classList.length,
-              (index) => RankModel(text: classList[index], rankType: RankType.Class, isSelected: false));
-    }
-    else if(rank.rankType == RankType.Class){
-      List<Album> a = [...albums.where((element) => element.classCode == rank.text).toList(), ...parentAlbums.where((element) => element.classCode == rank.text).toList()];
+      _classes = List.generate(
+          classList.length,
+          (index) => RankModel(
+              text: classList[index],
+              rankType: RankType.Class,
+              isSelected: false));
+    } else if (rank.rankType == RankType.Class) {
+      List<Album> a = [
+        ...albums.where((element) => element.classCode == rank.text).toList(),
+        ...parentAlbums
+            .where((element) => element.classCode == rank.text)
+            .toList()
+      ];
       a.forEach((album) {
         if (album.section != null) {
-          if(!sectionList.contains(album.section!.split('-').last)){
+          if (!sectionList.contains(album.section!.split('-').last)) {
             if (rank.isSelected) {
               sectionList.add(album.section!.split('-').last);
-            }else{
+            } else {
               sectionList.remove(album.section!.split('-').last);
             }
           }
         }
       });
-      _sections = List.generate(sectionList.length,
-              (index) => RankModel(text: sectionList[index], rankType: RankType.Section, isSelected: false));
+      _sections = List.generate(
+          sectionList.length,
+          (index) => RankModel(
+              text: sectionList[index],
+              rankType: RankType.Section,
+              isSelected: false));
     }
-    bool branchEmpty = _branches.where((element) => element.isSelected).toList().isEmpty;
-    if(branchEmpty){
+    bool branchEmpty =
+        _branches.where((element) => element.isSelected).toList().isEmpty;
+    if (branchEmpty) {
       _classes.clear();
       classList.clear();
       _sections.clear();
       sectionList.clear();
-    }else if(classList.isEmpty){
+    } else if (classList.isEmpty) {
       _sections.clear();
       sectionList.clear();
     }
   }
 }
-
 
 class RankModel {
   final String text;

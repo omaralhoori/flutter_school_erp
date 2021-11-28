@@ -106,59 +106,22 @@ class _HomeViewState extends State<HomeView> {
                           labelColor: Palette.appBarIconsColor,
                           tabs: [
                             Tab(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Icon(
-                                    Icons.home,
-                                    size: 25,
-                                  ),
-                                  Text(tr("Home")),
-                                ],
+                              child: AppBarTab(
+                                label: tr("Home"),
+                                icon: Icons.home,
                               ),
                             ),
                             Tab(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  FaIcon(
-                                    FontAwesomeIcons.solidImage,
-                                    size: 25,
-                                  ),
-                                  Text(tr("Gallery")),
-                                ],
+                              child: AppBarTab(
+                                label: tr("Gallery"),
+                                icon: FontAwesomeIcons.images,
                               ),
                             ),
                             if (!Config().isGuest)
                               Tab(
-                                child: Stack(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        FaIcon(
-                                          FontAwesomeIcons.solidAddressBook,
-                                          size: 25,
-                                        ),
-                                        Text(tr("Students")),
-                                      ],
-                                    ),
-                                    if (model.unreadGM > 0)
-                                      Positioned(
-                                          top: 0,
-                                          right: rtlDir ? null : 0,
-                                          left: rtlDir ? 0 : null,
-                                          child: Container(
-                                            padding: EdgeInsets.all(5),
-                                            decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: Colors.red),
-                                            alignment: Alignment.center,
-                                          ))
-                                  ],
+                                child: AppBarTab(
+                                  label: tr("Students"),
+                                  icon: Icons.contact_page,
                                 ),
                               ),
                           ],
@@ -181,6 +144,65 @@ class _HomeViewState extends State<HomeView> {
         ),
       );
     });
+  }
+}
+
+class AppBarTab extends StatelessWidget {
+  const AppBarTab(
+      {Key? key,
+      required this.icon,
+      required this.label,
+      this.notify = false,
+      this.rtlDir = false})
+      : super(key: key);
+  final String label;
+  final IconData icon;
+  final bool? notify;
+  final bool? rtlDir;
+  @override
+  Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    return Stack(
+      children: [
+        (width > 360)
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Icon(
+                    this.icon,
+                    size: 25,
+                  ),
+                  Text(
+                    label,
+                  ),
+                ],
+              )
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    this.icon,
+                    size: 20,
+                  ),
+                  Text(
+                    label,
+                    style: TextStyle(fontSize: 14),
+                  ),
+                ],
+              ),
+        if (this.notify!)
+          Positioned(
+              top: 0,
+              right: this.rtlDir! ? null : 0,
+              left: this.rtlDir! ? 0 : null,
+              child: Container(
+                padding: EdgeInsets.all(5),
+                decoration:
+                    BoxDecoration(shape: BoxShape.circle, color: Colors.red),
+                alignment: Alignment.center,
+              ))
+      ],
+    );
   }
 }
 
