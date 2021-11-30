@@ -296,6 +296,8 @@ class _PostButtonsState extends State<PostButtons> {
                                                 model.comments[index].userName,
                                             comment:
                                                 model.comments[index].comment,
+                                            userImage:
+                                                model.comments[index].userImage,
                                           );
                                         })
                                     : CircularProgressIndicator();
