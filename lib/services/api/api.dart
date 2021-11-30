@@ -94,4 +94,10 @@ abstract class Api {
   Future<ParentPayment?> getParentPayments(String? studentNo);
 
   Future<Parent?> getParentData();
+
+  Future<List<dynamic>?> getSchoolBranches();
+
+  Future<List<dynamic>?> getSchoolClasses();
+
+  Future<List<dynamic>?> getSchoolSections();
 }

@@ -22,6 +22,7 @@ void main() async {
   await DioHelper.init();
   await locator<LoginViewModel>().loginMain();
   locator<StorageService>().checkPostVersions();
+  locator<StorageService>().getSchoolData();
   runApp(
     EasyLocalization(
         supportedLocales: [Locale('en'), Locale('ar')],

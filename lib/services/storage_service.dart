@@ -5,6 +5,7 @@ import 'package:school_erp/app/locator.dart';
 import 'package:school_erp/model/content.dart';
 import 'package:school_erp/model/post_version.dart';
 import 'package:school_erp/services/api/api.dart';
+import 'package:school_erp/storage/offline_storage.dart';
 import 'package:school_erp/storage/post_version_storage.dart';
 import 'package:school_erp/storage/posts_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -71,6 +72,21 @@ class StorageService {
       });
       await PostVersionStorage.deleteVersions();
       PostVersionStorage.putAllVersions(versions);
+    }
+  }
+
+  Future<void> getSchoolData() async {
+    List<dynamic>? schoolBranches = await locator<Api>().getSchoolBranches();
+    if (schoolBranches != null && schoolBranches.length > 0) {
+      OfflineStorage.putItem("branches", schoolBranches);
+    }
+    List<dynamic>? schoolClasses = await locator<Api>().getSchoolClasses();
+    if (schoolClasses != null && schoolClasses.length > 0) {
+      OfflineStorage.putItem("classes", schoolClasses);
+    }
+    List<dynamic>? schoolSections = await locator<Api>().getSchoolSections();
+    if (schoolSections != null && schoolSections.length > 0) {
+      OfflineStorage.putItem("sections", schoolSections);
     }
   }
 }

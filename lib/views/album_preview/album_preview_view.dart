@@ -10,6 +10,7 @@ import 'package:school_erp/config/palette.dart';
 import 'package:school_erp/model/album.dart';
 import 'package:school_erp/storage/config.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:school_erp/storage/offline_storage.dart';
 import 'package:school_erp/utils/frappe_alert.dart';
 import 'package:school_erp/utils/navigation_helper.dart';
 import 'package:school_erp/views/content_preview/content_preview_view.dart';
@@ -21,10 +22,40 @@ import 'package:school_erp/widgets/photo_viewer.dart';
 class AlbumPreviewView extends StatelessWidget {
   final Album album;
   const AlbumPreviewView({Key? key, required this.album}) : super(key: key);
+  String? getSchoolData(List dataList, String key, String type) {
+    for (var data in dataList) {
+      if (data["name"] == key) {
+        return data[type];
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     // print("${album.fileUrl.split(',')}");
+    String? _branch;
+    String? _class;
+    String? _section;
+    if (this.album.branch != null) {
+      List<dynamic>? branches = OfflineStorage.getItem("branches")["data"];
+      if (branches != null) {
+        _branch = getSchoolData(branches, this.album.branch!, "branch_name");
+      }
+      if (this.album.classCode != null) {
+        List<dynamic>? classes = OfflineStorage.getItem("classes")["data"];
+        if (classes != null) {
+          _class = getSchoolData(classes, this.album.classCode!, "class_name");
+        }
+        if (this.album.section != null) {
+          List<dynamic>? sections = OfflineStorage.getItem("sections")["data"];
+          if (sections != null) {
+            _section =
+                getSchoolData(sections, this.album.section!, "section_name");
+          }
+        }
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -42,25 +73,25 @@ class AlbumPreviewView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (album.branch != null &&
-                album.section != null &&
-                album.branch != null)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  RankCard(
-                    rankType: RankType.Branch,
-                    rankText: '${album.branch}',
-                  ),
-                  RankCard(
-                    rankType: RankType.Section,
-                    rankText: '${album.section!.split('-').last}',
-                  ),
-                  RankCard(
-                    rankType: RankType.Class,
-                    rankText: '${album.classCode}',
-                  ),
-                ],
+            if (_branch != null && _class != null && _section != null)
+              IntrinsicHeight(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    RankCard(
+                      rankType: RankType.Branch,
+                      rankText: '${_branch}',
+                    ),
+                    RankCard(
+                      rankType: RankType.Class,
+                      rankText: '${_class}',
+                    ),
+                    RankCard(
+                      rankType: RankType.Section,
+                      rankText: '${_section}',
+                    ),
+                  ],
+                ),
               ),
             Padding(
               padding: const EdgeInsets.all(10.0),
@@ -308,70 +339,74 @@ class RankCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * .33,
-      decoration: BoxDecoration(
-        color: rankType == RankType.Branch
-            ? Colors.blue.shade100
-            : rankType == RankType.Section
-                ? Colors.green.shade100
-                : rankType == RankType.Class
-                    ? Colors.red.shade100
-                    : Colors.blue.shade100,
-        borderRadius: rankType == RankType.Branch
-            ? BorderRadius.only(bottomRight: Radius.circular(25.0))
-            : rankType == RankType.Section
-                ? BorderRadius.only(
-                    bottomRight: Radius.circular(25.0),
-                    bottomLeft: Radius.circular(25.0))
-                : rankType == RankType.Class
-                    ? BorderRadius.only(bottomLeft: Radius.circular(25.0))
-                    : BorderRadius.circular(0.0),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          SizedBox(
-            height: 5.0,
-          ),
-          Text(
-            rankType == RankType.Branch
-                ? tr('Branch')
-                : rankType == RankType.Section
-                    ? tr('Section: ').replaceAll(':', '')
-                    : rankType == RankType.Class
-                        ? tr('Class: ').replaceAll(':', '')
-                        : '',
-            style: Theme.of(context).textTheme.bodyText2,
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: 20.0),
-            decoration: BoxDecoration(
-                color: rankType == RankType.Branch
-                    ? Colors.blue.shade100
-                    : rankType == RankType.Section
-                        ? Colors.green.shade100
-                        : rankType == RankType.Class
-                            ? Colors.red.shade100
-                            : Colors.blue.shade100,
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 10,
-                      offset: Offset(2, 0))
-                ]),
-            child: SizedBox(
-              height: 50,
-              width: 50,
-              child: Center(
-                  child: Text(
-                rankText,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              )),
+    return Expanded(
+      child: Container(
+        decoration: BoxDecoration(
+          color: rankType == RankType.Branch
+              ? Colors.blue.shade100
+              : rankType == RankType.Section
+                  ? Colors.green.shade100
+                  : rankType == RankType.Class
+                      ? Colors.red.shade100
+                      : Colors.blue.shade100,
+          borderRadius: rankType == RankType.Branch
+              ? BorderRadius.only(bottomRight: Radius.circular(25.0))
+              : rankType == RankType.Class
+                  ? BorderRadius.only(
+                      bottomRight: Radius.circular(25.0),
+                      bottomLeft: Radius.circular(25.0))
+                  : rankType == RankType.Section
+                      ? BorderRadius.only(bottomLeft: Radius.circular(25.0))
+                      : BorderRadius.circular(0.0),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 5.0,
             ),
-          ),
-        ],
+            Container(
+              decoration: BoxDecoration(
+                  color: rankType == RankType.Branch
+                      ? Colors.blue.shade100
+                      : rankType == RankType.Section
+                          ? Colors.green.shade100
+                          : rankType == RankType.Class
+                              ? Colors.red.shade100
+                              : Colors.blue.shade100,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 10,
+                        offset: Offset(2, 0))
+                  ]),
+              child: SizedBox(
+                height: 50,
+                width: 50,
+                child: Center(
+                    child: Text(
+                  rankType == RankType.Branch
+                      ? tr('Branch')
+                      : rankType == RankType.Section
+                          ? tr('Section: ').replaceAll(': ', '')
+                          : rankType == RankType.Class
+                              ? tr('Class: ').replaceAll(': ', '')
+                              : '',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                )),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 10),
+              padding: EdgeInsets.all(5),
+              child: Text(
+                rankText,
+                style: Theme.of(context).textTheme.bodyText2,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

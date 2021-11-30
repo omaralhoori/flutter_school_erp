@@ -847,4 +847,55 @@ class DioApi implements Api {
       return null;
     }
   }
+
+  Future<List<dynamic>?> getSchoolBranches() async {
+    if (DioHelper.dio != null) {
+      try {
+        final response = await DioHelper.dio!.post(
+            '/method/mobile_backend.mobile_backend.doctype.school_branch.school_branch.get_branches',
+            data: {},
+            options: Options(contentType: Headers.formUrlEncodedContentType));
+        if (response.statusCode == 200) {
+          return response.data["message"];
+        }
+      } catch (e) {
+        print(e);
+      }
+    }
+    return null;
+  }
+
+  Future<List<dynamic>?> getSchoolClasses() async {
+    if (DioHelper.dio != null) {
+      try {
+        final response = await DioHelper.dio!.post(
+            '/method/mobile_backend.mobile_backend.doctype.school_branch.school_branch.get_classes',
+            data: {},
+            options: Options(contentType: Headers.formUrlEncodedContentType));
+        if (response.statusCode == 200) {
+          return response.data["message"];
+        }
+      } catch (e) {
+        print(e);
+      }
+    }
+    return null;
+  }
+
+  Future<List<dynamic>?> getSchoolSections() async {
+    if (DioHelper.dio != null) {
+      try {
+        final response = await DioHelper.dio!.post(
+            '/method/mobile_backend.mobile_backend.doctype.school_branch.school_branch.get_sections',
+            data: {},
+            options: Options(contentType: Headers.formUrlEncodedContentType));
+        if (response.statusCode == 200) {
+          return response.data["message"];
+        }
+      } catch (e) {
+        print(e);
+      }
+    }
+    return null;
+  }
 }
