@@ -67,6 +67,8 @@ abstract class Api {
 
   Future<void> updateDeviceToken(String token);
 
+  Future<bool> deleteDeviceToken();
+
   Future<List<Message>> getMessages();
 
   Future<String> addMessageReply(String message, String messageName);

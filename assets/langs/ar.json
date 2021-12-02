@@ -101,5 +101,12 @@
   "Mobile no": "رقم الهاتف",
   "Cancel": "إلغاء",
   "Confirm": "تأكيد",
-  "Filter": "تصفية"
+  "Filter": "تصفية",
+  "Camera": "الكاميرا",
+  "This option will remove all devices registered to this account from receiving notifications.": "سيؤدي هذا الخيار إلى إزالة جميع الأجهزة المسجلة في هذا الحساب من تلقي الإشعارات.",
+  "Remove all devices.": "إزالة كافة الأجهزة.",
+  "Warning": "تحذير",
+  "All your registered devices will not receive notifications unless you signed in again.\nDo you want to proceed?": "لن تتلقى جميع أجهزتك المسجلة إشعارات إلا إذا قمت بتسجيل الدخول مرة أخرى.\nهل تريد المتابعة؟",
+  "Continue": "استمرار",
+  "All devices removed": "تم إزالة جميع الأجهزة"
 }

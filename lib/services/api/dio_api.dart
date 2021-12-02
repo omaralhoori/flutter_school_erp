@@ -554,6 +554,19 @@ class DioApi implements Api {
     }
   }
 
+  Future<bool> deleteDeviceToken() async {
+    if (DioHelper.dio != null) {
+      final response = await DioHelper.dio!.post(
+          '/method/mobile_backend.mobile_backend.notification.delete_device_token',
+          data: {},
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+      if (response.statusCode == 200) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   Future<List<Message>> getMessages() async {
     if (DioHelper.dio != null) {
       final response = await DioHelper.dio!.post(

@@ -101,5 +101,12 @@
   "Mobile no": "Mobile no",
   "Cancel": "Cancel",
   "Confirm": "Confirm",
-  "Filter": "Filter"
+  "Filter": "Filter",
+  "Camera": "Camera",
+  "This option will remove all devices registered to this account from receiving notifications.": "This option will remove all devices registered to this account from receiving notifications.",
+  "Remove all devices.": "Remove all devices.",
+  "Warning": "Warning",
+  "All your registered devices will not receive notifications unless you signed in again.\nDo you want to proceed?": "All your registered devices will not receive notifications unless you signed in again.\nDo you want to proceed?",
+  "Continue": "Continue",
+  "All devices removed": "All devices removed"
 }
