@@ -157,27 +157,25 @@ class _RankFilterState extends State<RankFilter> {
       direction: Axis.horizontal,
       children: List.generate(
           widget.rankList.length,
-          (i) => SizedBox(
-                width: 77.0,
-                child: Row(
-                  children: [
-                    Checkbox(
-                      value: widget.rankList[i].isSelected,
-                      onChanged: (value) {
-                        setState(() {
-                          widget.rankList[i].isSelected =
-                              !widget.rankList[i].isSelected;
-                        });
-                        locator<HomeViewModel>()
-                            .filterChanged(widget.rankList[i]);
-                      },
-                    ),
-                    Text(widget.split
-                        ? widget.rankList[i].text.split('-').last
-                        : widget.rankList[i].text),
-                  ],
-                ),
-              )),
+          (i) => Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Checkbox(
+                value: widget.rankList[i].isSelected,
+                onChanged: (value) {
+                  setState(() {
+                    widget.rankList[i].isSelected =
+                        !widget.rankList[i].isSelected;
+                  });
+                  locator<HomeViewModel>()
+                      .filterChanged(widget.rankList[i]);
+                },
+              ),
+              Text(widget.split
+                  ? widget.rankList[i].text.split('-').last
+                  : widget.rankList[i].text),
+            ],
+          )),
     );
   }
 }

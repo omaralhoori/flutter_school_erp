@@ -45,14 +45,24 @@ class HomeViewModel extends BaseViewModel {
   }
 
   HomeViewModel() {
-    getParentData();
-    getAlbums().then((value) {
-      _branches = List.generate(
-          branchList.length,
-          (index) => RankModel(
-              text: branchList[index],
-              rankType: RankType.Branch,
-              isSelected: false));
+    getParentData().then((value) {
+      getAlbums().then((value) async {
+        List<dynamic> _offBranches = await OfflineStorage.getItem("branches")['data'];
+        print("branchList: $branchList");
+        Map<String, String> _mapBranches = {};
+        _offBranches.forEach((element) {
+          _mapBranches[element['name']] = element['branch_name'];
+        });
+        _branches = List.generate(
+            branchList.length,
+                (index) => RankModel(
+                  code: branchList[index],
+                  text: _mapBranches[branchList[index]]!,
+                  rankType: RankType.Branch,
+                  isSelected: false,
+                ),
+        );
+      });
     });
   }
 
@@ -77,6 +87,7 @@ class HomeViewModel extends BaseViewModel {
       if (snapshotParent["data"] is List) {
         Iterable i = snapshotParent["data"];
         this.parentAlbums = List.from(i.map((e) => e as Album));
+        print("parentAlbums 1: $parentAlbums");
       }
       getParentAlbums();
     }
@@ -88,22 +99,24 @@ class HomeViewModel extends BaseViewModel {
       this.parentAlbums.clear();
       this.albums.forEach((album) {
         getRankListItems(album);
-        if (album.section != null) {
-          this.parentData!.students.forEach((student) {
-            if (album.section!.split('-').last == student.sectionCode) {
-              this.parentAlbums.add(album);
-            }
-          });
-        } else if (album.classCode != null) {
+        if (album.branch != null) {
+          if (album.branch == this.parentData!.branchCode) {
+            this.parentAlbums.add(album);
+          }
+        }
+        if (album.classCode != null) {
           this.parentData!.students.forEach((student) {
             if (album.classCode == student.classCode) {
               this.parentAlbums.add(album);
             }
           });
-        } else if (album.branch != null) {
-          if (album.branch == this.parentData!.branchCode) {
-            this.parentAlbums.add(album);
-          }
+        }
+        if (album.section != null) {
+          this.parentData!.students.forEach((student) {
+            if (album.section! == student.sectionCode) {
+              this.parentAlbums.add(album);
+            }
+          });
         }
       });
 
@@ -216,7 +229,6 @@ class HomeViewModel extends BaseViewModel {
         }
       }
     }
-
     return true;
   }
 
@@ -235,13 +247,13 @@ class HomeViewModel extends BaseViewModel {
           .where((element) =>
               selectedBranches.contains(element.branch) &&
               selectedClasses.contains(element.classCode) &&
-              selectedSections.contains(element.section!.split('-').last))
+              selectedSections.contains(element.section!))
           .toList();
       filteredParentAlbums = parentAlbums
           .where((element) =>
               selectedBranches.contains(element.branch) &&
               selectedClasses.contains(element.classCode) &&
-              selectedSections.contains(element.section!.split('-').last))
+              selectedSections.contains(element.section!))
           .toList();
     } else if (selectedClasses.isNotEmpty) {
       filteredAlbums = albums
@@ -292,11 +304,11 @@ class HomeViewModel extends BaseViewModel {
         } else {
           locator<HomeViewModel>().setFilter(
             List.generate(selectedBranches.length,
-                (index) => selectedBranches[index].text),
+                (index) => selectedBranches[index].code),
             List.generate(selectedSections.length,
-                (index) => selectedSections[index].text),
+                (index) => selectedSections[index].code),
             List.generate(
-                selectedClasses.length, (index) => selectedClasses[index].text),
+                selectedClasses.length, (index) => selectedClasses[index].code),
           );
           filterOn = true;
         }
@@ -319,24 +331,34 @@ class HomeViewModel extends BaseViewModel {
                     direction: Axis.horizontal,
                     children: List.generate(
                         _branches.length,
-                        (i) => ConstrainedBox(
-                              constraints: const BoxConstraints(maxWidth: 90.0),
-                              child: Row(
-                                children: [
-                                  Checkbox(
-                                    value: _branches[i].isSelected,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _branches[i].isSelected =
-                                            !_branches[i].isSelected;
-                                        filterChanged(_branches[i]);
-                                      });
-                                    },
-                                  ),
-                                  Text(_branches[i].text, overflow: TextOverflow.ellipsis,),
-                                ],
+                        (i) => Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Checkbox(
+                              value: _branches[i].isSelected,
+                              onChanged: (value) {
+                                setState(() {
+                                  _branches[i].isSelected =
+                                      !_branches[i].isSelected;
+                                  filterChanged(_branches[i]);
+                                });
+                              },
+                            ),
+                            GestureDetector(
+                              onTap: (){
+                                setState(() {
+                                  _branches[i].isSelected =
+                                  !_branches[i].isSelected;
+                                  filterChanged(_branches[i]);
+                                });
+                              },
+                              child: Text(
+                                _branches[i].text,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                            )),
+                            ),
+                          ],
+                        )),
                   ),
                   if (_classes.isNotEmpty) Text(tr('Class: ')),
                   if (_classes.isNotEmpty)
@@ -344,24 +366,31 @@ class HomeViewModel extends BaseViewModel {
                       direction: Axis.horizontal,
                       children: List.generate(
                           _classes.length,
-                          (i) => Container(
-                            width: 90,
-                                child: Row(
-                                  children: [
-                                    Checkbox(
-                                      value: _classes[i].isSelected,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _classes[i].isSelected =
-                                              !_classes[i].isSelected;
-                                          filterChanged(_classes[i]);
-                                        });
-                                      },
-                                    ),
-                                    Text(_classes[i].text, overflow: TextOverflow.ellipsis),
-                                  ],
-                                ),
-                              )),
+                          (i) => Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Checkbox(
+                                value: _classes[i].isSelected,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _classes[i].isSelected =
+                                        !_classes[i].isSelected;
+                                    filterChanged(_classes[i]);
+                                  });
+                                },
+                              ),
+                              GestureDetector(
+                                onTap: (){
+                                  setState(() {
+                                    _classes[i].isSelected =
+                                    !_classes[i].isSelected;
+                                    filterChanged(_classes[i]);
+                                  });
+                                },
+                                child: Text(_classes[i].text, overflow: TextOverflow.ellipsis),
+                              ),
+                            ],
+                          )),
                     ),
                   if (_sections.isNotEmpty) Text(tr('Section: ')),
                   if (_sections.isNotEmpty)
@@ -369,23 +398,30 @@ class HomeViewModel extends BaseViewModel {
                       direction: Axis.horizontal,
                       children: List.generate(
                           _sections.length,
-                          (i) => Container(
-                            width: 90,
-                            child: Row(
-                              children: [
-                                Checkbox(
-                                  value: _sections[i].isSelected,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _sections[i].isSelected =
-                                          !_sections[i].isSelected;
-                                      filterChanged(_sections[i]);
-                                    });
-                                  },
-                                ),
-                                Text(_sections[i].text, overflow: TextOverflow.ellipsis),
-                              ],
-                            ),
+                          (i) => Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Checkbox(
+                                value: _sections[i].isSelected,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _sections[i].isSelected =
+                                        !_sections[i].isSelected;
+                                    filterChanged(_sections[i]);
+                                  });
+                                },
+                              ),
+                              GestureDetector(
+                                onTap: (){
+                                  setState(() {
+                                    _sections[i].isSelected =
+                                    !_sections[i].isSelected;
+                                    filterChanged(_sections[i]);
+                                  });
+                                },
+                                child: Text(_sections[i].text, overflow: TextOverflow.ellipsis),
+                              ),
+                            ],
                           )),
                     ),
                 ],
@@ -407,62 +443,79 @@ class HomeViewModel extends BaseViewModel {
     );
   }
 
-  void filterChanged(RankModel rank) {
+  Future<void> filterChanged(RankModel rank) async {
     if (rank.rankType == RankType.Branch) {
       List<Album> a = [
-        ...albums.where((element) => element.branch == rank.text).toList(),
-        ...parentAlbums.where((element) => element.branch == rank.text).toList()
+        ...albums.where((element) => element.branch == rank.code).toList(),
+        ...parentAlbums.where((element) => element.branch == rank.code).toList()
       ];
       a.forEach((album) {
         if (album.classCode != null) {
-          if (!classList.contains(album.classCode)) {
-            if (rank.isSelected) {
-              classList.add(album.classCode!);
-            } else {
-              classList.remove(album.classCode);
-            }
+          if (!classList.contains(album.classCode) && rank.isSelected) {
+            print("classList: rank.code: ${rank.code} rank.text: ${rank.text} rank.isSelected: ${rank.isSelected}");
+            classList.add(album.classCode!);
+          }else {
+            classList.remove(album.classCode);
           }
         }
       });
+      List<dynamic> _offClasses = await OfflineStorage.getItem("classes")['data'];
+      print("classList: $classList");
+      Map<String, String> _mapClasses = {};
+      _offClasses.forEach((element) {
+        _mapClasses[element['name']] = element['class_name'];
+      });
       _classes = List.generate(
           classList.length,
-          (index) => RankModel(
-              text: classList[index],
+          (index) {
+            print("_offClasses[index]['name']: ${classList[index]}");
+            return RankModel(
+            code: classList[index],
+              text: _mapClasses[classList[index]]!,
               rankType: RankType.Class,
-              isSelected: false));
-    } else if (rank.rankType == RankType.Class) {
+              isSelected: false);
+          });
+      print("rank.code: ${rank.code}");
+    }
+    else if (rank.rankType == RankType.Class) {
       List<Album> a = [
-        ...albums.where((element) => element.classCode == rank.text).toList(),
+        ...albums.where((element) => element.classCode == rank.code).toList(),
         ...parentAlbums
-            .where((element) => element.classCode == rank.text)
+            .where((element) => element.classCode == rank.code)
             .toList()
       ];
       a.forEach((album) {
         if (album.section != null) {
-          if (!sectionList.contains(album.section!.split('-').last)) {
-            if (rank.isSelected) {
-              sectionList.add(album.section!.split('-').last);
-            } else {
-              sectionList.remove(album.section!.split('-').last);
-            }
+          if (!sectionList.contains(album.section!) && rank.isSelected) {
+            print("sectionList: rank.code: ${rank.code} rank.text: ${rank.text} rank.isSelected: ${rank.isSelected}");
+            sectionList.add(album.section!);
+          }else{
+            sectionList.remove(album.section!);
           }
         }
+      });
+      List<dynamic> _offSections = await OfflineStorage.getItem("sections")['data'];
+      print("sectionList: $sectionList");
+      Map<String, String> _mapSections = {};
+      _offSections.forEach((element) {
+        _mapSections[element['name']] = element['section_name'];
       });
       _sections = List.generate(
           sectionList.length,
           (index) => RankModel(
-              text: sectionList[index],
+            code: sectionList[index],
+              text: _mapSections[sectionList[index]]!,
               rankType: RankType.Section,
               isSelected: false));
     }
-    bool branchEmpty =
-        _branches.where((element) => element.isSelected).toList().isEmpty;
+    bool branchEmpty = _branches.where((element) => element.isSelected).toList().isEmpty;
     if (branchEmpty) {
       _classes.clear();
       classList.clear();
       _sections.clear();
       sectionList.clear();
-    } else if (classList.isEmpty) {
+    }
+    if (classList.isEmpty) {
       _sections.clear();
       sectionList.clear();
     }
@@ -470,11 +523,13 @@ class HomeViewModel extends BaseViewModel {
 }
 
 class RankModel {
+  final String code;
   final String text;
   final RankType rankType;
   bool isSelected;
 
   RankModel({
+    required this.code,
     required this.text,
     required this.rankType,
     required this.isSelected,
