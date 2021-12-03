@@ -48,7 +48,6 @@ class HomeViewModel extends BaseViewModel {
     getParentData().then((value) {
       getAlbums().then((value) async {
         List<dynamic> _offBranches = await OfflineStorage.getItem("branches")['data'];
-        print("branchList: $branchList");
         Map<String, String> _mapBranches = {};
         _offBranches.forEach((element) {
           _mapBranches[element['name']] = element['branch_name'];
@@ -87,7 +86,6 @@ class HomeViewModel extends BaseViewModel {
       if (snapshotParent["data"] is List) {
         Iterable i = snapshotParent["data"];
         this.parentAlbums = List.from(i.map((e) => e as Album));
-        print("parentAlbums 1: $parentAlbums");
       }
       getParentAlbums();
     }
@@ -452,7 +450,6 @@ class HomeViewModel extends BaseViewModel {
       a.forEach((album) {
         if (album.classCode != null) {
           if (!classList.contains(album.classCode) && rank.isSelected) {
-            print("classList: rank.code: ${rank.code} rank.text: ${rank.text} rank.isSelected: ${rank.isSelected}");
             classList.add(album.classCode!);
           }else {
             classList.remove(album.classCode);
@@ -460,7 +457,6 @@ class HomeViewModel extends BaseViewModel {
         }
       });
       List<dynamic> _offClasses = await OfflineStorage.getItem("classes")['data'];
-      print("classList: $classList");
       Map<String, String> _mapClasses = {};
       _offClasses.forEach((element) {
         _mapClasses[element['name']] = element['class_name'];
@@ -468,14 +464,12 @@ class HomeViewModel extends BaseViewModel {
       _classes = List.generate(
           classList.length,
           (index) {
-            print("_offClasses[index]['name']: ${classList[index]}");
             return RankModel(
             code: classList[index],
               text: _mapClasses[classList[index]]!,
               rankType: RankType.Class,
               isSelected: false);
           });
-      print("rank.code: ${rank.code}");
     }
     else if (rank.rankType == RankType.Class) {
       List<Album> a = [
@@ -487,7 +481,6 @@ class HomeViewModel extends BaseViewModel {
       a.forEach((album) {
         if (album.section != null) {
           if (!sectionList.contains(album.section!) && rank.isSelected) {
-            print("sectionList: rank.code: ${rank.code} rank.text: ${rank.text} rank.isSelected: ${rank.isSelected}");
             sectionList.add(album.section!);
           }else{
             sectionList.remove(album.section!);
@@ -495,7 +488,6 @@ class HomeViewModel extends BaseViewModel {
         }
       });
       List<dynamic> _offSections = await OfflineStorage.getItem("sections")['data'];
-      print("sectionList: $sectionList");
       Map<String, String> _mapSections = {};
       _offSections.forEach((element) {
         _mapSections[element['name']] = element['section_name'];
