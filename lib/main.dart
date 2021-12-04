@@ -21,8 +21,8 @@ void main() async {
   await EasyLocalization.ensureInitialized();
   await DioHelper.init();
   await locator<LoginViewModel>().loginMain();
-  locator<StorageService>().checkPostVersions();
-  locator<StorageService>().getSchoolData();
+  await locator<StorageService>().checkPostVersions();
+  await locator<StorageService>().getSchoolData();
   runApp(
     EasyLocalization(
         supportedLocales: [Locale('en'), Locale('ar')],

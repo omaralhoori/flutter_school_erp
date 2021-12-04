@@ -47,9 +47,10 @@ class HomeViewModel extends BaseViewModel {
   HomeViewModel() {
     getParentData().then((value) {
       getAlbums().then((value) async {
-        List<dynamic> _offBranches = await OfflineStorage.getItem("branches")['data'];
+        getRankListItems();
+        List<dynamic>? _offBranches = (await OfflineStorage.getItem("branches")['data']) ?? (await locator<Api>().getSchoolBranches());
         Map<String, String> _mapBranches = {};
-        _offBranches.forEach((element) {
+        _offBranches!.forEach((element) {
           _mapBranches[element['name']] = element['branch_name'];
         });
         _branches = List.generate(
@@ -96,7 +97,6 @@ class HomeViewModel extends BaseViewModel {
     if (!Config().isGuest) {
       this.parentAlbums.clear();
       this.albums.forEach((album) {
-        getRankListItems(album);
         if (album.branch != null) {
           if (album.branch == this.parentData!.branchCode) {
             this.parentAlbums.add(album);
@@ -230,12 +230,14 @@ class HomeViewModel extends BaseViewModel {
     return true;
   }
 
-  void getRankListItems(Album album) {
-    if (album.branch != null) {
-      if (!branchList.contains(album.branch)) {
-        branchList.add(album.branch!);
+  void getRankListItems() {
+    albums.forEach((album) {
+      if (album.branch != null) {
+        if (!branchList.contains(album.branch)) {
+          branchList.add(album.branch!);
+        }
       }
-    }
+    });
   }
 
   void setFilter(List<String> selectedBranches, List<String> selectedSections,
@@ -456,9 +458,9 @@ class HomeViewModel extends BaseViewModel {
           }
         }
       });
-      List<dynamic> _offClasses = await OfflineStorage.getItem("classes")['data'];
+      List<dynamic>? _offClasses = (await OfflineStorage.getItem("classes")['data']) ?? (await locator<Api>().getSchoolClasses());
       Map<String, String> _mapClasses = {};
-      _offClasses.forEach((element) {
+      _offClasses!.forEach((element) {
         _mapClasses[element['name']] = element['class_name'];
       });
       _classes = List.generate(
@@ -487,9 +489,9 @@ class HomeViewModel extends BaseViewModel {
           }
         }
       });
-      List<dynamic> _offSections = await OfflineStorage.getItem("sections")['data'];
+      List<dynamic>? _offSections = (await OfflineStorage.getItem("sections")['data']) ?? (await locator<Api>().getSchoolSections());
       Map<String, String> _mapSections = {};
-      _offSections.forEach((element) {
+      _offSections!.forEach((element) {
         _mapSections[element['name']] = element['section_name'];
       });
       _sections = List.generate(
