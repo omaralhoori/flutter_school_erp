@@ -32,6 +32,10 @@ class HomeViewModel extends BaseViewModel {
   List<RankModel> _classes = [];
   List<RankModel> _sections = [];
 
+  List<dynamic>? _offClasses = [];
+  List<dynamic>? _offSections = [];
+
+
   ParentPayment? parentPayment;
   Parent? parentData;
   int unreadDM = 0;
@@ -49,6 +53,8 @@ class HomeViewModel extends BaseViewModel {
       getAlbums().then((value) async {
         getRankListItems();
         List<dynamic>? _offBranches = (await OfflineStorage.getItem("branches")['data']) ?? (await locator<Api>().getSchoolBranches());
+        _offClasses = (await OfflineStorage.getItem("classes")['data']) ?? (await locator<Api>().getSchoolClasses());
+        _offSections = (await OfflineStorage.getItem("sections")['data']) ?? (await locator<Api>().getSchoolSections());
         Map<String, String> _mapBranches = {};
         _offBranches!.forEach((element) {
           _mapBranches[element['name']] = element['branch_name'];
@@ -458,7 +464,7 @@ class HomeViewModel extends BaseViewModel {
           }
         }
       });
-      List<dynamic>? _offClasses = (await OfflineStorage.getItem("classes")['data']) ?? (await locator<Api>().getSchoolClasses());
+
       Map<String, String> _mapClasses = {};
       _offClasses!.forEach((element) {
         _mapClasses[element['name']] = element['class_name'];
@@ -489,7 +495,7 @@ class HomeViewModel extends BaseViewModel {
           }
         }
       });
-      List<dynamic>? _offSections = (await OfflineStorage.getItem("sections")['data']) ?? (await locator<Api>().getSchoolSections());
+
       Map<String, String> _mapSections = {};
       _offSections!.forEach((element) {
         _mapSections[element['name']] = element['section_name'];
