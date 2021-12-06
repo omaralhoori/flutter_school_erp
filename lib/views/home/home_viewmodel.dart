@@ -323,121 +323,132 @@ class HomeViewModel extends BaseViewModel {
     );
     Widget alert = StatefulBuilder(
       builder: (context, setState) {
-        return AlertDialog(
-          title: Text(tr('Filter')),
-          content: SizedBox(
-            height: size.height * .4,
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(tr('Branch')),
-                  Wrap(
-                    direction: Axis.horizontal,
-                    children: List.generate(
-                        _branches.length,
-                        (i) => Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Checkbox(
-                              value: _branches[i].isSelected,
-                              onChanged: (value) {
-                                setState(() {
-                                  _branches[i].isSelected =
-                                      !_branches[i].isSelected;
-                                  filterChanged(_branches[i]);
-                                });
-                              },
-                            ),
-                            GestureDetector(
-                              onTap: (){
-                                setState(() {
-                                  _branches[i].isSelected =
-                                  !_branches[i].isSelected;
-                                  filterChanged(_branches[i]);
-                                });
-                              },
-                              child: Text(
-                                _branches[i].text,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ],
-                        )),
-                  ),
-                  if (_classes.isNotEmpty) Text(tr('Class: ')),
-                  if (_classes.isNotEmpty)
+        return WillPopScope(
+          onWillPop: () async{
+            filterOn = false;
+            _branches.forEach((element) {
+              element.isSelected = false;
+            });
+            _sections.clear();
+            _classes.clear();
+            return true;
+          },
+          child: AlertDialog(
+            title: Text(tr('Filter')),
+            content: SizedBox(
+              height: size.height * .4,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(tr('Branch')),
                     Wrap(
                       direction: Axis.horizontal,
                       children: List.generate(
-                          _classes.length,
+                          _branches.length,
                           (i) => Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Checkbox(
-                                value: _classes[i].isSelected,
+                                value: _branches[i].isSelected,
                                 onChanged: (value) {
                                   setState(() {
-                                    _classes[i].isSelected =
-                                        !_classes[i].isSelected;
-                                    filterChanged(_classes[i]);
+                                    _branches[i].isSelected =
+                                        !_branches[i].isSelected;
+                                    filterChanged(_branches[i]);
                                   });
                                 },
                               ),
                               GestureDetector(
                                 onTap: (){
                                   setState(() {
-                                    _classes[i].isSelected =
-                                    !_classes[i].isSelected;
-                                    filterChanged(_classes[i]);
+                                    _branches[i].isSelected =
+                                    !_branches[i].isSelected;
+                                    filterChanged(_branches[i]);
                                   });
                                 },
-                                child: Text(_classes[i].text, overflow: TextOverflow.ellipsis),
+                                child: Text(
+                                  _branches[i].text,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             ],
                           )),
                     ),
-                  if (_sections.isNotEmpty) Text(tr('Section: ')),
-                  if (_sections.isNotEmpty)
-                    Wrap(
-                      direction: Axis.horizontal,
-                      children: List.generate(
-                          _sections.length,
-                          (i) => Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Checkbox(
-                                value: _sections[i].isSelected,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _sections[i].isSelected =
-                                        !_sections[i].isSelected;
-                                    filterChanged(_sections[i]);
-                                  });
-                                },
-                              ),
-                              GestureDetector(
-                                onTap: (){
-                                  setState(() {
-                                    _sections[i].isSelected =
-                                    !_sections[i].isSelected;
-                                    filterChanged(_sections[i]);
-                                  });
-                                },
-                                child: Text(_sections[i].text, overflow: TextOverflow.ellipsis),
-                              ),
-                            ],
-                          )),
-                    ),
-                ],
+                    if (_classes.isNotEmpty) Text(tr('Class: ')),
+                    if (_classes.isNotEmpty)
+                      Wrap(
+                        direction: Axis.horizontal,
+                        children: List.generate(
+                            _classes.length,
+                            (i) => Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Checkbox(
+                                  value: _classes[i].isSelected,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _classes[i].isSelected =
+                                          !_classes[i].isSelected;
+                                      filterChanged(_classes[i]);
+                                    });
+                                  },
+                                ),
+                                GestureDetector(
+                                  onTap: (){
+                                    setState(() {
+                                      _classes[i].isSelected =
+                                      !_classes[i].isSelected;
+                                      filterChanged(_classes[i]);
+                                    });
+                                  },
+                                  child: Text(_classes[i].text, overflow: TextOverflow.ellipsis),
+                                ),
+                              ],
+                            )),
+                      ),
+                    if (_sections.isNotEmpty) Text(tr('Section: ')),
+                    if (_sections.isNotEmpty)
+                      Wrap(
+                        direction: Axis.horizontal,
+                        children: List.generate(
+                            _sections.length,
+                            (i) => Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Checkbox(
+                                  value: _sections[i].isSelected,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _sections[i].isSelected =
+                                          !_sections[i].isSelected;
+                                      filterChanged(_sections[i]);
+                                    });
+                                  },
+                                ),
+                                GestureDetector(
+                                  onTap: (){
+                                    setState(() {
+                                      _sections[i].isSelected =
+                                      !_sections[i].isSelected;
+                                      filterChanged(_sections[i]);
+                                    });
+                                  },
+                                  child: Text(_sections[i].text, overflow: TextOverflow.ellipsis),
+                                ),
+                              ],
+                            )),
+                      ),
+                  ],
+                ),
               ),
             ),
+            actions: [
+              cancelButton,
+              continueButton,
+            ],
           ),
-          actions: [
-            cancelButton,
-            continueButton,
-          ],
         );
       },
     );
