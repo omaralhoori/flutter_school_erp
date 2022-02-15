@@ -108,5 +108,7 @@
   "Warning": "Warning",
   "All your registered devices will not receive notifications unless you signed in again.\nDo you want to proceed?": "All your registered devices will not receive notifications unless you signed in again.\nDo you want to proceed?",
   "Continue": "Continue",
-  "All devices removed": "All devices removed"
+  "All devices removed": "All devices removed",
+  "Password is not correct!": "Password is not correct!",
+  "Teacher": "Teacher"
 }

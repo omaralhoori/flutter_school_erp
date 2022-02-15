@@ -59,6 +59,10 @@ abstract class Api {
 
   Future<UserData?> getUserData();
 
+  Future<Map?> getUserType();
+
+  Future<bool> loginTeacher(String password);
+
   Future<UpdateProfileResponse> updateUserProfile(UserData userData);
 
   Future<String?> updateUserProfileImage(XFile image);

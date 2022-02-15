@@ -12,6 +12,14 @@ class Config {
         'isGuest',
         defaultValue: false,
       );
+  bool get isTeacher => configContainer.get(
+        'isTeacher',
+        defaultValue: false,
+      );
+  bool get isParent => configContainer.get(
+        'isParent',
+        defaultValue: false,
+      );
 
   String? get userId =>
       Uri.decodeFull(configContainer.get('userId', defaultValue: ""));
@@ -25,7 +33,7 @@ class Config {
 
   // String? get baseUrl => configContainer.get('baseUrl');
   static String get baseUrl =>
-      "http://137.184.51.167:8000"; //  "http://185.230.138.118:8000";
+      "http://192.168.1.107:8000"; //  "http://185.230.138.118:8000";
 
   Uri? get uri {
     return Uri.parse(baseUrl);

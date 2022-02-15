@@ -8,6 +8,7 @@ import 'package:school_erp/utils/navigation_helper.dart';
 import 'package:school_erp/views/base_view.dart';
 import 'package:school_erp/views/home/home_viewmodel.dart';
 import 'package:school_erp/views/home/student_tab.dart';
+import 'package:school_erp/views/home/teacher_tab.dart';
 import 'package:school_erp/views/messaging/direct_messages_view.dart';
 import 'package:school_erp/widgets/home_widgets/gallery_tab.dart';
 import 'package:school_erp/widgets/home_widgets/home_drawer.dart';
@@ -22,6 +23,13 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     bool rtlDir = context.locale.toString() == 'ar';
+    bool _isGuest = Config().isGuest;
+    bool _isTeacher = Config().isTeacher;
+    bool _isParent = Config().isParent;
+    int _tabExtras = 2;
+    if (_isTeacher) _tabExtras += 1;
+    if (_isParent) _tabExtras += 1;
+    int _tabCount = _isGuest ? 2 : _tabExtras;
     return BaseView<HomeViewModel>(onModelReady: (model) {
       if (!Config().isGuest) model.getUnreadMessages();
     }, builder: (context, model, _) {
@@ -32,7 +40,7 @@ class _HomeViewState extends State<HomeView> {
               .copyWith(statusBarColor: Palette.appBarIconsColor),
           child: SafeArea(
             child: DefaultTabController(
-              length: !Config().isGuest ? 3 : 2,
+              length: _tabCount,
               child: NestedScrollView(
                 headerSliverBuilder:
                     (BuildContext context, bool innerBoxIsScrolled) {
@@ -117,13 +125,20 @@ class _HomeViewState extends State<HomeView> {
                                 icon: FontAwesomeIcons.images,
                               ),
                             ),
-                            if (!Config().isGuest)
+                            if (!_isGuest && _isParent)
                               Tab(
                                 child: AppBarTab(
                                   label: tr("Students"),
                                   icon: Icons.contact_page,
                                   notify: model.unreadGM > 00,
                                   rtlDir: rtlDir,
+                                ),
+                              ),
+                            if (!_isGuest && _isTeacher)
+                              Tab(
+                                child: AppBarTab(
+                                  label: tr("Teacher"),
+                                  icon: Icons.person,
                                 ),
                               ),
                           ],
@@ -137,7 +152,11 @@ class _HomeViewState extends State<HomeView> {
                   children: [
                     ContentTab(),
                     GalleryTab(),
-                    if (!Config().isGuest) StudentTab(),
+                    if (!_isGuest && _isParent) StudentTab(),
+                    if (!_isGuest && _isTeacher)
+                      TeacherTab(
+                        isTeacherRegistered: model.isTeacherRegistered,
+                      ),
                   ],
                 ),
               ),
@@ -166,32 +185,33 @@ class AppBarTab extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     return Stack(
       children: [
-        (width > 360)
-            ? Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Icon(
-                    this.icon,
-                    size: 25,
-                  ),
-                  Text(
-                    label,
-                  ),
-                ],
-              )
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    this.icon,
-                    size: 20,
-                  ),
-                  Text(
-                    label,
-                    style: TextStyle(fontSize: 14),
-                  ),
-                ],
-              ),
+        // (width > 360)
+        //     ? Row(
+        //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //         children: [
+        //           Icon(
+        //             this.icon,
+        //             size: 25,
+        //           ),
+        //           Text(
+        //             label,
+        //           ),
+        //         ],
+        //       )
+        //     :
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              this.icon,
+              size: 20,
+            ),
+            Text(
+              label,
+              style: TextStyle(fontSize: width > 360 ? 14 : 10),
+            ),
+          ],
+        ),
         if (this.notify!)
           Positioned(
               top: 0,

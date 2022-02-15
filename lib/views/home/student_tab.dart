@@ -111,14 +111,15 @@ class ParentCard extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 30 / edgeRation),
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20 / edgeRation),
-      decoration: BoxDecoration(
-          color: Colors.orange.shade50,
-          borderRadius: BorderRadius.circular(10)),
+      decoration: BoxDecoration(boxShadow: [
+        BoxShadow(color: Colors.black12, blurRadius: 10, offset: Offset(0, 10))
+      ], color: Colors.orange.shade50, borderRadius: BorderRadius.circular(10)),
       child: Row(
         children: [
           Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle, color: Colors.white,
+
               //image: DecorationImage(image: AssetImage('assets/user-avatar.png'))
             ),
             margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),

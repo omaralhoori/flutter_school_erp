@@ -35,11 +35,17 @@ class HomeViewModel extends BaseViewModel {
   List<dynamic>? _offClasses = [];
   List<dynamic>? _offSections = [];
 
-
   ParentPayment? parentPayment;
   Parent? parentData;
   int unreadDM = 0;
   int unreadGM = 0;
+
+  bool _isTeacherRegistered = false;
+  bool get isTeacherRegistered => _isTeacherRegistered;
+  set isTeacherRegistered(bool val) {
+    this._isTeacherRegistered = val;
+    notifyListeners();
+  }
 
   bool _filterOn = false;
   bool get filterOn => _filterOn;
@@ -48,25 +54,39 @@ class HomeViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  Future<bool> loginTeacher(String pwd) async {
+    try {
+      bool isLogined = await locator<Api>().loginTeacher(pwd);
+      isTeacherRegistered = isLogined;
+      return isLogined;
+    } catch (e) {
+      return false;
+    }
+  }
+
   HomeViewModel() {
     getParentData().then((value) {
       getAlbums().then((value) async {
         getRankListItems();
-        List<dynamic>? _offBranches = (await OfflineStorage.getItem("branches")['data']) ?? (await locator<Api>().getSchoolBranches());
-        _offClasses = (await OfflineStorage.getItem("classes")['data']) ?? (await locator<Api>().getSchoolClasses());
-        _offSections = (await OfflineStorage.getItem("sections")['data']) ?? (await locator<Api>().getSchoolSections());
+        List<dynamic>? _offBranches =
+            (await OfflineStorage.getItem("branches")['data']) ??
+                (await locator<Api>().getSchoolBranches());
+        _offClasses = (await OfflineStorage.getItem("classes")['data']) ??
+            (await locator<Api>().getSchoolClasses());
+        _offSections = (await OfflineStorage.getItem("sections")['data']) ??
+            (await locator<Api>().getSchoolSections());
         Map<String, String> _mapBranches = {};
         _offBranches!.forEach((element) {
           _mapBranches[element['name']] = element['branch_name'];
         });
         _branches = List.generate(
-            branchList.length,
-                (index) => RankModel(
-                  code: branchList[index],
-                  text: _mapBranches[branchList[index]]!,
-                  rankType: RankType.Branch,
-                  isSelected: false,
-                ),
+          branchList.length,
+          (index) => RankModel(
+            code: branchList[index],
+            text: _mapBranches[branchList[index]]!,
+            rankType: RankType.Branch,
+            isSelected: false,
+          ),
         );
       });
     });
@@ -324,7 +344,7 @@ class HomeViewModel extends BaseViewModel {
     Widget alert = StatefulBuilder(
       builder: (context, setState) {
         return WillPopScope(
-          onWillPop: () async{
+          onWillPop: () async {
             filterOn = false;
             _branches.forEach((element) {
               element.isSelected = false;
@@ -348,33 +368,33 @@ class HomeViewModel extends BaseViewModel {
                       children: List.generate(
                           _branches.length,
                           (i) => Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Checkbox(
-                                value: _branches[i].isSelected,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _branches[i].isSelected =
-                                        !_branches[i].isSelected;
-                                    filterChanged(_branches[i]);
-                                  });
-                                },
-                              ),
-                              GestureDetector(
-                                onTap: (){
-                                  setState(() {
-                                    _branches[i].isSelected =
-                                    !_branches[i].isSelected;
-                                    filterChanged(_branches[i]);
-                                  });
-                                },
-                                child: Text(
-                                  _branches[i].text,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ],
-                          )),
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Checkbox(
+                                    value: _branches[i].isSelected,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _branches[i].isSelected =
+                                            !_branches[i].isSelected;
+                                        filterChanged(_branches[i]);
+                                      });
+                                    },
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        _branches[i].isSelected =
+                                            !_branches[i].isSelected;
+                                        filterChanged(_branches[i]);
+                                      });
+                                    },
+                                    child: Text(
+                                      _branches[i].text,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              )),
                     ),
                     if (_classes.isNotEmpty) Text(tr('Class: ')),
                     if (_classes.isNotEmpty)
@@ -383,30 +403,31 @@ class HomeViewModel extends BaseViewModel {
                         children: List.generate(
                             _classes.length,
                             (i) => Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Checkbox(
-                                  value: _classes[i].isSelected,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _classes[i].isSelected =
-                                          !_classes[i].isSelected;
-                                      filterChanged(_classes[i]);
-                                    });
-                                  },
-                                ),
-                                GestureDetector(
-                                  onTap: (){
-                                    setState(() {
-                                      _classes[i].isSelected =
-                                      !_classes[i].isSelected;
-                                      filterChanged(_classes[i]);
-                                    });
-                                  },
-                                  child: Text(_classes[i].text, overflow: TextOverflow.ellipsis),
-                                ),
-                              ],
-                            )),
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Checkbox(
+                                      value: _classes[i].isSelected,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _classes[i].isSelected =
+                                              !_classes[i].isSelected;
+                                          filterChanged(_classes[i]);
+                                        });
+                                      },
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          _classes[i].isSelected =
+                                              !_classes[i].isSelected;
+                                          filterChanged(_classes[i]);
+                                        });
+                                      },
+                                      child: Text(_classes[i].text,
+                                          overflow: TextOverflow.ellipsis),
+                                    ),
+                                  ],
+                                )),
                       ),
                     if (_sections.isNotEmpty) Text(tr('Section: ')),
                     if (_sections.isNotEmpty)
@@ -415,30 +436,31 @@ class HomeViewModel extends BaseViewModel {
                         children: List.generate(
                             _sections.length,
                             (i) => Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Checkbox(
-                                  value: _sections[i].isSelected,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _sections[i].isSelected =
-                                          !_sections[i].isSelected;
-                                      filterChanged(_sections[i]);
-                                    });
-                                  },
-                                ),
-                                GestureDetector(
-                                  onTap: (){
-                                    setState(() {
-                                      _sections[i].isSelected =
-                                      !_sections[i].isSelected;
-                                      filterChanged(_sections[i]);
-                                    });
-                                  },
-                                  child: Text(_sections[i].text, overflow: TextOverflow.ellipsis),
-                                ),
-                              ],
-                            )),
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Checkbox(
+                                      value: _sections[i].isSelected,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _sections[i].isSelected =
+                                              !_sections[i].isSelected;
+                                          filterChanged(_sections[i]);
+                                        });
+                                      },
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          _sections[i].isSelected =
+                                              !_sections[i].isSelected;
+                                          filterChanged(_sections[i]);
+                                        });
+                                      },
+                                      child: Text(_sections[i].text,
+                                          overflow: TextOverflow.ellipsis),
+                                    ),
+                                  ],
+                                )),
                       ),
                   ],
                 ),
@@ -470,7 +492,7 @@ class HomeViewModel extends BaseViewModel {
         if (album.classCode != null) {
           if (!classList.contains(album.classCode) && rank.isSelected) {
             classList.add(album.classCode!);
-          }else {
+          } else {
             classList.remove(album.classCode);
           }
         }
@@ -480,17 +502,14 @@ class HomeViewModel extends BaseViewModel {
       _offClasses!.forEach((element) {
         _mapClasses[element['name']] = element['class_name'];
       });
-      _classes = List.generate(
-          classList.length,
-          (index) {
-            return RankModel(
+      _classes = List.generate(classList.length, (index) {
+        return RankModel(
             code: classList[index],
-              text: _mapClasses[classList[index]]!,
-              rankType: RankType.Class,
-              isSelected: false);
-          });
-    }
-    else if (rank.rankType == RankType.Class) {
+            text: _mapClasses[classList[index]]!,
+            rankType: RankType.Class,
+            isSelected: false);
+      });
+    } else if (rank.rankType == RankType.Class) {
       List<Album> a = [
         ...albums.where((element) => element.classCode == rank.code).toList(),
         ...parentAlbums
@@ -501,7 +520,7 @@ class HomeViewModel extends BaseViewModel {
         if (album.section != null) {
           if (!sectionList.contains(album.section!) && rank.isSelected) {
             sectionList.add(album.section!);
-          }else{
+          } else {
             sectionList.remove(album.section!);
           }
         }
@@ -514,12 +533,13 @@ class HomeViewModel extends BaseViewModel {
       _sections = List.generate(
           sectionList.length,
           (index) => RankModel(
-            code: sectionList[index],
+              code: sectionList[index],
               text: _mapSections[sectionList[index]]!,
               rankType: RankType.Section,
               isSelected: false));
     }
-    bool branchEmpty = _branches.where((element) => element.isSelected).toList().isEmpty;
+    bool branchEmpty =
+        _branches.where((element) => element.isSelected).toList().isEmpty;
     if (branchEmpty) {
       _classes.clear();
       classList.clear();

@@ -491,6 +491,36 @@ class DioApi implements Api {
     return null;
   }
 
+  Future<Map?> getUserType() async {
+    if (DioHelper.dio != null) {
+      final response = await DioHelper.dio!.post(
+          '/method/mobile_backend.mobile_backend.user.get_user_type',
+          data: {},
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+
+      if (response.statusCode == 200) {
+        return response.data["message"];
+      } else {
+        throw Exception('Something went wrong');
+      }
+    }
+    return null;
+  }
+
+  Future<bool> loginTeacher(String password) async {
+    if (DioHelper.dio != null) {
+      final response = await DioHelper.dio!.post(
+          '/method/mobile_backend.mobile_backend.doctype.school_teacher.school_teacher.login_teacher',
+          data: {"pwd": password},
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+
+      if (response.statusCode == 200) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   Future<UpdateProfileResponse> updateUserProfile(UserData userData) async {
     if (DioHelper.dio != null) {
       final response = await DioHelper.dio!.post(
