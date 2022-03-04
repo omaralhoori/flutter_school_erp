@@ -89,6 +89,11 @@ class LoginViewModel extends BaseViewModel {
             );
           }
         }
+        Map? userType = await locator<Api>().getUserType();
+        if (userType != null) {
+          Config.set('isTeacher', userType["teacher"] ?? false);
+          Config.set('isParent', userType["parent"] ?? false);
+        }
         await updateDeviceToken();
         await DioHelper.initCookies();
 

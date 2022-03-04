@@ -15,56 +15,55 @@ class AlbumCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(0.0),
-      ),
-      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-      width: size.width,
-      child: InkWell(
-        splashColor: Colors.blue.withAlpha(30),
-        onTap: () {
-          // TODO(ac01): Add new page to show comments and News details
-          if (album.isViewed == 0) {
-            try {
-              locator<Api>().contentView(album.name, '');
-              album.isViewed = 1;
-              album.views++;
-            } catch (e) {}
-          }
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => AlbumPreviewView(
-                        album: album,
-                      )));
-
-
-        },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: 140.0,
-              height: 140.0,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30.0),
-                image: DecorationImage(
-                    image: CachedNetworkImageProvider(
-                        Config.baseUrl + this.album.fileUrl.split(',').first),
-                    fit: BoxFit.fill),
+    final double cellSized = 120; //(size.width / (size.width / 180.0)) - 60;
+    return InkWell(
+      splashColor: Colors.blue.withAlpha(30),
+      onTap: () {
+        // TODO(ac01): Add new page to show comments and News details
+        if (album.isViewed == 0) {
+          try {
+            locator<Api>().contentView(album.name, '');
+            album.isViewed = 1;
+            album.views++;
+          } catch (e) {}
+        }
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => AlbumPreviewView(
+                      album: album,
+                    )));
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: SingleChildScrollView(
+          physics: NeverScrollableScrollPhysics(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                padding: EdgeInsets.all(5),
+                width: cellSized,
+                height: cellSized,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(cellSized / 4),
+                  image: DecorationImage(
+                      image: CachedNetworkImageProvider(
+                          Config.baseUrl + this.album.fileUrl.split(',').first),
+                      fit: BoxFit.fill),
+                ),
               ),
-            ),
-            SizedBox(height: 3.0,),
-            SizedBox(
-              width: 140.0,
-              child: Row(
+              SizedBox(
+                height: 10,
+              ),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    width: 17.0,
-                    height: 17.0,
+                    // width: cellSized / 7,
+                    // height: cellSized / 7,
+                    padding: EdgeInsets.symmetric(vertical: 2, horizontal: 4),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                         color: Palette.appBarIconsColor.withOpacity(0.3),
@@ -75,15 +74,20 @@ class AlbumCard extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                   ),
-                  SizedBox(width: 15,),
-                  Text(
-                    this.album.title,
-                    style: Theme.of(context).textTheme.bodyText1,
+                  SizedBox(
+                    width: cellSized / 8,
+                  ),
+                  Flexible(
+                    child: Text(
+                      this.album.title,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
                   ),
                 ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

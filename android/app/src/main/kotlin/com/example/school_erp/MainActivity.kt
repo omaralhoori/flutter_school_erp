@@ -1,4 +1,4 @@
-package com.example.school_erp
+package com.alfityan.school
 
 import io.flutter.embedding.android.FlutterActivity
 

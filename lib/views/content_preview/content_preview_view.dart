@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:school_erp/app/locator.dart';
 import 'package:school_erp/config/palette.dart';
 import 'package:school_erp/model/content.dart';
+import 'package:school_erp/storage/config.dart';
 import 'package:school_erp/utils/frappe_alert.dart';
 import 'package:school_erp/views/base_view.dart';
 import 'package:school_erp/views/content_preview/content_preview_viewmodel.dart';
@@ -47,7 +49,7 @@ class _ContentPreviewViewState extends State<ContentPreviewView> {
               Expanded(
                   child: RefreshIndicator(
                 onRefresh: () async {
-                  await model.fetchComments(content);
+                  await model.fetchComments(content.name, content.contentType);
                   setState(() {});
                 },
                 child: SingleChildScrollView(
@@ -69,10 +71,13 @@ class _ContentPreviewViewState extends State<ContentPreviewView> {
                       if (content.fileUrl != '')
                         CustomSlider(filesUrl: content.fileUrl.split(',')),
                       Divider(),
-                      PostButtons(content: content,),
+                      PostButtons(
+                        content: content,
+                      ),
                       Divider(),
                       FutureBuilder(
-                          future: model.fetchComments(content),
+                          future: model.fetchComments(
+                              content.name, content.contentType),
                           builder: (context, snapshot) {
                             return snapshot.hasData
                                 ? ListView.builder(
@@ -87,6 +92,8 @@ class _ContentPreviewViewState extends State<ContentPreviewView> {
                                         senderName:
                                             model.comments[index].userName,
                                         comment: model.comments[index].comment,
+                                        userImage:
+                                            model.comments[index].userImage,
                                       );
                                     })
                                 : CircularProgressIndicator();
@@ -122,8 +129,8 @@ class _ContentPreviewViewState extends State<ContentPreviewView> {
                               var formValue = _fbKey.currentState!.value;
                               String comment = formValue["message"] ?? '';
                               if (comment == '') return;
-                              bool result =
-                                  await model.addComment(content, comment);
+                              bool result = await model.addComment(
+                                  content.name, content.contentType, comment);
                               if (!result) {
                                 FrappeAlert.errorAlert(
                                     title: tr("Something went wrong"),
@@ -160,28 +167,58 @@ class _ContentPreviewViewState extends State<ContentPreviewView> {
 }
 
 class CommentItem extends StatelessWidget {
-  const CommentItem({Key? key, required this.comment, required this.senderName})
+  const CommentItem(
+      {Key? key,
+      required this.comment,
+      required this.senderName,
+      this.userImage})
       : super(key: key);
   final String senderName;
   final String comment;
+  final String? userImage;
   @override
   Widget build(BuildContext context) {
     return Card(
       child: Container(
         padding: EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
           children: [
             Container(
-              child: Text(
-                senderName,
-                style: TextStyle(fontSize: 16),
+              margin: EdgeInsets.symmetric(horizontal: 10),
+              child: ClipOval(
+                child: (userImage != null && userImage != "")
+                    ? CachedNetworkImage(
+                        fit: BoxFit.cover,
+                        width: 50,
+                        height: 50,
+                        imageUrl: Config.baseUrl + userImage!)
+                    : Image(
+                        fit: BoxFit.cover,
+                        width: 50,
+                        height: 50,
+                        image: AssetImage("assets/user-avatar.png"),
+                      ),
               ),
             ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              child: Text(comment),
-            )
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    child: Text(
+                      senderName,
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: Text(
+                      comment,
+                    ),
+                  )
+                ],
+              ),
+            ),
           ],
         ),
       ),

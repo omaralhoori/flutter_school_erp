@@ -102,35 +102,39 @@ class _StudentRefreshState extends State<StudentRefresh> {
 class ParentCard extends StatelessWidget {
   final Parent parent;
   ParentCard({Key? key, required this.parent}) : super(key: key);
-  String? userImage = OfflineStorage.getItem("userImage")["data"];
+  final String? userImage = OfflineStorage.getItem("userImage")["data"];
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double imagesSize = width > 360 ? 100 : 75;
+    double edgeRation = width > 360 ? 1 : 2;
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 30),
-      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      decoration: BoxDecoration(
-          color: Colors.orange.shade50,
-          borderRadius: BorderRadius.circular(10)),
+      margin: EdgeInsets.symmetric(horizontal: 30 / edgeRation),
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20 / edgeRation),
+      decoration: BoxDecoration(boxShadow: [
+        BoxShadow(color: Colors.black12, blurRadius: 10, offset: Offset(0, 10))
+      ], color: Colors.orange.shade50, borderRadius: BorderRadius.circular(10)),
       child: Row(
         children: [
           Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle, color: Colors.white,
+
               //image: DecorationImage(image: AssetImage('assets/user-avatar.png'))
             ),
             margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             child: userImage == null
                 ? Image(
                     fit: BoxFit.fill,
-                    width: 100,
-                    height: 100,
+                    width: imagesSize,
+                    height: imagesSize,
                     image: AssetImage('assets/user-avatar.png'),
                   )
                 : ClipOval(
                     child: CachedNetworkImage(
                         fit: BoxFit.cover,
-                        width: 100,
-                        height: 100,
+                        width: imagesSize,
+                        height: imagesSize,
                         imageUrl: Config.baseUrl + userImage!),
                   ),
           ),
@@ -195,7 +199,7 @@ class StudentCard extends StatelessWidget {
                             fit: BoxFit.contain,
                             alignment: Alignment.centerRight,
                             image: AssetImage(
-                                'assets/students_images/${gender}${photoNum}.png')),
+                                'assets/students_images/$gender$photoNum.png')),
                         borderRadius: BorderRadius.circular(8),
                         boxShadow: [
                           BoxShadow(

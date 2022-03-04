@@ -98,5 +98,17 @@
   "Other albums": "Other albums",
   "Welcome to our school.": "Welcome to our school.",
   "Lets get you started!": "Let's get you started!",
-  "Mobile no": "Mobile no"
+  "Mobile no": "Mobile no",
+  "Cancel": "Cancel",
+  "Confirm": "Confirm",
+  "Filter": "Filter",
+  "Camera": "Camera",
+  "This option will remove all devices registered to this account from receiving notifications.": "This option will remove all devices registered to this account from receiving notifications.",
+  "Remove all devices.": "Remove all devices.",
+  "Warning": "Warning",
+  "All your registered devices will not receive notifications unless you signed in again.\nDo you want to proceed?": "All your registered devices will not receive notifications unless you signed in again.\nDo you want to proceed?",
+  "Continue": "Continue",
+  "All devices removed": "All devices removed",
+  "Password is not correct!": "Password is not correct!",
+  "Teacher": "Teacher"
 }

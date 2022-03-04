@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:school_erp/config/palette.dart';
+import 'package:school_erp/model/messaging/message.dart';
 import 'package:school_erp/storage/config.dart';
 import 'package:school_erp/utils/navigation_helper.dart';
 import 'package:school_erp/views/base_view.dart';
@@ -23,11 +24,6 @@ class _DirectMessagesViewState extends State<DirectMessagesView> {
     return BaseView<MessagingViewModel>(onModelReady: (model) async {
       await model.init();
     }, builder: (context, model, child) {
-      Future<void> onrefresh() async {
-        await model.getDirectMessages();
-        setState(() {});
-      }
-
       return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -41,36 +37,9 @@ class _DirectMessagesViewState extends State<DirectMessagesView> {
             future: model.getDirectMessages(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return RefreshIndicator(
-                  onRefresh: onrefresh,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 16, right: 16, top: 10),
-                    child: ListView.builder(
-                      itemCount: model.directMessages.length,
-                      itemBuilder: (context, index) {
-                        int unreadMessage = 0;
-                        for (var replay
-                            in model.directMessages[index].replies) {
-                          if (replay.isAdministration == 1 &&
-                              replay.isRead == 0) {
-                            unreadMessage += 1;
-                          }
-                        }
-                        return MessageGesture(
-                          name: model.directMessages[index].name,
-                          title: model.directMessages[index].title,
-                          postTime: model.directMessages[index].creation,
-                          message: model
-                                  .directMessages[index].replies.isNotEmpty
-                              ? model.directMessages[index].replies.last.message
-                              : "",
-                          isRead: unreadMessage == 0,
-                          unreadMessages: unreadMessage,
-                          thumbnail: model.directMessages[index].thumbnail,
-                        );
-                      },
-                    ),
-                  ),
+                return MessagesRefresh(
+                  onRefresh: model.getDirectMessages,
+                  messages: model.directMessages,
                 );
               } else {
                 return Center(child: CircularProgressIndicator());
@@ -78,6 +47,53 @@ class _DirectMessagesViewState extends State<DirectMessagesView> {
             }),
       );
     });
+  }
+}
+
+class MessagesRefresh extends StatefulWidget {
+  const MessagesRefresh(
+      {Key? key, required this.onRefresh, required this.messages})
+      : super(key: key);
+  final List<Message> messages;
+  final Future Function() onRefresh;
+  @override
+  _MessagesRefreshState createState() => _MessagesRefreshState();
+}
+
+class _MessagesRefreshState extends State<MessagesRefresh> {
+  @override
+  Widget build(BuildContext context) {
+    return RefreshIndicator(
+      onRefresh: () async {
+        await widget.onRefresh();
+        setState(() {});
+      },
+      child: Padding(
+        padding: EdgeInsets.only(left: 16, right: 16, top: 10),
+        child: ListView.builder(
+          itemCount: widget.messages.length,
+          itemBuilder: (context, index) {
+            int unreadMessage = 0;
+            for (var replay in widget.messages[index].replies) {
+              if (replay.isAdministration == 1 && replay.isRead == 0) {
+                unreadMessage += 1;
+              }
+            }
+            return MessageGesture(
+              name: widget.messages[index].name,
+              title: widget.messages[index].title,
+              postTime: widget.messages[index].creation,
+              message: widget.messages[index].replies.isNotEmpty
+                  ? widget.messages[index].replies.last.message
+                  : "",
+              isRead: unreadMessage == 0,
+              unreadMessages: unreadMessage,
+              thumbnail: widget.messages[index].thumbnail,
+            );
+          },
+        ),
+      ),
+    );
   }
 }
 
@@ -127,7 +143,7 @@ class MessageGesture extends StatelessWidget {
                     child: (thumbnail == null || thumbnail == "")
                         ? Image(
                             image: AssetImage(
-                                'assets/message_thumbnails/${imageNum}.png'))
+                                'assets/message_thumbnails/$imageNum.png'))
                         : CachedNetworkImage(
                             imageUrl: Config.baseUrl + thumbnail!),
                   ),
