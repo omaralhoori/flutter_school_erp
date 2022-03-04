@@ -1,9 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:school_erp/model/parent/student.dart';
 import 'package:school_erp/config/palette.dart';
 import 'package:school_erp/utils/navigation_helper.dart';
 import 'package:school_erp/views/base_view.dart';
+import 'package:school_erp/views/degree/degree_view.dart';
 import 'package:school_erp/views/messaging/group_messages_view.dart';
 import 'package:school_erp/views/payment/student_payment_view.dart';
 import 'package:school_erp/views/student/student_viewmodel.dart';
@@ -70,6 +72,16 @@ class _StudentViewState extends State<StudentView> {
                                       studentNo: student.no));
                             },
                           ),
+                          StudentTool(
+                            icon: FontAwesomeIcons.graduationCap,
+                            backgroundColor: Colors.redAccent.shade100,
+                            title: tr("Degrees"),
+                            onTab: () {
+                              NavigationHelper.push(
+                                  context: context,
+                                  page: DegreeView(student: student));
+                            },
+                          ),
                         ],
                       )
                     ],
@@ -108,8 +120,7 @@ class StudentInfoCard extends StatelessWidget {
         image: DecorationImage(
             fit: BoxFit.contain,
             alignment: Alignment.centerRight,
-            image:
-                AssetImage('assets/students_images/$gender$photoNum.png')),
+            image: AssetImage('assets/students_images/$gender$photoNum.png')),
       ),
       child: Column(
         children: [

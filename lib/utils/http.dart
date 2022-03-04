@@ -74,10 +74,11 @@ String getAbsoluteUrl(String url) {
 
 Future<File?> downloadFile(String url, String name) async {
   //if(Platform.isIOS) return null;
-  final appStorage =
-      await getApplicationDocumentsDirectory(); //await getExternalStorageDirectory();
+  final appStorage = await getApplicationDocumentsDirectory();
+  // await getApplicationDocumentsDirectory(); //await getExternalStorageDirectory();
   //if (appStorage == null) return;
-  final file = File('${appStorage.path}/$name');
+  final path = appStorage.path;
+  final file = File('${path}/$name');
   try {
     final response = await DioHelper.dio!.get(url,
         options: Options(
