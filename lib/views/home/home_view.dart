@@ -52,24 +52,29 @@ class _HomeViewState extends State<HomeView> {
                       floating: false,
                       pinned: false,
                       flexibleSpace: FlexibleSpaceBar(
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                                width: 35.0,
-                                height: 20.0,
-                                child: Image.asset("assets/app_logo.png")),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 4.0, top: 3.0, right: 4.0),
-                              child: Text(
-                                tr("Alfityan School"),
-                                style: TextStyle(
-                                    color: Palette.appBarIconsColor,
-                                    fontSize: 13),
+                        title: Container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                  width: 25.0,
+                                  height: 25.0,
+                                  child: Image.asset("assets/app_logo.png")),
+                              Flexible(
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                      left: 2, right: 2, top: 4),
+                                  child: Text(
+                                    tr("Retaal International Academy"),
+                                    style: TextStyle(
+                                        color: Palette.appBarIconsColor,
+                                        fontSize: 13),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                         titlePadding: EdgeInsets.only(bottom: 13.0),
                       ),

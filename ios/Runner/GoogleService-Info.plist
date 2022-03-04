@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.alfityan.school</string>
+	<string>com.retaal.academy</string>
 	<key>PROJECT_ID</key>
 	<string>school-erp-baff3</string>
 	<key>STORAGE_BUCKET</key>

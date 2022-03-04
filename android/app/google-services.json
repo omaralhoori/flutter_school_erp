@@ -1,77 +1,34 @@
 {
   "project_info": {
-    "project_number": "438822645350",
-    "project_id": "school-erp-baff3",
-    "storage_bucket": "school-erp-baff3.appspot.com"
+    "project_number": "788790788139",
+    "project_id": "retaal-academy",
+    "storage_bucket": "retaal-academy.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:438822645350:android:2452dd320f112b297ec7a7",
+        "mobilesdk_app_id": "1:788790788139:android:bfe50dfef377dd53822a6e",
         "android_client_info": {
-          "package_name": "com.alfityan.school"
+          "package_name": "com.retaal.academy"
         }
       },
       "oauth_client": [
         {
-          "client_id": "438822645350-r08c3vtorr39cah6aqm18tceaqrlg19s.apps.googleusercontent.com",
+          "client_id": "788790788139-gpi1pamvgu4i3087r0hr9g2h9n4q9v1i.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDlAOF6NVFIaz7fYBtxe_NqkotzPE3OkiQ"
+          "current_key": "AIzaSyD_ipcDMu03CS8vgT2Z2-3h-u3JgdNjMJI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "438822645350-r08c3vtorr39cah6aqm18tceaqrlg19s.apps.googleusercontent.com",
+              "client_id": "788790788139-gpi1pamvgu4i3087r0hr9g2h9n4q9v1i.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "438822645350-kbv48lv126ueshh2vtrlpaotmicemppd.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.schoolErp"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:438822645350:android:6fc636e4fa5724007ec7a7",
-        "android_client_info": {
-          "package_name": "com.example.school_erp"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "438822645350-r08c3vtorr39cah6aqm18tceaqrlg19s.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDlAOF6NVFIaz7fYBtxe_NqkotzPE3OkiQ"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "438822645350-r08c3vtorr39cah6aqm18tceaqrlg19s.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "438822645350-kbv48lv126ueshh2vtrlpaotmicemppd.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.schoolErp"
-              }
             }
           ]
         }

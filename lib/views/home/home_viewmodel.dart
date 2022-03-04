@@ -166,6 +166,7 @@ class HomeViewModel extends BaseViewModel {
         }
       }
     } catch (dioError) {
+      print(dioError);
       this.contentList = PostsStorage.getContents();
       // if (snapshot["data"] is List) {
       //   Iterable i = snapshot["data"];

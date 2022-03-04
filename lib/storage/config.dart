@@ -33,7 +33,7 @@ class Config {
 
   // String? get baseUrl => configContainer.get('baseUrl');
   static String get baseUrl =>
-      "http://192.168.1.107:8000"; //  "http://185.230.138.118:8000";
+      "http://185.230.138.118:8001"; //   "http://192.168.1.107:8000";
 
   Uri? get uri {
     return Uri.parse(baseUrl);
