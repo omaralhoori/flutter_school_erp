@@ -868,6 +868,23 @@ class DioApi implements Api {
     }
   }
 
+  Future<dynamic?> getDegreeSettings() async {
+    if (DioHelper.dio != null) {
+      try {
+        final response = await DioHelper.dio!.post(
+            '/method/mobile_backend.mobile_backend.doctype.school_degree_report_settings.school_degree_report_settings.get_degree_settings',
+            data: {},
+            options: Options(contentType: Headers.formUrlEncodedContentType));
+        if (response.statusCode == 200) {
+          return response.data["message"];
+        }
+      } catch (e) {
+        print(e);
+      }
+    }
+    return null;
+  }
+
   Future<ParentPayment?> getParentPayments(String? studentNo) async {
     var data = {};
     if (studentNo != null) {

@@ -110,5 +110,19 @@
   "Continue": "Continue",
   "All devices removed": "All devices removed",
   "Password is not correct!": "Password is not correct!",
-  "Teacher": "Teacher"
+  "Teacher": "Teacher",
+
+  "Degrees": "Degrees",
+  "First Semester": "First Semester",
+  "Second Semester": "Second Semester",
+  "All Semesters": "All Semesters",
+  "First Period": "First Period",
+  "Second Period": "Second Period",
+  "Third Period": "Third Period",
+  "Fourth Period": "Fourth Period",
+  "Semesters": "Semesters",
+  "Periods": "Periods",
+  "Arabic": "Arabic",
+  "English": "English",
+  "Download":"Download"
 }

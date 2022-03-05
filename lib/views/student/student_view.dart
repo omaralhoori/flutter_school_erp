@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:school_erp/model/parent/student.dart';
 import 'package:school_erp/config/palette.dart';
+import 'package:school_erp/storage/offline_storage.dart';
 import 'package:school_erp/utils/navigation_helper.dart';
 import 'package:school_erp/views/base_view.dart';
 import 'package:school_erp/views/degree/degree_view.dart';
@@ -19,6 +20,7 @@ class StudentView extends StatefulWidget {
 
 class _StudentViewState extends State<StudentView> {
   final Student student;
+
   _StudentViewState({required this.student});
   @override
   Widget build(BuildContext context) {
@@ -72,16 +74,17 @@ class _StudentViewState extends State<StudentView> {
                                       studentNo: student.no));
                             },
                           ),
-                          StudentTool(
-                            icon: FontAwesomeIcons.graduationCap,
-                            backgroundColor: Colors.redAccent.shade100,
-                            title: tr("Degrees"),
-                            onTab: () {
-                              NavigationHelper.push(
-                                  context: context,
-                                  page: DegreeView(student: student));
-                            },
-                          ),
+                          if (renderDegreesTool(student.no))
+                            StudentTool(
+                              icon: FontAwesomeIcons.graduationCap,
+                              backgroundColor: Colors.redAccent.shade100,
+                              title: tr("Degrees"),
+                              onTab: () {
+                                NavigationHelper.push(
+                                    context: context,
+                                    page: DegreeView(student: student));
+                              },
+                            ),
                         ],
                       )
                     ],
@@ -92,6 +95,21 @@ class _StudentViewState extends State<StudentView> {
           ));
     });
   }
+}
+
+bool renderDegreesTool(String studentNo) {
+  var degreeSettings = OfflineStorage.getItem("degreeSettings")["data"];
+  bool render = false;
+  if (degreeSettings != null) {
+    for (var student in degreeSettings["students"]) {
+      if (studentNo == student["student_no"]) {
+        if (student["degree_report"] == 1) render = true;
+        break;
+      }
+    }
+  }
+
+  return render;
 }
 
 class StudentInfoCard extends StatelessWidget {

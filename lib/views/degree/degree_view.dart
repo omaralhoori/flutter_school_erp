@@ -5,8 +5,10 @@ import 'package:school_erp/app/locator.dart';
 import 'package:school_erp/config/palette.dart';
 import 'package:school_erp/form/controls/control.dart';
 import 'package:school_erp/model/doctype_response.dart';
+import 'package:school_erp/model/parent/parent.dart';
 import 'package:school_erp/model/parent/student.dart';
 import 'package:school_erp/services/api/api.dart';
+import 'package:school_erp/storage/offline_storage.dart';
 import 'package:school_erp/utils/enums.dart';
 import 'package:school_erp/utils/frappe_alert.dart';
 import 'package:school_erp/widgets/frappe_button.dart';
@@ -21,6 +23,8 @@ class DegreeView extends StatefulWidget {
 
 class _DegreeViewState extends State<DegreeView> {
   final Student student;
+  List<FormBuilderFieldOption> semesterOptions = getSemesterFormOptions();
+  List<FormBuilderFieldOption> periodOptions = getPeriodFormOptions();
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
   _DegreeViewState({required this.student});
   @override
@@ -46,21 +50,17 @@ class _DegreeViewState extends State<DegreeView> {
                   children: [
                     buildDecoratedControl(
                       control: FormBuilderRadioGroup(
-                          options: [
-                            FormBuilderFieldOption(
-                              value: tr("First Semester"),
-                            ),
-                            FormBuilderFieldOption(
-                              value: tr("Second Semester"),
-                            ),
-                            FormBuilderFieldOption(
-                              value: tr("All Semesters"),
-                            ),
-                          ],
+                          options: semesterOptions,
                           name: 'semesters',
                           validator: FormBuilderValidators.compose([
                             FormBuilderValidators.required(context),
                           ]),
+                          onChanged: (dynamic value) {
+                            setState(() {
+                              periodOptions =
+                                  getPeriodFormOptions(semester: value);
+                            });
+                          },
                           decoration: Palette.formFieldDecoration(
                             label: tr("Semesters"),
                           )),
@@ -69,23 +69,7 @@ class _DegreeViewState extends State<DegreeView> {
                     ),
                     buildDecoratedControl(
                       control: FormBuilderRadioGroup(
-                          options: [
-                            FormBuilderFieldOption(
-                              value: tr("First Period"),
-                            ),
-                            FormBuilderFieldOption(
-                              value: tr("Second Period"),
-                            ),
-                            FormBuilderFieldOption(
-                              value: tr("Third Period"),
-                            ),
-                            FormBuilderFieldOption(
-                              value: tr("Fourth Period"),
-                            ),
-                            FormBuilderFieldOption(
-                              value: tr("All Periods"),
-                            ),
-                          ],
+                          options: periodOptions,
                           name: 'periods',
                           validator: FormBuilderValidators.compose([
                             FormBuilderValidators.required(context),
@@ -125,14 +109,17 @@ class _DegreeViewState extends State<DegreeView> {
                         if (_fbKey.currentState != null) {
                           if (_fbKey.currentState!.saveAndValidate()) {
                             var formValue = _fbKey.currentState?.value;
-
-                            if (formValue == null) {
+                            Parent parentData =
+                                OfflineStorage.getItem("parent")["data"]
+                                    as Parent;
+                            if (formValue == null || parentData == null) {
                               return FrappeAlert.errorAlert(
-                                title: tr("Missing value"),
+                                title: tr("Missing data"),
                                 subtitle: tr("Something went wrong!"),
                                 context: context,
                               );
                             }
+
                             String semester =
                                 getSemester(formValue['semesters']);
                             String period = getPeriod(formValue['periods']);
@@ -141,15 +128,15 @@ class _DegreeViewState extends State<DegreeView> {
                                 formValue['language'], semester, period);
                             locator<Api>().downloadDegreesPdf(
                                 report: report,
-                                currentYear: "2020",
+                                currentYear: parentData.yearName.split("/")[0],
                                 allPeriods: allPeriods,
-                                classNo: "014",
-                                divisionNo: "001",
-                                branchNo: "01",
+                                classNo: widget.student.classCode,
+                                divisionNo: widget.student.sectionCode,
+                                branchNo: parentData.branchCode,
                                 period: period,
                                 semester: semester,
-                                contractNo: "2020/00015",
-                                studentNo: "2");
+                                contractNo: parentData.contractNo,
+                                studentNo: student.no);
                           }
                         }
                       },
@@ -161,6 +148,104 @@ class _DegreeViewState extends State<DegreeView> {
       ),
     );
   }
+}
+
+List<FormBuilderFieldOption> getSemesterFormOptions() {
+  List<FormBuilderFieldOption> options = [];
+  var degreeSettings = OfflineStorage.getItem("degreeSettings")["data"];
+  bool allSemesters = true;
+  if (degreeSettings != null) {
+    if (degreeSettings["first_semester"] != null &&
+        degreeSettings["first_semester"]["first_semester"] == 1)
+      options.add(FormBuilderFieldOption(
+        value: tr("First Semester"),
+      ));
+    else
+      allSemesters = false;
+    if (degreeSettings["second_semester"] != null &&
+        degreeSettings["second_semester"]["second_semester"] == 1)
+      options.add(FormBuilderFieldOption(
+        value: tr("Second Semester"),
+      ));
+    else
+      allSemesters = false;
+  } else
+    allSemesters = false;
+  if (allSemesters) {
+    options.add(FormBuilderFieldOption(
+      value: tr("All Semesters"),
+    ));
+  }
+  return options;
+}
+
+List<FormBuilderFieldOption> getPeriodFormOptions({dynamic semester}) {
+  List<FormBuilderFieldOption> options = [];
+  var degreeSettings = OfflineStorage.getItem("degreeSettings")["data"];
+  String selectedSemester = "";
+  if (semester != null) {
+    if (semester == tr("First Semester"))
+      selectedSemester = "first";
+    else if (semester == tr("Second Semester"))
+      selectedSemester = "second";
+    else
+      selectedSemester = "all";
+  }
+  if (degreeSettings != null) {
+    if (selectedSemester != "" && selectedSemester != "all") {
+      if (degreeSettings['${selectedSemester}_semester'] != null &&
+          degreeSettings['${selectedSemester}_semester']
+                  ['${selectedSemester}_semester'] ==
+              1) {
+        options = getPeriods(degreeSettings, selectedSemester);
+      }
+    } else {
+      if (degreeSettings['second_semester'] != null &&
+          degreeSettings['second_semester']['second_semester'] == 1) {
+        options = getPeriods(degreeSettings, "second");
+      } else if (degreeSettings['first_semester'] != null &&
+          degreeSettings['first_semester']['first_semester'] == 1) {
+        options = getPeriods(degreeSettings, "first");
+      }
+    }
+  }
+  return options;
+}
+
+List<FormBuilderFieldOption> getPeriods(
+    dynamic degreeSettings, String selectedSemester) {
+  List<FormBuilderFieldOption> options = [];
+  if (degreeSettings['${selectedSemester}_semester']
+          ['${selectedSemester}_period_1'] ==
+      1)
+    options.add(FormBuilderFieldOption(
+      value: tr("First Period"),
+    ));
+  if (degreeSettings['${selectedSemester}_semester']
+          ['${selectedSemester}_period_2'] ==
+      1)
+    options.add(FormBuilderFieldOption(
+      value: tr("Second Period"),
+    ));
+  if (degreeSettings['${selectedSemester}_semester']
+          ['${selectedSemester}_period_3'] ==
+      1)
+    options.add(FormBuilderFieldOption(
+      value: tr("Third Period"),
+    ));
+  if (degreeSettings['${selectedSemester}_semester']
+          ['${selectedSemester}_period_4'] ==
+      1)
+    options.add(FormBuilderFieldOption(
+      value: tr("Fourth Period"),
+    ));
+  if (degreeSettings['${selectedSemester}_semester']
+          ['${selectedSemester}_all_periods'] ==
+      1)
+    options.add(FormBuilderFieldOption(
+      value: tr("All Periods"),
+    ));
+  return options;
 }
 
 String getSemester(var selected) {
