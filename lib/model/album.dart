@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 part '../adapters/album.g.dart';
 
 @HiveType(typeId: 1)
-class Album{
+class Album {
   @HiveField(0)
   late String creation;
   @HiveField(1)
@@ -51,7 +51,7 @@ class Album{
     creation = json['creation'];
     name = json['name'];
     title = json['title'];
-    description = json['description'];
+    description = json['description'] ?? '';
     views = json['views'];
     likes = json['likes'];
     approvedComments = json['approved_comments'];

@@ -133,7 +133,7 @@ class _DegreeViewState extends State<DegreeView> {
                                 classNo: widget.student.classCode,
                                 divisionNo: widget.student.sectionCode,
                                 branchNo: parentData.branchCode,
-                                period: period,
+                                period: allPeriods == "0" ? period : "1",
                                 semester: semester,
                                 contractNo: parentData.contractNo,
                                 studentNo: student.no);
