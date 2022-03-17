@@ -68,7 +68,7 @@ class _HomeViewState extends State<HomeView> {
                                     tr("Retaal International Academy"),
                                     style: TextStyle(
                                         color: Palette.appBarIconsColor,
-                                        fontSize: 13),
+                                        fontSize: 12),
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
