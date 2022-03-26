@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.alfityan.school">
+    package="com.retaal.academy">
    <application
-        android:label="Alfityan School"
-        android:icon="@mipmap/ic_launcher">
+        android:label="Retaal International Academy"
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>438822645350-9nb2hibcqsk5f8jrprvgo55qv04mncog.apps.googleusercontent.com</string>
+	<string>1067737640867-li5p56ue5upq5ksfm88kqr41hk9qls8r.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.438822645350-9nb2hibcqsk5f8jrprvgo55qv04mncog</string>
+	<string>com.googleusercontent.apps.1067737640867-li5p56ue5upq5ksfm88kqr41hk9qls8r</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAzk6tfqh4kxzGe0Og4jrpTLyTEzAzTig0</string>
+	<string>AIzaSyAw-HNhEOiBDCaWhIW98RNLgz7zAf00Lks</string>
 	<key>GCM_SENDER_ID</key>
-	<string>438822645350</string>
+	<string>1067737640867</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.alfityan.school</string>
+	<string>com.retaal.academy</string>
 	<key>PROJECT_ID</key>
-	<string>school-erp-baff3</string>
+	<string>mobile-erp-a6e89</string>
 	<key>STORAGE_BUCKET</key>
-	<string>school-erp-baff3.appspot.com</string>
+	<string>mobile-erp-a6e89.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:438822645350:ios:f34728ae5e7c072f7ec7a7</string>
+	<string>1:1067737640867:ios:af47779c96cc7f835b7416</string>
 </dict>
 </plist>

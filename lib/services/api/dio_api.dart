@@ -841,6 +841,50 @@ class DioApi implements Api {
     }
   }
 
+  Future downloadDegreesPdf(
+      {required String report,
+      required String currentYear,
+      required String allPeriods,
+      required String classNo,
+      required String divisionNo,
+      required String branchNo,
+      required String period,
+      required String semester,
+      required String contractNo,
+      required String studentNo}) async {
+    // String url =
+    //     '/method/mobile_backend.mobile_backend.pdf.get_parent_transactions_pdf';
+    // if (studentNo != null) {
+    //   url += "?PSTD=$studentNo";
+    // }
+    // String fullUrl = "${Config.baseUrl}/api${url}";
+    // launch(fullUrl);
+    if (DioHelper.dio != null) {
+      //String url = '/method/mobile_backend.mobile_backend.pdf.get_transactions_pdf?PBRN=$branch&PYEAR=$year&PCONNO=$contract';
+      String url =
+          'http://194.165.141.2:8888/reports/rwservlet?report=${report}&userid=MOBUSR/RET_2015ACD@INFRA&DESFORMAT=PDF&DESTYPE=Cache&PERCENFLG=1&STDTRNFLG=1&CONCATMATFLG=2&CONCATMATFLG_DTL=0&SUMPERDIPFLG=2&STDFLG=2&PYEAR=${currentYear}&PALLPER=${allPeriods}&PCLASS=${classNo}&PDIV=${divisionNo}&PBRN=${branchNo}&PPER=${period}&PSEM=${semester}&STDBRN=${branchNo}&STDCON=${contractNo}&STDNO=${studentNo}';
+      String fileName = "degrees.pdf";
+      openFile(url: url, fileName: fileName);
+    }
+  }
+
+  Future<dynamic?> getDegreeSettings() async {
+    if (DioHelper.dio != null) {
+      try {
+        final response = await DioHelper.dio!.post(
+            '/method/mobile_backend.mobile_backend.doctype.school_degree_report_settings.school_degree_report_settings.get_degree_settings',
+            data: {},
+            options: Options(contentType: Headers.formUrlEncodedContentType));
+        if (response.statusCode == 200) {
+          return response.data["message"];
+        }
+      } catch (e) {
+        print(e);
+      }
+    }
+    return null;
+  }
+
   Future<ParentPayment?> getParentPayments(String? studentNo) async {
     var data = {};
     if (studentNo != null) {

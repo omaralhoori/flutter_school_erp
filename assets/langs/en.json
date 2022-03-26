@@ -55,7 +55,7 @@
   "Messages": "Messages",
   "Write message...": "Write message...",
   "selected":"selected",
-  "Alfityan School": "Alfityan School",
+  "Retaal International Academy": "Retaal International Academy",
   "Home": "Home",
   "Students": "Students",
   "Transactions": "Transactions",
@@ -110,5 +110,20 @@
   "Continue": "Continue",
   "All devices removed": "All devices removed",
   "Password is not correct!": "Password is not correct!",
-  "Teacher": "Teacher"
+  "Teacher": "Teacher",
+
+  "Degrees": "Degrees",
+  "First Semester": "First Semester",
+  "Second Semester": "Second Semester",
+  "All Semesters": "All Semesters",
+  "First Period": "First Period",
+  "Second Period": "Second Period",
+  "Third Period": "Third Period",
+  "Fourth Period": "Fourth Period",
+  "All Periods": "All Periods",
+  "Semesters": "Semesters",
+  "Periods": "Periods",
+  "Arabic": "Arabic",
+  "English": "English",
+  "Download":"Download"
 }

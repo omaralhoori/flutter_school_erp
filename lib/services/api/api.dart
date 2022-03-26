@@ -97,7 +97,21 @@ abstract class Api {
 
   Future downloadPaymentPdf({String? studentNo});
 
+  Future downloadDegreesPdf(
+      {required String report,
+      required String currentYear,
+      required String allPeriods,
+      required String classNo,
+      required String divisionNo,
+      required String branchNo,
+      required String period,
+      required String semester,
+      required String contractNo,
+      required String studentNo});
+
   Future<ParentPayment?> getParentPayments(String? studentNo);
+
+  Future getDegreeSettings();
 
   Future<Parent?> getParentData();
 

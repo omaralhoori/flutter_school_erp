@@ -166,6 +166,7 @@ class HomeViewModel extends BaseViewModel {
         }
       }
     } catch (dioError) {
+      print(dioError);
       this.contentList = PostsStorage.getContents();
       // if (snapshot["data"] is List) {
       //   Iterable i = snapshot["data"];
@@ -236,6 +237,9 @@ class HomeViewModel extends BaseViewModel {
     if (!Config().isGuest) {
       try {
         parentData = await locator<Api>().getParentData();
+        var degreeSettings = await locator<Api>().getDegreeSettings();
+        if (degreeSettings != null)
+          OfflineStorage.putItem("degreeSettings", degreeSettings);
         if (parentData == null) {
           parentData = OfflineStorage.getItem("parent")["data"] as Parent;
           return true;

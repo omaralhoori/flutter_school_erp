@@ -55,7 +55,7 @@
   "Messages": "الرسائل",
   "Write message...": "اكتب رسالة...",
   "selected": "تم اختيار",
-  "Alfityan School": "مدرسة الفتيان",
+  "Retaal International Academy": "اكاديمية ريتال الدولية",
   "Home": "الرئيسية",
   "Students": "الطلاب",
   "Transactions": "الحوالات",
@@ -110,5 +110,20 @@
   "Continue": "استمرار",
   "All devices removed": "تم إزالة جميع الأجهزة",
   "Password is not correct!": "كلمة المرور خاطئة!",
-  "Teacher": "المعلم"
+  "Teacher": "المعلم",
+  
+  "Degrees": "الدرجات",
+  "First Semester": "الفصل الأول",
+  "Second Semester": "الفصل الثاني",
+  "All Semesters": "جميع الفصول",
+  "First Period": "الفترة الأولى",
+  "Second Period": "الفترة الثانية",
+  "Third Period": "الفترة الثالثة",
+  "Fourth Period": "الفترة الرابعة",
+  "All Periods": "جميع الفترات",
+  "Semesters": "الفصول",
+  "Periods": "الفترات",
+  "Arabic": "عربي",
+  "English": "English",
+  "Download":"تحميل"
 }
