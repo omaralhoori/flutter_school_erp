@@ -33,6 +33,7 @@ class GalleryTab extends StatelessWidget {
                             SizedBox(
                               width: 10.0,
                             ),
+                            //TODO: Hide filter when its empty
                             TextButton(
                               onPressed: () {
                                 home.showAlertDialog(context);
