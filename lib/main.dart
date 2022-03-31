@@ -28,7 +28,8 @@ void main() async {
         supportedLocales: [Locale('en'), Locale('ar')],
         path: 'assets/langs',
         fallbackLocale: Locale('en'),
-        startLocale: Locale(systemLocales.first.languageCode),
+
+        // startLocale: Locale(systemLocales.first.languageCode),
         child: FrappeApp()),
   );
 }
