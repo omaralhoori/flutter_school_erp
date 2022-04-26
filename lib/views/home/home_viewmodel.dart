@@ -155,7 +155,13 @@ class HomeViewModel extends BaseViewModel {
       List<Content> _contents =
           await locator<Api>().getContents(this.contentList.length);
       if (_contents.isNotEmpty) {
-        this.contentList = List.from(this.contentList)..addAll(_contents);
+        List<Content> filteredContents = _contents
+            .where((element) => !(this.contentList.any((it) =>
+                (it.name == element.name &&
+                    it.contentType == element.contentType))))
+            .toList();
+        this.contentList = List.from(this.contentList)
+          ..addAll(filteredContents);
         notifyListeners();
         if (this.contentList.isNotEmpty) {
           try {
