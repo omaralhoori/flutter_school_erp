@@ -170,8 +170,8 @@ class PostDescriptionHtml extends StatelessWidget {
         onLinkTap: (String? url, RenderContext context,
             Map<String, String> attributes, element) async {
           if (url != null) {
-            if (await canLaunch(url)) {
-              await launch(url);
+            if (await canLaunchUrl(Uri.parse(url))) {
+              await launchUrl(Uri.parse(url));
             } else {
               print("Cant open $url");
             }
