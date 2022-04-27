@@ -32,7 +32,9 @@ class GalleryTab extends StatelessWidget {
                         if ((home.filterOn
                             ? home.filteredParentAlbums
                             : home.parentAlbums)
-                            .isNotEmpty)
+                            .isNotEmpty || (home.filterOn
+                            ? home.filteredAlbums
+                            : home.albums).isNotEmpty)
                           Row(
                           children: [
                             SizedBox(
