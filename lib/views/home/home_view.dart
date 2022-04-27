@@ -30,130 +30,132 @@ class _HomeViewState extends State<HomeView> {
     if (_isTeacher) _tabExtras += 1;
     if (_isParent) _tabExtras += 1;
     int _tabCount = _isGuest ? 2 : _tabExtras;
-    return BaseView<HomeViewModel>(onModelReady: (model) {
-      if (!Config().isGuest) model.getUnreadMessages();
-    }, builder: (context, model, _) {
-      return Scaffold(
-        drawer: HomeDrawer(),
-        body: AnnotatedRegion<SystemUiOverlayStyle>(
-          value: SystemUiOverlayStyle.light
-              .copyWith(statusBarColor: Palette.appBarIconsColor),
-          child: SafeArea(
-            child: DefaultTabController(
-              length: _tabCount,
-              child: NestedScrollView(
-                headerSliverBuilder:
-                    (BuildContext context, bool innerBoxIsScrolled) {
-                  return <Widget>[
-                    SliverAppBar(
-                      backgroundColor: Palette.homeAppBarColor,
-                      expandedHeight: 60.0,
-                      iconTheme: IconThemeData(color: Palette.appBarIconsColor),
-                      floating: false,
-                      pinned: false,
-                      flexibleSpace: FlexibleSpaceBar(
-                        title: Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                  width: 25.0,
-                                  height: 25.0,
-                                  child: Image.asset("assets/app_logo.png")),
-                              Flexible(
-                                child: Container(
-                                  padding: EdgeInsets.only(
-                                      left: 2, right: 2, top: 4),
-                                  child: Text(
-                                    tr("Retaal International Academy"),
-                                    style: TextStyle(
-                                        color: Palette.appBarIconsColor,
-                                        fontSize: 12),
-                                    overflow: TextOverflow.ellipsis,
+    return BaseView<HomeViewModel>(
+      onModelReady: (model) {
+        if (!Config().isGuest) model.getUnreadMessages();
+      },
+      builder: (context, model, _) {
+        return Scaffold(
+          drawer: HomeDrawer(),
+          body: AnnotatedRegion<SystemUiOverlayStyle>(
+            value: SystemUiOverlayStyle.light
+                .copyWith(statusBarColor: Palette.appBarIconsColor),
+            child: SafeArea(
+              child: DefaultTabController(
+                length: _tabCount,
+                child: NestedScrollView(
+                  headerSliverBuilder:
+                      (BuildContext context, bool innerBoxIsScrolled) {
+                    return <Widget>[
+                      SliverAppBar(
+                        backgroundColor: Palette.homeAppBarColor,
+                        expandedHeight: 60.0,
+                        iconTheme: IconThemeData(color: Palette.appBarIconsColor),
+                        floating: false,
+                        pinned: false,
+                        flexibleSpace: FlexibleSpaceBar(
+                          title: Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                    width: 25.0,
+                                    height: 25.0,
+                                    child: Image.asset("assets/app_logo.png")),
+                                Flexible(
+                                  child: Container(
+                                    padding: EdgeInsets.only(
+                                        left: 2, right: 2, top: 4),
+                                    child: Text(
+                                      tr("Retaal International Academy"),
+                                      style: TextStyle(
+                                          color: Palette.appBarIconsColor,
+                                          fontSize: 12),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ),
                                 ),
+                              ],
+                            ),
+                          ),
+                          titlePadding: EdgeInsets.only(bottom: 13.0),
+                        ),
+                        actions: [
+                          if (!Config().isGuest)
+                            Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                IconButton(
+                                    onPressed: () {
+                                      NavigationHelper.push(
+                                          context: context,
+                                          page: DirectMessagesView());
+                                    },
+                                    icon: Icon(Icons.mail_outline)),
+                                if (model.unreadDM > 0)
+                                  Positioned(
+                                      top: 5,
+                                      right: 5,
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 6, vertical: 2),
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.rectangle,
+                                            color: Colors.red,
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          "${model.unreadDM}",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      )),
+                              ],
+                            )
+                        ],
+                      ),
+                      SliverPersistentHeader(
+                        delegate: _SliverAppBarDelegate(
+                          TabBar(
+                            indicatorColor: Palette.indicatorColor,
+                            labelColor: Palette.appBarIconsColor,
+                            tabs: [
+                              Tab(
+                                child: AppBarTab(
+                                  label: tr("Home"),
+                                  icon: Icons.home,
+                                ),
                               ),
+                              Tab(
+                                child: AppBarTab(
+                                  label: tr("Gallery"),
+                                  icon: FontAwesomeIcons.images,
+                                ),
+                              ),
+                              if (!_isGuest && _isParent)
+                                Tab(
+                                  child: AppBarTab(
+                                    label: tr("Students"),
+                                    icon: Icons.contact_page,
+                                    notify: model.unreadGM > 00,
+                                    rtlDir: rtlDir,
+                                  ),
+                                ),
+                              if (!_isGuest && _isTeacher)
+                                Tab(
+                                  child: AppBarTab(
+                                    label: tr("Teacher"),
+                                    icon: Icons.person,
+                                  ),
+                                ),
                             ],
                           ),
                         ),
-                        titlePadding: EdgeInsets.only(bottom: 13.0),
+                        pinned: true,
                       ),
-                      actions: [
-                        if (!Config().isGuest)
-                          Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              IconButton(
-                                  onPressed: () {
-                                    NavigationHelper.push(
-                                        context: context,
-                                        page: DirectMessagesView());
-                                  },
-                                  icon: Icon(Icons.mail_outline)),
-                              if (model.unreadDM > 0)
-                                Positioned(
-                                    top: 5,
-                                    right: 5,
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 6, vertical: 2),
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.rectangle,
-                                          color: Colors.red,
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        "${model.unreadDM}",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    )),
-                            ],
-                          )
-                      ],
-                    ),
-                    SliverPersistentHeader(
-                      delegate: _SliverAppBarDelegate(
-                        TabBar(
-                          indicatorColor: Palette.indicatorColor,
-                          labelColor: Palette.appBarIconsColor,
-                          tabs: [
-                            Tab(
-                              child: AppBarTab(
-                                label: tr("Home"),
-                                icon: Icons.home,
-                              ),
-                            ),
-                            Tab(
-                              child: AppBarTab(
-                                label: tr("Gallery"),
-                                icon: FontAwesomeIcons.images,
-                              ),
-                            ),
-                            if (!_isGuest && _isParent)
-                              Tab(
-                                child: AppBarTab(
-                                  label: tr("Students"),
-                                  icon: Icons.contact_page,
-                                  notify: model.unreadGM > 00,
-                                  rtlDir: rtlDir,
-                                ),
-                              ),
-                            if (!_isGuest && _isTeacher)
-                              Tab(
-                                child: AppBarTab(
-                                  label: tr("Teacher"),
-                                  icon: Icons.person,
-                                ),
-                              ),
-                          ],
-                        ),
-                      ),
-                      pinned: true,
-                    ),
-                  ];
-                },
-                body: TabBarView(
+                    ];
+                  },
+                  body: TabBarView(
                   children: [
                     ContentTab(),
                     GalleryTab(),
@@ -169,7 +171,8 @@ class _HomeViewState extends State<HomeView> {
           ),
         ),
       );
-    });
+      },
+    );
   }
 }
 
