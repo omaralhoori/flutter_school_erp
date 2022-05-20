@@ -7,6 +7,9 @@ import 'package:school_erp/views/contact_view.dart';
 import 'package:school_erp/views/content_preview_noti/content_preview_noti_view.dart';
 import 'package:school_erp/views/settings/settings_view.dart';
 
+import '../views/messaging/direct_messages_view.dart';
+import '../views/messaging/group_messages_view.dart';
+
 class Notifications {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
@@ -84,19 +87,42 @@ class Notifications {
     //   //     )
     // });
     FirebaseMessaging.onMessageOpenedApp.first.then((RemoteMessage message) {
-      navigatorKey.currentState!
-          .push(MaterialPageRoute(builder: (context) => SettingsViews()));
-      // ContentPreviewNotificationView(
-      //       name: message.data['name'],
-      //       type: message.data['type'],
-      //     )
-
-      print(
-          "Message data: ${message.notification!.title} : ${message.notification!.body}, ${message.data}");
+      Widget? page = directedPage(message);
+      if (page != null) {
+        navigatorKey.currentState!
+            .push(MaterialPageRoute(builder: (context) => page));
+      }
     });
   }
 }
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // print("Handling a background message: ${message.data}");
+}
+
+Widget? directedPage(RemoteMessage? message) {
+  if (message != null) {
+    print(message.data);
+    if (message.data["type"] != null) {
+      if (message.data["type"] == "School Direct Message") {
+        return DirectMessagesView();
+      }
+      if (message.data["type"] == "School Group Message") {
+        if (message.data["student_no"] != null) {
+          return GroupMessagesView(
+            studentNo: message.data["student_no"],
+          );
+        }
+      }
+      if (message.data["type"] == "Announcement" ||
+          message.data["type"] == "news") {
+        if (message.data["student_no"] != null) {
+          return ContentPreviewNotificationView(
+            name: message.data['name'],
+            type: message.data['type'],
+          );
+        }
+      }
+    }
+  }
 }

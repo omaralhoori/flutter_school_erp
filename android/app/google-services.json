@@ -1,62 +1,33 @@
 {
   "project_info": {
-    "project_number": "266600338105",
-    "project_id": "fcm-flutter-2c731",
-    "storage_bucket": "fcm-flutter-2c731.appspot.com"
+    "project_number": "140642428776",
+    "project_id": "retaalapp",
+    "storage_bucket": "retaalapp.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:266600338105:android:ea8846c2a557df0e48c168",
-        "android_client_info": {
-          "package_name": "com.easyapproach.push_notification"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "266600338105-e3skead6kjfbsgb1nig8370dbf6o3fr4.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBwVjr87HUZSJCCSiwzaipNOde93MIH86A"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "266600338105-e3skead6kjfbsgb1nig8370dbf6o3fr4.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:266600338105:android:f18329f2080adf2148c168",
+        "mobilesdk_app_id": "1:140642428776:android:6bc8dec4b686407ea758dd",
         "android_client_info": {
           "package_name": "com.retaal.academy"
         }
       },
       "oauth_client": [
         {
-          "client_id": "266600338105-e3skead6kjfbsgb1nig8370dbf6o3fr4.apps.googleusercontent.com",
+          "client_id": "140642428776-l77s990h7bcsp3jl64fdeoh7deridtbh.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBwVjr87HUZSJCCSiwzaipNOde93MIH86A"
+          "current_key": "AIzaSyDeJFQBv9M5rQh9Mko_5D6CXn9ELaSRNs8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "266600338105-e3skead6kjfbsgb1nig8370dbf6o3fr4.apps.googleusercontent.com",
+              "client_id": "140642428776-l77s990h7bcsp3jl64fdeoh7deridtbh.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

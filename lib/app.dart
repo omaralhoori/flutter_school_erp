@@ -2,8 +2,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:school_erp/lifecycle_manager.dart';
 import 'package:school_erp/splash_view.dart';
-import 'package:school_erp/utils/navigation_helper.dart';
-import 'package:school_erp/views/contact_view.dart';
+import 'package:school_erp/storage/offline_storage.dart';
+import 'package:school_erp/views/messaging/direct_messages_view.dart';
+import 'package:school_erp/views/messaging/group_messages_view.dart';
 import 'config/palette.dart';
 import 'storage/config.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -27,19 +28,17 @@ class _FrappeAppState extends State<FrappeApp> {
   bool _isLoggedIn = false;
   bool _isGuest = false;
   bool _isLoaded = false;
+  RemoteMessage? payloadMessage;
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   @override
   void initState() {
     _checkIfLoggedIn();
-
-    // FirebaseMessaging.instance.getInitialMessage().then((message) {
-    //   if (message != null) {
-    //     //final routeFromMessage = message.data
-    //     print(message);
-    //   }
-    //   NavigationHelper.push(context: context, page: ContactView());
-    // });
-
+    FirebaseMessaging.instance.getInitialMessage().then((message) {
+      setState(() {
+        payloadMessage = message;
+      });
+      //NavigationHelper.push(context: context, page: ContactView());
+    });
     super.initState();
   }
 
@@ -54,6 +53,8 @@ class _FrappeAppState extends State<FrappeApp> {
 
   @override
   Widget build(BuildContext context) {
+    RemoteMessage? _payloadMessage = payloadMessage;
+    payloadMessage = null;
     return Portal(
       child: LifeCycleManager(
         navigatorKey: navigatorKey,
@@ -77,9 +78,9 @@ class _FrappeAppState extends State<FrappeApp> {
               child: Scaffold(
                 body: _isLoaded
                     ? _isLoggedIn
-                        ? HomeView()
+                        ? directedPage(_payloadMessage)
                         : _isGuest
-                            ? HomeView()
+                            ? directedPage(_payloadMessage)
                             : SplashView()
                     : Center(
                         child: CircularProgressIndicator(),
@@ -91,4 +92,22 @@ class _FrappeAppState extends State<FrappeApp> {
       ),
     );
   }
+}
+
+Widget directedPage(RemoteMessage? message) {
+  if (message != null && !Config().isGuest) {
+    if (message.data["type"] != null) {
+      if (message.data["type"] == "School Direct Message") {
+        return DirectMessagesView();
+      }
+      if (message.data["type"] == "School Group Message") {
+        if (message.data["student_no"] != null) {
+          return GroupMessagesView(
+            studentNo: message.data["student_no"],
+          );
+        }
+      }
+    }
+  }
+  return HomeView();
 }

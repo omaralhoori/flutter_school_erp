@@ -21,6 +21,11 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     bool rtlDir = context.locale.toString() == 'ar';
     bool _isGuest = Config().isGuest;
@@ -50,7 +55,8 @@ class _HomeViewState extends State<HomeView> {
                       SliverAppBar(
                         backgroundColor: Palette.homeAppBarColor,
                         expandedHeight: 60.0,
-                        iconTheme: IconThemeData(color: Palette.appBarIconsColor),
+                        iconTheme:
+                            IconThemeData(color: Palette.appBarIconsColor),
                         floating: false,
                         pinned: false,
                         flexibleSpace: FlexibleSpaceBar(
@@ -156,21 +162,21 @@ class _HomeViewState extends State<HomeView> {
                     ];
                   },
                   body: TabBarView(
-                  children: [
-                    ContentTab(),
-                    GalleryTab(),
-                    if (!_isGuest && _isParent) StudentTab(),
-                    if (!_isGuest && _isTeacher)
-                      TeacherTab(
-                        isTeacherRegistered: model.isTeacherRegistered,
-                      ),
-                  ],
+                    children: [
+                      ContentTab(),
+                      GalleryTab(),
+                      if (!_isGuest && _isParent) StudentTab(),
+                      if (!_isGuest && _isTeacher)
+                        TeacherTab(
+                          isTeacherRegistered: model.isTeacherRegistered,
+                        ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      );
+        );
       },
     );
   }
