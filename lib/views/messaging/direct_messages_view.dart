@@ -10,6 +10,7 @@ import 'package:school_erp/utils/navigation_helper.dart';
 import 'package:school_erp/views/base_view.dart';
 import 'package:school_erp/views/messaging/messaging_view.dart';
 import 'package:school_erp/views/messaging/messaging_viewmodel.dart';
+import 'package:school_erp/views/messaging/send_message_view.dart';
 
 class DirectMessagesView extends StatefulWidget {
   const DirectMessagesView({Key? key}) : super(key: key);
@@ -32,13 +33,25 @@ class _DirectMessagesViewState extends State<DirectMessagesView> {
           ),
           leading: BackButton(color: Palette.appbarForegroundColor),
           backgroundColor: Palette.appbarBackgroundColor,
+          actions: [
+            IconButton(
+                onPressed: () {
+                  NavigationHelper.push(
+                      context: context, page: SendMessageView());
+                },
+                color: Palette.appbarForegroundColor,
+                icon: Icon(Icons.add_circle_outline)),
+          ],
         ),
         body: FutureBuilder(
             future: model.getDirectMessages(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return MessagesRefresh(
-                  onRefresh: model.getDirectMessages,
+                  onRefresh: () async {
+                    model.notify = true;
+                    await model.getDirectMessages();
+                  },
                   messages: model.directMessages,
                 );
               } else {

@@ -45,7 +45,7 @@ class Message extends HiveObject {
     name = json['name'];
     messageType = getMessageType(json["message_type"]);
     title = json['title'];
-    messageName = json['message_name'];
+    messageName = json['message_name'] ?? "";
     studentNo = json['student_no'];
     studentName = json['student_name'];
     thumbnail = json['thumbnail'];

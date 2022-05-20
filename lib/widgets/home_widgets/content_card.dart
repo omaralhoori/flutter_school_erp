@@ -56,7 +56,9 @@ class ContentCard extends StatelessWidget {
             PostDescriptionHtml(content: content),
             if (content.fileUrl != '')
               CustomSlider(filesUrl: content.fileUrl.split(',')),
-            PostButtons(content: content,),
+            PostButtons(
+              content: content,
+            ),
           ],
         ),
       ),
@@ -90,12 +92,14 @@ class _PostButtonsState extends State<PostButtons> {
                 print('like');
                 widget.content.isLiked = 1;
                 widget.content.likes++;
-                locator<HomeViewModel>().likePost(widget.content.name, widget.content.contentType);
+                locator<HomeViewModel>()
+                    .likePost(widget.content.name, widget.content.contentType);
               } else {
                 print('dislike');
                 widget.content.isLiked = 0;
                 widget.content.likes--;
-                locator<HomeViewModel>().dislikePost(widget.content.name, widget.content.contentType);
+                locator<HomeViewModel>().dislikePost(
+                    widget.content.name, widget.content.contentType);
               }
               setState(() {});
             },
@@ -143,8 +147,12 @@ class PostDescriptionHtml extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String description = this.content.description.replaceAllMapped(
+          RegExp(r'(<img[^>]+>)', caseSensitive: false),
+          (match) => "",
+        );
     return Html(
-        data: this.content.description,
+        data: description,
         style: {
           "table": Style(),
           "td": Style(

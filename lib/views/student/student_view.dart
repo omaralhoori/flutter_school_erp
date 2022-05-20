@@ -124,6 +124,8 @@ class StudentInfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     String gender = student.gender == 'Female' ? 'g' : 'b';
     int photoNum = int.parse(student.no) % 4 + 1;
+    bool isRtl = context.locale.languageCode == "ar";
+    String direction = isRtl ? 'r' : '';
     return Container(
       margin: EdgeInsets.all(10),
       padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
@@ -137,8 +139,9 @@ class StudentInfoCard extends StatelessWidget {
         ],
         image: DecorationImage(
             fit: BoxFit.contain,
-            alignment: Alignment.centerRight,
-            image: AssetImage('assets/students_images/$gender$photoNum.png')),
+            alignment: isRtl ? Alignment.centerLeft : Alignment.centerRight,
+            image: AssetImage(
+                'assets/students_images/$gender$photoNum$direction.png')),
       ),
       child: Column(
         children: [

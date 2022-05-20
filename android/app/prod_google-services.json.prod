@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1067737640867",
+    "project_id": "mobile-erp-a6e89",
+    "storage_bucket": "mobile-erp-a6e89.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1067737640867:android:1a612d88cf50f3255b7416",
+        "android_client_info": {
+          "package_name": "com.retaal.academy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1067737640867-97tgoqvpkinamr65fcsks9nubedr2qbe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBR3J_n3fQ1negFLCK0M7kHZoFMAx4_GOM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1067737640867-97tgoqvpkinamr65fcsks9nubedr2qbe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

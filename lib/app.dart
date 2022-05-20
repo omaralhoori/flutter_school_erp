@@ -1,6 +1,9 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:school_erp/lifecycle_manager.dart';
 import 'package:school_erp/splash_view.dart';
+import 'package:school_erp/utils/navigation_helper.dart';
+import 'package:school_erp/views/contact_view.dart';
 import 'config/palette.dart';
 import 'storage/config.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -28,6 +31,15 @@ class _FrappeAppState extends State<FrappeApp> {
   @override
   void initState() {
     _checkIfLoggedIn();
+
+    // FirebaseMessaging.instance.getInitialMessage().then((message) {
+    //   if (message != null) {
+    //     //final routeFromMessage = message.data
+    //     print(message);
+    //   }
+    //   NavigationHelper.push(context: context, page: ContactView());
+    // });
+
     super.initState();
   }
 

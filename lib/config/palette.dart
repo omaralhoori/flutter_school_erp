@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:device_info/device_info.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -129,8 +130,11 @@ class Palette {
     int inDays = resultDuration.inDays;
     int inHours = resultDuration.inHours;
     int inMinutes = resultDuration.inMinutes;
-    int inSeconds = resultDuration.inSeconds;
-
+    int inSeconds = max(resultDuration.inSeconds, 0);
+    if (inSeconds == 0 && inMinutes < 1) {
+      inMinutes = 1;
+      inSeconds = 61;
+    }
     if (inDays > 360) {
       return "${perfectFormat.format(date)}";
     } else if (inDays > 30) {

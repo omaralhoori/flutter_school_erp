@@ -618,6 +618,21 @@ class DioApi implements Api {
     return [];
   }
 
+  Future<bool> sendParentMessage(String title, String message) async {
+    if (DioHelper.dio != null) {
+      final response = await DioHelper.dio!.post(
+          '/method/mobile_backend.mobile_backend.doctype.school_messaging.school_messaging.send_parent_message',
+          data: {"message": message, "title": title},
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        throw Exception('Something went wrong');
+      }
+    }
+    return false;
+  }
+
   Future<String> addMessageReply(String message, String messageName) async {
     if (DioHelper.dio != null) {
       final response = await DioHelper.dio!.post(

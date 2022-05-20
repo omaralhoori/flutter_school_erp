@@ -1,33 +1,62 @@
 {
   "project_info": {
-    "project_number": "1067737640867",
-    "project_id": "mobile-erp-a6e89",
-    "storage_bucket": "mobile-erp-a6e89.appspot.com"
+    "project_number": "266600338105",
+    "project_id": "fcm-flutter-2c731",
+    "storage_bucket": "fcm-flutter-2c731.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1067737640867:android:1a612d88cf50f3255b7416",
+        "mobilesdk_app_id": "1:266600338105:android:ea8846c2a557df0e48c168",
         "android_client_info": {
-          "package_name": "com.retaal.academy"
+          "package_name": "com.easyapproach.push_notification"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1067737640867-97tgoqvpkinamr65fcsks9nubedr2qbe.apps.googleusercontent.com",
+          "client_id": "266600338105-e3skead6kjfbsgb1nig8370dbf6o3fr4.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBR3J_n3fQ1negFLCK0M7kHZoFMAx4_GOM"
+          "current_key": "AIzaSyBwVjr87HUZSJCCSiwzaipNOde93MIH86A"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1067737640867-97tgoqvpkinamr65fcsks9nubedr2qbe.apps.googleusercontent.com",
+              "client_id": "266600338105-e3skead6kjfbsgb1nig8370dbf6o3fr4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:266600338105:android:f18329f2080adf2148c168",
+        "android_client_info": {
+          "package_name": "com.retaal.academy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "266600338105-e3skead6kjfbsgb1nig8370dbf6o3fr4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwVjr87HUZSJCCSiwzaipNOde93MIH86A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "266600338105-e3skead6kjfbsgb1nig8370dbf6o3fr4.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
