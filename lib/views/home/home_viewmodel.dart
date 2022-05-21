@@ -123,24 +123,23 @@ class HomeViewModel extends BaseViewModel {
     if (!Config().isGuest) {
       this.parentAlbums.clear();
       this.albums.forEach((album) {
-        if (album.branch != null) {
-          if (album.branch == this.parentData!.branchCode) {
-            this.parentAlbums.add(album);
-          }
-        }
-        if (album.classCode != null) {
+        if (album.section != null) {
+          this.parentData!.students.forEach((student) {
+            if (album.section! ==
+                "${student.classCode}-${student.sectionCode}") {
+              this.parentAlbums.add(album);
+            }
+          });
+        } else if (album.classCode != null) {
           this.parentData!.students.forEach((student) {
             if (album.classCode == student.classCode) {
               this.parentAlbums.add(album);
             }
           });
-        }
-        if (album.section != null) {
-          this.parentData!.students.forEach((student) {
-            if (album.section! == student.sectionCode) {
-              this.parentAlbums.add(album);
-            }
-          });
+        } else if (album.branch != null) {
+          if (album.branch == this.parentData!.branchCode) {
+            this.parentAlbums.add(album);
+          }
         }
       });
 
