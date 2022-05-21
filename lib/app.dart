@@ -29,6 +29,7 @@ class _FrappeAppState extends State<FrappeApp> {
   bool _isGuest = false;
   bool _isLoaded = false;
   RemoteMessage? payloadMessage;
+  bool isMessageViewed = true;
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   @override
   void initState() {
@@ -52,39 +53,60 @@ class _FrappeAppState extends State<FrappeApp> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    setState(() {
+      payloadMessage = null;
+      isMessageViewed = false;
+    });
+    super.dispose();
+  }
+
+  Future<bool> _onBackPressed() async {
+    setState(() {
+      payloadMessage = null;
+      isMessageViewed = false;
+    });
+    return true;
+  }
+
+  @override
   Widget build(BuildContext context) {
     RemoteMessage? _payloadMessage = payloadMessage;
     payloadMessage = null;
-    return Portal(
-      child: LifeCycleManager(
-        navigatorKey: navigatorKey,
-        child: StreamProvider<ConnectivityStatus>(
-          initialData: ConnectivityStatus.offline,
-          create: (context) =>
-              ConnectivityService().connectionStatusController.stream,
-          child: MaterialApp(
-            navigatorKey: navigatorKey,
-            localizationsDelegates: context.localizationDelegates,
-            supportedLocales: context.supportedLocales,
-            locale: context.locale,
-            builder: EasyLoading.init(),
-            debugShowCheckedModeBanner: false,
-            title: 'Retaal International Academy',
-            theme: Palette.customTheme,
-            home: GestureDetector(
-              onTap: () {
-                FocusScope.of(context).requestFocus(new FocusNode());
-              },
-              child: Scaffold(
-                body: _isLoaded
-                    ? _isLoggedIn
-                        ? directedPage(_payloadMessage)
-                        : _isGuest
-                            ? directedPage(_payloadMessage)
-                            : SplashView()
-                    : Center(
-                        child: CircularProgressIndicator(),
-                      ),
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: Portal(
+        child: LifeCycleManager(
+          navigatorKey: navigatorKey,
+          child: StreamProvider<ConnectivityStatus>(
+            initialData: ConnectivityStatus.offline,
+            create: (context) =>
+                ConnectivityService().connectionStatusController.stream,
+            child: MaterialApp(
+              navigatorKey: navigatorKey,
+              localizationsDelegates: context.localizationDelegates,
+              supportedLocales: context.supportedLocales,
+              locale: context.locale,
+              builder: EasyLoading.init(),
+              debugShowCheckedModeBanner: false,
+              title: 'Retaal International Academy',
+              theme: Palette.customTheme,
+              home: GestureDetector(
+                onTap: () {
+                  FocusScope.of(context).requestFocus(new FocusNode());
+                },
+                child: Scaffold(
+                  body: _isLoaded
+                      ? _isLoggedIn
+                          ? directedPage(_payloadMessage, isMessageViewed)
+                          : _isGuest
+                              ? directedPage(_payloadMessage, isMessageViewed)
+                              : SplashView()
+                      : Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                ),
               ),
             ),
           ),
@@ -94,16 +116,19 @@ class _FrappeAppState extends State<FrappeApp> {
   }
 }
 
-Widget directedPage(RemoteMessage? message) {
-  if (message != null && !Config().isGuest) {
+Widget directedPage(RemoteMessage? message, bool isMessageViewed) {
+  if (message != null && !Config().isGuest && isMessageViewed) {
     if (message.data["type"] != null) {
       if (message.data["type"] == "School Direct Message") {
-        return DirectMessagesView();
+        return DirectMessagesView(
+          isDirected: true,
+        );
       }
-      if (message.data["type"] == "School Group Message") {
+      if (message.data["type"] == "School Group Message" && isMessageViewed) {
         if (message.data["student_no"] != null) {
           return GroupMessagesView(
             studentNo: message.data["student_no"],
+            isDirected: true,
           );
         }
       }
