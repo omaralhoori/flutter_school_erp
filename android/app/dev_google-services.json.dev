@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "1067737640867",
-    "project_id": "mobile-erp-a6e89",
-    "storage_bucket": "mobile-erp-a6e89.appspot.com"
+    "project_number": "140642428776",
+    "project_id": "retaalapp",
+    "storage_bucket": "retaalapp.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1067737640867:android:1a612d88cf50f3255b7416",
+        "mobilesdk_app_id": "1:140642428776:android:6bc8dec4b686407ea758dd",
         "android_client_info": {
           "package_name": "com.retaal.academy"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1067737640867-97tgoqvpkinamr65fcsks9nubedr2qbe.apps.googleusercontent.com",
+          "client_id": "140642428776-l77s990h7bcsp3jl64fdeoh7deridtbh.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBR3J_n3fQ1negFLCK0M7kHZoFMAx4_GOM"
+          "current_key": "AIzaSyDeJFQBv9M5rQh9Mko_5D6CXn9ELaSRNs8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1067737640867-97tgoqvpkinamr65fcsks9nubedr2qbe.apps.googleusercontent.com",
+              "client_id": "140642428776-l77s990h7bcsp3jl64fdeoh7deridtbh.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
