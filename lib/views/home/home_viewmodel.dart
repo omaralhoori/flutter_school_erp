@@ -123,24 +123,23 @@ class HomeViewModel extends BaseViewModel {
     if (!Config().isGuest) {
       this.parentAlbums.clear();
       this.albums.forEach((album) {
-        if (album.branch != null) {
-          if (album.branch == this.parentData!.branchCode) {
-            this.parentAlbums.add(album);
-          }
-        }
-        if (album.classCode != null) {
+        if (album.section != null) {
+          this.parentData!.students.forEach((student) {
+            if (album.section! ==
+                "${student.classCode}-${student.sectionCode}") {
+              this.parentAlbums.add(album);
+            }
+          });
+        } else if (album.classCode != null) {
           this.parentData!.students.forEach((student) {
             if (album.classCode == student.classCode) {
               this.parentAlbums.add(album);
             }
           });
-        }
-        if (album.section != null) {
-          this.parentData!.students.forEach((student) {
-            if (album.section! == student.sectionCode) {
-              this.parentAlbums.add(album);
-            }
-          });
+        } else if (album.branch != null) {
+          if (album.branch == this.parentData!.branchCode) {
+            this.parentAlbums.add(album);
+          }
         }
       });
 
@@ -155,7 +154,13 @@ class HomeViewModel extends BaseViewModel {
       List<Content> _contents =
           await locator<Api>().getContents(this.contentList.length);
       if (_contents.isNotEmpty) {
-        this.contentList = List.from(this.contentList)..addAll(_contents);
+        List<Content> filteredContents = _contents
+            .where((element) => !(this.contentList.any((it) =>
+                (it.name == element.name &&
+                    it.contentType == element.contentType))))
+            .toList();
+        this.contentList = List.from(this.contentList)
+          ..addAll(filteredContents);
         notifyListeners();
         if (this.contentList.isNotEmpty) {
           try {

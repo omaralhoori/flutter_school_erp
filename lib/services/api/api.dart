@@ -75,6 +75,8 @@ abstract class Api {
 
   Future<List<Message>> getMessages();
 
+  Future<bool> sendParentMessage(String title, String message);
+
   Future<String> addMessageReply(String message, String messageName);
 
   Future<bool> deleteMessageRpelies(String message, String replies);

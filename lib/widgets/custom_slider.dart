@@ -56,7 +56,8 @@ class _CustomSliderState extends State<CustomSlider>
                 },
                 child: CachedNetworkImage(
                   imageUrl: Config.baseUrl + widget.filesUrl[i],
-                  placeholder: (context, url) => CircularProgressIndicator(),
+                  placeholder: (context, url) =>
+                      Center(child: CircularProgressIndicator()),
                 ),
               );
             },

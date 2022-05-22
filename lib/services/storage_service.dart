@@ -40,38 +40,42 @@ class StorageService {
   }
 
   Future<void> checkPostVersions() async {
-    List<PostVersion>? versions = await locator<Api>().getContentVersions();
-    if (versions != null) {
-      List<PostVersion> storedVersions = PostVersionStorage.getVersions();
-      Future.forEach(storedVersions, (PostVersion sv) async {
-        for (PostVersion v in versions) {
-          if (v.name == sv.name) {
-            try {
-              if (v.version > sv.version) {
-                Content? content;
-                if (v.type == "News")
-                  content = await locator<Api>().getNews(v.name);
-                else if (v.type == "Announcement")
-                  content = await locator<Api>().getAnnouncement(v.name);
-                if (content != null) {
-                  PostsStorage.putContent(content);
+    try {
+      List<PostVersion>? versions = await locator<Api>().getContentVersions();
+      if (versions != null) {
+        List<PostVersion> storedVersions = PostVersionStorage.getVersions();
+        Future.forEach(storedVersions, (PostVersion sv) async {
+          for (PostVersion v in versions) {
+            if (v.name == sv.name) {
+              try {
+                if (v.version > sv.version) {
+                  Content? content;
+                  if (v.type == "News")
+                    content = await locator<Api>().getNews(v.name);
+                  else if (v.type == "Announcement")
+                    content = await locator<Api>().getAnnouncement(v.name);
+                  if (content != null) {
+                    PostsStorage.putContent(content);
+                  }
                 }
+              } catch (e) {
+                print(e);
               }
-            } catch (e) {
-              print(e);
-            }
 
-            return;
+              return;
+            }
           }
-        }
-        try {
-          PostsStorage.removeItem(sv.type, sv.name);
-        } catch (e) {
-          print(e);
-        }
-      });
-      await PostVersionStorage.deleteVersions();
-      PostVersionStorage.putAllVersions(versions);
+          try {
+            PostsStorage.removeItem(sv.type, sv.name);
+          } catch (e) {
+            print(e);
+          }
+        });
+        await PostVersionStorage.deleteVersions();
+        PostVersionStorage.putAllVersions(versions);
+      }
+    } catch (e) {
+      print(e);
     }
   }
 

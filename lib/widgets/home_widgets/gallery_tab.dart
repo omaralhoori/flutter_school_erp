@@ -28,7 +28,14 @@ class GalleryTab extends StatelessWidget {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        Row(
+                        //TODO: Hide filter when its empty (OK)
+                        if ((home.filterOn
+                            ? home.filteredParentAlbums
+                            : home.parentAlbums)
+                            .isNotEmpty || (home.filterOn
+                            ? home.filteredAlbums
+                            : home.albums).isNotEmpty)
+                          Row(
                           children: [
                             SizedBox(
                               width: 10.0,

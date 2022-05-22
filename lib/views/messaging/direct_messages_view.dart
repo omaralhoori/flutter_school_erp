@@ -8,43 +8,71 @@ import 'package:school_erp/model/messaging/message.dart';
 import 'package:school_erp/storage/config.dart';
 import 'package:school_erp/utils/navigation_helper.dart';
 import 'package:school_erp/views/base_view.dart';
+import 'package:school_erp/views/home/home_view.dart';
 import 'package:school_erp/views/messaging/messaging_view.dart';
 import 'package:school_erp/views/messaging/messaging_viewmodel.dart';
+import 'package:school_erp/views/messaging/send_message_view.dart';
 
 class DirectMessagesView extends StatefulWidget {
-  const DirectMessagesView({Key? key}) : super(key: key);
+  final isDirected;
+  const DirectMessagesView({Key? key, this.isDirected = false})
+      : super(key: key);
 
   @override
   _DirectMessagesViewState createState() => _DirectMessagesViewState();
 }
 
 class _DirectMessagesViewState extends State<DirectMessagesView> {
+  Future<bool> _onBackPressed() async {
+    if (widget.isDirected) {
+      NavigationHelper.pushReplacement(context: context, page: HomeView());
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BaseView<MessagingViewModel>(onModelReady: (model) async {
       await model.init();
     }, builder: (context, model, child) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            tr("Messages"),
-            style: TextStyle(color: Palette.appbarForegroundColor),
+      return WillPopScope(
+        onWillPop: _onBackPressed,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(
+              tr("Messages"),
+              style: TextStyle(color: Palette.appbarForegroundColor),
+            ),
+            leading: BackButton(color: Palette.appbarForegroundColor),
+            backgroundColor: Palette.appbarBackgroundColor,
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    NavigationHelper.push(
+                        context: context, page: SendMessageView());
+                  },
+                  color: Palette.appbarForegroundColor,
+                  icon: Icon(Icons.add_circle_outline)),
+            ],
           ),
-          leading: BackButton(color: Palette.appbarForegroundColor),
-          backgroundColor: Palette.appbarBackgroundColor,
+          body: FutureBuilder(
+              future: model.getDirectMessages(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return MessagesRefresh(
+                    onRefresh: () async {
+                      model.notify = true;
+                      await model.getDirectMessages();
+                    },
+                    messages: model.directMessages,
+                  );
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              }),
         ),
-        body: FutureBuilder(
-            future: model.getDirectMessages(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return MessagesRefresh(
-                  onRefresh: model.getDirectMessages,
-                  messages: model.directMessages,
-                );
-              } else {
-                return Center(child: CircularProgressIndicator());
-              }
-            }),
       );
     });
   }

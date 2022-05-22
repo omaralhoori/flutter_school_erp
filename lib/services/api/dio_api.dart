@@ -618,6 +618,21 @@ class DioApi implements Api {
     return [];
   }
 
+  Future<bool> sendParentMessage(String title, String message) async {
+    if (DioHelper.dio != null) {
+      final response = await DioHelper.dio!.post(
+          '/method/mobile_backend.mobile_backend.doctype.school_messaging.school_messaging.send_parent_message',
+          data: {"message": message, "title": title},
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        throw Exception('Something went wrong');
+      }
+    }
+    return false;
+  }
+
   Future<String> addMessageReply(String message, String messageName) async {
     if (DioHelper.dio != null) {
       final response = await DioHelper.dio!.post(
@@ -745,16 +760,19 @@ class DioApi implements Api {
 
   Future<List<PostVersion>?> getContentVersions() async {
     if (DioHelper.dio != null) {
-      final response = await DioHelper.dio!.post(
-          '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.get_contents_version',
-          data: {},
-          options: Options(contentType: Headers.formUrlEncodedContentType));
-
-      if (response.statusCode == 200) {
-        Iterable i = response.data["message"];
-        List<PostVersion> comments =
-            List.from(i.map((message) => PostVersion.fromJson(message)));
-        return comments;
+      try {
+        final response = await DioHelper.dio!.post(
+            '/method/mobile_backend.mobile_backend.doctype.announcement.announcement.get_contents_version',
+            data: {},
+            options: Options(contentType: Headers.formUrlEncodedContentType));
+        if (response.statusCode == 200) {
+          Iterable i = response.data["message"];
+          List<PostVersion> comments =
+              List.from(i.map((message) => PostVersion.fromJson(message)));
+          return comments;
+        }
+      } catch (e) {
+        print(e);
       }
     }
     return null;

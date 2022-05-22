@@ -14,6 +14,8 @@ class MessagingViewModel extends BaseViewModel {
   List<Message> groupMessages = [];
   List<Message> directMessages = [];
   List<String> attachments = [];
+  bool _notify = false;
+  set notify(bool value) => _notify = value;
   init() async {
     await getMessages();
   }
@@ -53,6 +55,7 @@ class MessagingViewModel extends BaseViewModel {
   Future<bool> getGroupMessages(String studentNo) async {
     await this.getMessages();
     groupMessages = messages.where((e) => e.studentNo == studentNo).toList();
+    print(groupMessages);
     return true;
   }
 
@@ -60,6 +63,10 @@ class MessagingViewModel extends BaseViewModel {
     await this.getMessages();
     directMessages =
         messages.where((e) => e.messageType == MessageType.direct).toList();
+    if (_notify) {
+      notify = false;
+      notifyListeners();
+    }
     return true;
   }
 
@@ -82,6 +89,11 @@ class MessagingViewModel extends BaseViewModel {
 
   Future<String> addMessageReply(Message message, String reply) async {
     String result = await locator<Api>().addMessageReply(reply, message.name);
+    return result;
+  }
+
+  Future<bool> sendParentMessage(String title, String message) async {
+    bool result = await locator<Api>().sendParentMessage(title, message);
     return result;
   }
 
