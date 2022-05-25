@@ -120,19 +120,21 @@ class HomeViewModel extends BaseViewModel {
   }
 
   void getParentAlbums() {
-    if (!Config().isGuest) {
+    if (!Config().isGuest && this.parentData != null) {
       this.parentAlbums.clear();
       this.albums.forEach((album) {
         if (album.section != null) {
           this.parentData!.students.forEach((student) {
             if (album.section! ==
-                "${student.classCode}-${student.sectionCode}") {
+                    "${student.classCode}-${student.sectionCode}" &&
+                album.branch == this.parentData!.branchCode) {
               this.parentAlbums.add(album);
             }
           });
         } else if (album.classCode != null) {
           this.parentData!.students.forEach((student) {
-            if (album.classCode == student.classCode) {
+            if (album.classCode == student.classCode &&
+                album.branch == this.parentData!.branchCode) {
               this.parentAlbums.add(album);
             }
           });
@@ -142,11 +144,13 @@ class HomeViewModel extends BaseViewModel {
           }
         }
       });
-
       this.parentAlbums.forEach((element) {
         this.albums.remove(element);
       });
+    } else {
+      this.parentAlbums.clear();
     }
+    this.albums = this.albums.where((i) => !i.restricted).toList();
   }
 
   Future<bool> getContent() async {
