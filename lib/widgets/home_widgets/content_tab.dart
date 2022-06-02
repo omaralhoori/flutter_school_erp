@@ -41,6 +41,7 @@ class _ContentTabState extends State<ContentTab> {
                         if (_scrollController.position.pixels >
                             triggerFetchMoreSize) {
                           _scrollLock = true;
+                          home.notifyContent = true;
                           await home.getContent();
                           _scrollLock = false;
                         }
