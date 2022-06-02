@@ -39,7 +39,8 @@ class HomeViewModel extends BaseViewModel {
   Parent? parentData;
   int unreadDM = 0;
   int unreadGM = 0;
-
+  bool notifyGallery = false;
+  bool notifyContent = false;
   bool _isTeacherRegistered = false;
   bool get isTeacherRegistered => _isTeacherRegistered;
   set isTeacherRegistered(bool val) {
@@ -96,6 +97,12 @@ class HomeViewModel extends BaseViewModel {
     try {
       this.albums = await locator<Api>().getGallery();
       getParentAlbums();
+      if (notifyGallery) {
+        notifyGallery = false;
+        notifyListeners();
+        print("notified");
+      }
+      //notifyListeners();
       if (this.albums.isNotEmpty) {
         await OfflineStorage.putItem('allAlbums', albums);
       }
@@ -165,7 +172,10 @@ class HomeViewModel extends BaseViewModel {
             .toList();
         this.contentList = List.from(this.contentList)
           ..addAll(filteredContents);
-        notifyListeners();
+        if (notifyContent) {
+          notifyContent = false;
+          notifyListeners();
+        }
         if (this.contentList.isNotEmpty) {
           try {
             PostsStorage.putAllContents(this.contentList);

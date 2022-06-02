@@ -18,6 +18,7 @@ class PhotoViewer extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
+        foregroundColor: Colors.white,
       ),
       body: PageView.builder(
         itemCount: urls.length,
