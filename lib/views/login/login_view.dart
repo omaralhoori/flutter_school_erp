@@ -327,7 +327,7 @@ class Title extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      el.tr('Retaal International Academy'),
+      el.tr('Alfityan School'),
       style: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.bold,
