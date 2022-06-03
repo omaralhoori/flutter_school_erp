@@ -1,6 +1,5 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart' as es;
 import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:school_erp/app/locator.dart';
@@ -48,7 +47,7 @@ class ContentCard extends StatelessWidget {
               height: 3.0,
             ),
             Text(
-              "${tr(content.contentType)} " +
+              "${es.tr(content.contentType)} " +
                   Palette.postingTime(DateTime.parse(content.creation),
                       context.locale.toString()),
               style: Theme.of(context).textTheme.caption,
@@ -147,43 +146,55 @@ class PostDescriptionHtml extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String description = this.content.description.replaceAllMapped(
+    String description = this
+        .content
+        .description
+        .replaceAllMapped(
           RegExp(r'(<img[^>]+>)', caseSensitive: false),
           (match) => "",
-        );
-    return Html(
-        data: description,
-        style: {
-          "table": Style(),
-          "td": Style(
-              border: Border.all(width: 0.5, color: Colors.black87),
-              padding: EdgeInsets.all(5))
-        },
-        customImageRenders: {
-          networkSourceMatcher(): networkImageRender(
-            headers: {"Custom-Header": "some-value"},
-            altWidget: (alt) => Text(alt ?? ""),
-            loadingWidget: () => Text("Loading..."),
-          ),
-          (attr, _) => attr["src"] != null && attr["src"]!.startsWith("/files"):
-              networkImageRender(
-            mapUrl: (url) {
-              String imgUrl = Config.baseUrl.endsWith('/')
-                  ? url!.substring(1, url.length)
-                  : url!;
-              return Config.baseUrl + imgUrl;
-            },
-          ),
-        },
-        onLinkTap: (String? url, RenderContext context,
-            Map<String, String> attributes, element) async {
-          if (url != null) {
-            if (await canLaunchUrl(Uri.parse(url))) {
-              await launchUrl(Uri.parse(url));
-            } else {
-              print("Cant open $url");
+        )
+        .replaceAllMapped(RegExp("text-align: right;"),
+            (match) => "text-align: right; direction: rtl;");
+    bool rightToLeft = description.contains("text-align: right;");
+    return Directionality(
+      textDirection: rightToLeft ? TextDirection.rtl : TextDirection.ltr,
+      child: Html(
+          data: description,
+          style: {
+            "table": Style(),
+            "td": Style(
+                border: Border.all(width: 0.5, color: Colors.black87),
+                padding: EdgeInsets.all(5)),
+            ".ql-editor": Style(direction: TextDirection.ltr),
+            ".ql-direction-rtl": Style(direction: TextDirection.rtl),
+          },
+          customImageRenders: {
+            networkSourceMatcher(): networkImageRender(
+              headers: {"Custom-Header": "some-value"},
+              altWidget: (alt) => Text(alt ?? ""),
+              loadingWidget: () => Text("Loading..."),
+            ),
+            (attr, _) =>
+                    attr["src"] != null && attr["src"]!.startsWith("/files"):
+                networkImageRender(
+              mapUrl: (url) {
+                String imgUrl = Config.baseUrl.endsWith('/')
+                    ? url!.substring(1, url.length)
+                    : url!;
+                return Config.baseUrl + imgUrl;
+              },
+            ),
+          },
+          onLinkTap: (String? url, RenderContext context,
+              Map<String, String> attributes, element) async {
+            if (url != null) {
+              if (await canLaunchUrl(Uri.parse(url))) {
+                await launchUrl(Uri.parse(url));
+              } else {
+                print("Cant open $url");
+              }
             }
-          }
-        });
+          }),
+    );
   }
 }

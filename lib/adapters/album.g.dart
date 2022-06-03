@@ -30,13 +30,14 @@ class AlbumAdapter extends TypeAdapter<Album> {
       section: fields[10] as String?,
       classCode: fields[11] as String?,
       branch: fields[12] as String?,
+      restricted: fields[13] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, Album obj) {
     writer
-      ..writeByte(13)
+      ..writeByte(14)
       ..writeByte(0)
       ..write(obj.creation)
       ..writeByte(1)
@@ -62,7 +63,9 @@ class AlbumAdapter extends TypeAdapter<Album> {
       ..writeByte(11)
       ..write(obj.classCode)
       ..writeByte(12)
-      ..write(obj.branch);
+      ..write(obj.branch)
+      ..writeByte(13)
+      ..write(obj.restricted);
   }
 
   @override

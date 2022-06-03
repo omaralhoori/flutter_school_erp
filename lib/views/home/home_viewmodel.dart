@@ -39,7 +39,8 @@ class HomeViewModel extends BaseViewModel {
   Parent? parentData;
   int unreadDM = 0;
   int unreadGM = 0;
-
+  bool notifyGallery = false;
+  bool notifyContent = false;
   bool _isTeacherRegistered = false;
   bool get isTeacherRegistered => _isTeacherRegistered;
   set isTeacherRegistered(bool val) {
@@ -96,6 +97,12 @@ class HomeViewModel extends BaseViewModel {
     try {
       this.albums = await locator<Api>().getGallery();
       getParentAlbums();
+      if (notifyGallery) {
+        notifyGallery = false;
+        notifyListeners();
+        print("notified");
+      }
+      //notifyListeners();
       if (this.albums.isNotEmpty) {
         await OfflineStorage.putItem('allAlbums', albums);
       }
@@ -120,19 +127,21 @@ class HomeViewModel extends BaseViewModel {
   }
 
   void getParentAlbums() {
-    if (!Config().isGuest) {
+    if (!Config().isGuest && this.parentData != null) {
       this.parentAlbums.clear();
       this.albums.forEach((album) {
         if (album.section != null) {
           this.parentData!.students.forEach((student) {
             if (album.section! ==
-                "${student.classCode}-${student.sectionCode}") {
+                    "${student.classCode}-${student.sectionCode}" &&
+                album.branch == this.parentData!.branchCode) {
               this.parentAlbums.add(album);
             }
           });
         } else if (album.classCode != null) {
           this.parentData!.students.forEach((student) {
-            if (album.classCode == student.classCode) {
+            if (album.classCode == student.classCode &&
+                album.branch == this.parentData!.branchCode) {
               this.parentAlbums.add(album);
             }
           });
@@ -142,11 +151,13 @@ class HomeViewModel extends BaseViewModel {
           }
         }
       });
-
       this.parentAlbums.forEach((element) {
         this.albums.remove(element);
       });
+    } else {
+      this.parentAlbums.clear();
     }
+    this.albums = this.albums.where((i) => !i.restricted).toList();
   }
 
   Future<bool> getContent() async {
@@ -161,7 +172,10 @@ class HomeViewModel extends BaseViewModel {
             .toList();
         this.contentList = List.from(this.contentList)
           ..addAll(filteredContents);
-        notifyListeners();
+        if (notifyContent) {
+          notifyContent = false;
+          notifyListeners();
+        }
         if (this.contentList.isNotEmpty) {
           try {
             PostsStorage.putAllContents(this.contentList);
