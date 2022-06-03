@@ -26,8 +26,10 @@ class _ContentTabState extends State<ContentTab> {
             if (snapshot.hasData) {
               return RefreshIndicator(
                 onRefresh: () async {
-                  home.getContent();
-                  home.getUnreadMessages();
+                  home.notifyContent = true;
+                  home.contentList = [];
+                  await home.getContent();
+                  await home.getUnreadMessages();
                 },
                 child: ListView.separated(
                   addAutomaticKeepAlives: false,
@@ -39,6 +41,7 @@ class _ContentTabState extends State<ContentTab> {
                         if (_scrollController.position.pixels >
                             triggerFetchMoreSize) {
                           _scrollLock = true;
+                          home.notifyContent = true;
                           await home.getContent();
                           _scrollLock = false;
                         }

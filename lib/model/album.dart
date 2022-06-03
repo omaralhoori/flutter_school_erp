@@ -30,6 +30,8 @@ class Album {
   String? classCode;
   @HiveField(12)
   String? branch;
+  @HiveField(13)
+  late bool restricted;
 
   Album({
     required this.title,
@@ -45,6 +47,7 @@ class Album {
     required this.section,
     required this.classCode,
     required this.branch,
+    this.restricted = false,
   });
 
   Album.fromJson(Map<String, dynamic> json) {
@@ -61,6 +64,11 @@ class Album {
     section = json['section'];
     classCode = json['class_code'];
     branch = json['branch'];
+    if (json['restricted'] != null) {
+      restricted = json['restricted'] == 1 ? true : false;
+    } else {
+      restricted = false;
+    }
   }
 
   Map<String, dynamic> toJson() {

@@ -21,7 +21,10 @@ class GalleryTab extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return RefreshIndicator(
-                onRefresh: home.getAlbums,
+                onRefresh: () async {
+                  home.notifyGallery = true;
+                  await home.getAlbums();
+                },
                 child: SizedBox(
                   height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width,
@@ -30,36 +33,37 @@ class GalleryTab extends StatelessWidget {
                       children: [
                         //TODO: Hide filter when its empty (OK)
                         if ((home.filterOn
-                            ? home.filteredParentAlbums
-                            : home.parentAlbums)
-                            .isNotEmpty || (home.filterOn
-                            ? home.filteredAlbums
-                            : home.albums).isNotEmpty)
+                                    ? home.filteredParentAlbums
+                                    : home.parentAlbums)
+                                .isNotEmpty ||
+                            (home.filterOn ? home.filteredAlbums : home.albums)
+                                .isNotEmpty)
                           Row(
-                          children: [
-                            SizedBox(
-                              width: 10.0,
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                home.showAlertDialog(context);
-                              },
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width * .3,
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.filter_alt),
-                                    Text(
-                                      tr('Filter'),
-                                      style:
-                                          Theme.of(context).textTheme.bodyText1,
-                                    ),
-                                  ],
+                            children: [
+                              SizedBox(
+                                width: 10.0,
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  home.showAlertDialog(context);
+                                },
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width * .3,
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.filter_alt),
+                                      Text(
+                                        tr('Filter'),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
+                            ],
+                          ),
                         if ((home.filterOn
                                 ? home.filteredParentAlbums
                                 : home.parentAlbums)
@@ -165,24 +169,24 @@ class _RankFilterState extends State<RankFilter> {
       children: List.generate(
           widget.rankList.length,
           (i) => Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Checkbox(
-                value: widget.rankList[i].isSelected,
-                onChanged: (value) {
-                  setState(() {
-                    widget.rankList[i].isSelected =
-                        !widget.rankList[i].isSelected;
-                  });
-                  locator<HomeViewModel>()
-                      .filterChanged(widget.rankList[i]);
-                },
-              ),
-              Text(widget.split
-                  ? widget.rankList[i].text.split('-').last
-                  : widget.rankList[i].text),
-            ],
-          )),
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Checkbox(
+                    value: widget.rankList[i].isSelected,
+                    onChanged: (value) {
+                      setState(() {
+                        widget.rankList[i].isSelected =
+                            !widget.rankList[i].isSelected;
+                      });
+                      locator<HomeViewModel>()
+                          .filterChanged(widget.rankList[i]);
+                    },
+                  ),
+                  Text(widget.split
+                      ? widget.rankList[i].text.split('-').last
+                      : widget.rankList[i].text),
+                ],
+              )),
     );
   }
 }

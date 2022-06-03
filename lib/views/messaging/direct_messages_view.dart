@@ -183,6 +183,7 @@ class MessageGesture extends StatelessWidget {
                   children: [
                     Text(
                       title,
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(fontSize: 16),
                     ),
@@ -192,6 +193,7 @@ class MessageGesture extends StatelessWidget {
                     Text(
                       message,
                       overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
                       style: TextStyle(
                           fontSize: 13,
                           color: Colors.grey.shade600,

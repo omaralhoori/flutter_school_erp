@@ -15,14 +15,20 @@ class PhotoViewer extends StatelessWidget {
 //Config.baseUrl +
   @override
   Widget build(BuildContext context) {
-    return PageView.builder(
-      itemCount: urls.length,
-      controller: PageController(initialPage: index),
-      itemBuilder: (context, i){
-        return PhotoView(
-          imageProvider: CachedNetworkImageProvider(Config.baseUrl + urls[i]),
-        );
-      },
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.white,
+      ),
+      body: PageView.builder(
+        itemCount: urls.length,
+        controller: PageController(initialPage: index),
+        itemBuilder: (context, i) {
+          return PhotoView(
+            imageProvider: CachedNetworkImageProvider(Config.baseUrl + urls[i]),
+          );
+        },
+      ),
     );
   }
 }
