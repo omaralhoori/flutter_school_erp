@@ -90,7 +90,7 @@ class _FrappeAppState extends State<FrappeApp> {
               locale: context.locale,
               builder: EasyLoading.init(),
               debugShowCheckedModeBanner: false,
-              title: 'Retaal International Academy',
+              title: 'Alfityan School',
               theme: Palette.customTheme,
               home: GestureDetector(
                 onTap: () {

@@ -1,18 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- <item>
+    <item>
         <bitmap android:gravity="fill" android:src="@drawable/background"/>
-    </item> -->
-    <item android:drawable="@drawable/backgound_gradient"/>
-    <item
-        android:width="200dp"
-        android:height="200dp"
-        android:gravity="center"
-    >
-        <bitmap 
-        android:gravity="fill" 
-        android:src="@drawable/splash"
-        android:mipMap="true"
-        />
+    </item>
+    <item>
+        <bitmap android:gravity="center" android:src="@drawable/splash"/>
     </item>
 </layer-list>

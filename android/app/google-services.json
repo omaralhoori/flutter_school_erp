@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "1067737640867",
-    "project_id": "mobile-erp-a6e89",
-    "storage_bucket": "mobile-erp-a6e89.appspot.com"
+    "project_number": "313062341624",
+    "project_id": "alfityanapp",
+    "storage_bucket": "alfityanapp.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1067737640867:android:1a612d88cf50f3255b7416",
+        "mobilesdk_app_id": "1:313062341624:android:ca9ffdd9ef5505a490740d",
         "android_client_info": {
-          "package_name": "com.retaal.academy"
+          "package_name": "com.alfityan.school"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1067737640867-97tgoqvpkinamr65fcsks9nubedr2qbe.apps.googleusercontent.com",
+          "client_id": "313062341624-sh7sf698h9oc4icv3pec1m9doqrfcadm.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBR3J_n3fQ1negFLCK0M7kHZoFMAx4_GOM"
+          "current_key": "AIzaSyBJL2jzW3pbdnBC1h8Cmk8YoGmTwyUnALc"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1067737640867-97tgoqvpkinamr65fcsks9nubedr2qbe.apps.googleusercontent.com",
+              "client_id": "313062341624-sh7sf698h9oc4icv3pec1m9doqrfcadm.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
