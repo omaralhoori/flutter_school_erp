@@ -63,10 +63,8 @@ class _CustomSliderState extends State<CustomSlider>
             },
           ),
           if (_numDots > 1)
-            Positioned(
-              bottom: 0,
-              right: size.width * .4,
-              left: size.width * .4,
+            Align(
+              alignment: Alignment.bottomCenter,
               child: TabPageSelector(
                 controller: _controller,
               ),
