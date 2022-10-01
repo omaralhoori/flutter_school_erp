@@ -32,7 +32,8 @@ class Config {
   String get version => configContainer.get('version');
 
   // String? get baseUrl => configContainer.get('baseUrl');
-  static String get baseUrl => "http://185.230.138.118:8002";
+  static String get baseUrl =>
+      "http://149.102.143.108"; //"http://185.230.138.118:8002";
   // "http://193.187.129.247";
   // //;"http://192.168.1.106:8001";
   //

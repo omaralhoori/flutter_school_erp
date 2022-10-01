@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "313062341624",
-    "project_id": "alfityanapp",
-    "storage_bucket": "alfityanapp.appspot.com"
+    "project_number": "420111208430",
+    "project_id": "almanar-schools",
+    "storage_bucket": "almanar-schools.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:313062341624:android:ca9ffdd9ef5505a490740d",
+        "mobilesdk_app_id": "1:420111208430:android:7b8c2d4f6476f0687408ff",
         "android_client_info": {
-          "package_name": "com.alfityan.school"
+          "package_name": "com.edirection.manar"
         }
       },
       "oauth_client": [
         {
-          "client_id": "313062341624-sh7sf698h9oc4icv3pec1m9doqrfcadm.apps.googleusercontent.com",
+          "client_id": "420111208430-ed3m7fjq904n6ch3dvt0bv47hn2gocrg.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBJL2jzW3pbdnBC1h8Cmk8YoGmTwyUnALc"
+          "current_key": "AIzaSyDS0C5qGlIIMtR6uAcjgQxp9_McGjpldYE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "313062341624-sh7sf698h9oc4icv3pec1m9doqrfcadm.apps.googleusercontent.com",
+              "client_id": "420111208430-ed3m7fjq904n6ch3dvt0bv47hn2gocrg.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

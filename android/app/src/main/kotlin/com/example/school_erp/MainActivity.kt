@@ -1,4 +1,4 @@
-package com.alfityan.school
+package com.edirection.manar
 
 import io.flutter.embedding.android.FlutterActivity
 

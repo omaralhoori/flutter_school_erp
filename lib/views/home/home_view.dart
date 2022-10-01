@@ -73,7 +73,7 @@ class _HomeViewState extends State<HomeView> {
                                     padding: EdgeInsets.only(
                                         left: 2, right: 2, top: 4),
                                     child: Text(
-                                      tr("Alfityan School"),
+                                      tr("Al-Manar Schools"),
                                       style: TextStyle(
                                           color: Palette.appBarIconsColor,
                                           fontSize: 12),

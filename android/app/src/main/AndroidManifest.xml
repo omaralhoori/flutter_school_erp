@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.alfityan.school">
+    package="com.edirection.manar">
    <application
-        android:label="Alfityan School"
+        android:label="Al-Manar Schools"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
