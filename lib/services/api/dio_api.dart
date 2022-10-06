@@ -880,7 +880,8 @@ class DioApi implements Api {
     if (DioHelper.dio != null) {
       //String url = '/method/mobile_backend.mobile_backend.pdf.get_transactions_pdf?PBRN=$branch&PYEAR=$year&PCONNO=$contract';
       String url =
-          'http://46.185.139.178:7778/reports/rwservlet?report=${report}&userid=MOBUSR/M0B_2O20_Y5N@manar&DESFORMAT=XML&DESTYPE=Cache&PERCENFLG=1&STDTRNFLG=1&CONCATMATFLG=2&CONCATMATFLG_DTL=0&SUMPERDIPFLG=2&STDFLG=2&PYEAR=${currentYear}&PALLPER=${allPeriods}&PCLASS=${classNo}&PDIV=${divisionNo}&PBRN=${branchNo}&PPER=${period}&PSEM=${semester}&STDBRN=${branchNo}&STDCON=${contractNo}&STDNO=${studentNo}';
+          '/method/mobile_backend.mobile_backend.degree.get_report?report=$report&year=$currentYear&all_periods=$allPeriods&class_no=$classNo&division_no=$divisionNo&branch_no=$branchNo&period=$period&semester=$semester&contract_no=$contractNo&student_no=$studentNo';
+      //  'http://46.185.139.178:7778/reports/rwservlet?report=${report}&userid=MOBUSR/M0B_2O20_Y5N@manar&DESFORMAT=XML&DESTYPE=Cache&PERCENFLG=1&STDTRNFLG=1&CONCATMATFLG=2&CONCATMATFLG_DTL=0&SUMPERDIPFLG=2&STDFLG=2&PYEAR=${currentYear}&PALLPER=${allPeriods}&PCLASS=${classNo}&PDIV=${divisionNo}&PBRN=${branchNo}&PPER=${period}&PSEM=${semester}&STDBRN=${branchNo}&STDCON=${contractNo}&STDNO=${studentNo}';
       String fileName = "degrees.pdf";
       openFile(url: url, fileName: fileName);
     }

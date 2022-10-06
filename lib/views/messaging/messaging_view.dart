@@ -132,11 +132,12 @@ class _MessagingViewState extends State<MessagingView> {
                                         .split('/')
                                         .last),
                                     onTap: () {
-
-String url = Config.baseUrl + model.attachments[index];
-final Uri uri = Uri.parse(url);
-launchUrl(uri);
-},
+                                      String url = Config.baseUrl +
+                                          model.attachments[index];
+                                      final Uri uri = Uri.parse(url);
+                                      launchUrl(uri,
+                                          mode: LaunchMode.externalApplication);
+                                    },
                                   ),
                                 );
                               })
