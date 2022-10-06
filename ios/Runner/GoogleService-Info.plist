@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>1067737640867-li5p56ue5upq5ksfm88kqr41hk9qls8r.apps.googleusercontent.com</string>
+	<string>420111208430-5pk6cjg839a3mivp9rg2a1k659lrqifs.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.1067737640867-li5p56ue5upq5ksfm88kqr41hk9qls8r</string>
+	<string>com.googleusercontent.apps.420111208430-5pk6cjg839a3mivp9rg2a1k659lrqifs</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAw-HNhEOiBDCaWhIW98RNLgz7zAf00Lks</string>
+	<string>AIzaSyDZNShX3UIebQfBbzey7IQcR9w81Qx7CfY</string>
 	<key>GCM_SENDER_ID</key>
-	<string>1067737640867</string>
+	<string>420111208430</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.edirection.manar</string>
+	<string>com.almanar-sch.almanar</string>
 	<key>PROJECT_ID</key>
-	<string>mobile-erp-a6e89</string>
+	<string>almanar-schools</string>
 	<key>STORAGE_BUCKET</key>
-	<string>mobile-erp-a6e89.appspot.com</string>
+	<string>almanar-schools.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1067737640867:ios:af47779c96cc7f835b7416</string>
+	<string>1:420111208430:ios:fa0335fd44de2b8c7408ff</string>
 </dict>
 </plist>
