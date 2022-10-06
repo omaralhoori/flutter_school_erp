@@ -131,8 +131,12 @@ class _MessagingViewState extends State<MessagingView> {
                                     child: Text(model.attachments[index]
                                         .split('/')
                                         .last),
-                                    onTap: () => launch(Config.baseUrl +
-                                        model.attachments[index]),
+                                    onTap: () {
+
+String url = Config.baseUrl + model.attachments[index];
+final Uri uri = Uri.parse(url);
+launchUrl(uri);
+},
                                   ),
                                 );
                               })
