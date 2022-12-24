@@ -33,6 +33,7 @@ class StudentTab extends StatelessWidget {
                 return StudentRefresh(
                   snapshot: snapshot,
                   parentData: home.parentData,
+                  unreadMessages: home.unreadStudentsMessages,
                   onRefresh: home.getParentData,
                 );
               }),
@@ -47,11 +48,13 @@ class StudentRefresh extends StatefulWidget {
       {Key? key,
       required this.snapshot,
       required this.onRefresh,
+      required this.unreadMessages,
       this.parentData})
       : super(key: key);
   final AsyncSnapshot<Object?> snapshot;
   final Parent? parentData;
   final Future<bool> Function() onRefresh;
+  final List<dynamic> unreadMessages;
 
   @override
   _StudentRefreshState createState() => _StudentRefreshState();
@@ -80,6 +83,12 @@ class _StudentRefreshState extends State<StudentRefresh> {
                               itemCount: widget.parentData!.students.length,
                               itemBuilder: (context, index) {
                                 return StudentCard(
+                                    unreadMessages: widget.unreadMessages
+                                        .where((element) =>
+                                            element['student_no'] ==
+                                            widget
+                                                .parentData!.students[index].no)
+                                        .toList(),
                                     student:
                                         widget.parentData!.students[index]);
                               })
@@ -159,8 +168,10 @@ class ParentCard extends StatelessWidget {
 }
 
 class StudentCard extends StatelessWidget {
-  StudentCard({Key? key, required this.student}) : super(key: key);
+  StudentCard({Key? key, required this.student, required this.unreadMessages})
+      : super(key: key);
   final Student student;
+  final List unreadMessages;
   final Color textColor = Palette.studentCardForegroundColor;
   final List<Color> bgColors = [
     Colors.amber.shade200,
@@ -174,93 +185,111 @@ class StudentCard extends StatelessWidget {
   Widget build(BuildContext context) {
     String gender = student.gender == 'Female' ? 'g' : 'b';
     int photoNum = int.parse(student.no) % 4 + 1;
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      child: GestureDetector(
-        onTap: () {
-          NavigationHelper.push(
-              context: context, page: StudentView(student: student));
-        },
-        child: Container(
-          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Stack(
+    int unreadMsgs =
+        unreadMessages.isNotEmpty ? unreadMessages.last["unread_messages"] : 0;
+    print(unreadMsgs);
+    return Stack(
+      children: [
+        Container(
+          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          child: GestureDetector(
+            onTap: () {
+              NavigationHelper.push(
+                  context: context, page: StudentView(student: student));
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                    margin: EdgeInsets.only(left: 40.0),
-                    height: 80,
-                    decoration: BoxDecoration(
-                        color: bgColors[
-                            colorIndex], //Palette.studentCardBackgroundColor,
-                        shape: BoxShape.rectangle,
-                        image: DecorationImage(
-                            fit: BoxFit.contain,
-                            alignment: Alignment.centerRight,
-                            image: AssetImage(
-                                'assets/students_images/$gender$photoNum.png')),
-                        borderRadius: BorderRadius.circular(8),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 10,
-                              offset: Offset(0, 10))
-                        ]),
-                    child: Center(
-                      child: Text(
-                        student.name,
-                        style: TextStyle(
-                            color: textColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: FractionalOffset.centerLeft,
-                    child: Container(
-                      margin: new EdgeInsets.symmetric(vertical: 14),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                      ),
-                      child: SizedBox(
-                        height: 55,
-                        width: 55,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: FractionalOffset.centerLeft,
-                    child: Container(
-                      margin: new EdgeInsets.symmetric(vertical: 16),
-                      decoration: BoxDecoration(
-                          color: bgColors[colorIndex],
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 10,
-                                offset: Offset(2, 0))
-                          ]),
-                      child: SizedBox(
-                        height: 50,
-                        width: 50,
+                  Stack(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(left: 40.0),
+                        height: 80,
+                        decoration: BoxDecoration(
+                            color: bgColors[
+                                colorIndex], //Palette.studentCardBackgroundColor,
+                            shape: BoxShape.rectangle,
+                            image: DecorationImage(fit: BoxFit.contain, alignment: Alignment.centerRight, image: AssetImage('assets/students_images/$gender$photoNum.png')),
+                            borderRadius: BorderRadius.circular(8),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black12,
+                                  blurRadius: 10,
+                                  offset: Offset(0, 10))
+                            ]),
                         child: Center(
-                            child: Text(
-                          student.no,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        )),
+                          child: Text(
+                            student.name,
+                            style: TextStyle(
+                                color: textColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14),
+                          ),
+                        ),
                       ),
-                    ),
+                      Align(
+                        alignment: FractionalOffset.centerLeft,
+                        child: Container(
+                          margin: new EdgeInsets.symmetric(vertical: 14),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                          ),
+                          child: SizedBox(
+                            height: 55,
+                            width: 55,
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: FractionalOffset.centerLeft,
+                        child: Container(
+                          margin: new EdgeInsets.symmetric(vertical: 16),
+                          decoration: BoxDecoration(
+                              color: bgColors[colorIndex],
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.black12,
+                                    blurRadius: 10,
+                                    offset: Offset(2, 0))
+                              ]),
+                          child: SizedBox(
+                            height: 50,
+                            width: 50,
+                            child: Center(
+                                child: Text(
+                              student.no,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            )),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
+            ),
           ),
         ),
-      ),
+        if (unreadMsgs > 0)
+          Positioned(
+            child: Container(
+              margin: EdgeInsets.only(right: 0),
+              child: Text(
+                unreadMsgs > 9 ? "+9" : unreadMsgs.toString(),
+                style: TextStyle(color: Colors.white),
+              ),
+              padding: EdgeInsets.all(8),
+              decoration:
+                  BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+            ),
+            right: 25,
+            top: 25,
+          ),
+      ],
     );
   }
 }

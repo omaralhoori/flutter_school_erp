@@ -39,6 +39,7 @@ class HomeViewModel extends BaseViewModel {
   Parent? parentData;
   int unreadDM = 0;
   int unreadGM = 0;
+  List<dynamic> unreadStudentsMessages = [];
   bool notifyGallery = false;
   bool notifyContent = false;
   bool _isTeacherRegistered = false;
@@ -255,6 +256,8 @@ class HomeViewModel extends BaseViewModel {
     //parentData = OfflineStorage.getItem("parent")["data"] as Parent;
     if (!Config().isGuest) {
       try {
+        unreadStudentsMessages =
+            await locator<Api>().getStudentUnreadMessages();
         parentData = await locator<Api>().getParentData();
         var degreeSettings = await locator<Api>().getDegreeSettings();
         if (degreeSettings != null)

@@ -685,6 +685,19 @@ class DioApi implements Api {
     return [];
   }
 
+  Future<List<dynamic>> getStudentUnreadMessages() async {
+    if (DioHelper.dio != null) {
+      final response = await DioHelper.dio!.post(
+          '/method/mobile_backend.mobile_backend.doctype.school_messaging.school_messaging.get_student_unread_messages',
+          data: {},
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+      if (response.statusCode == 200) {
+        return response.data["message"];
+      }
+    }
+    return [];
+  }
+
   @override
   Future<void> contentLike(String name, String type) async {
     var data;
