@@ -189,7 +189,9 @@ class PostDescriptionHtml extends StatelessWidget {
               Map<String, String> attributes, element) async {
             if (url != null) {
               if (await canLaunchUrl(Uri.parse(url))) {
-                await launchUrl(Uri.parse(url));
+                print(url);
+                await launchUrl(Uri.parse(url),
+                    mode: LaunchMode.externalApplication);
               } else {
                 print("Cant open $url");
               }
